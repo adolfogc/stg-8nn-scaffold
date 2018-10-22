@@ -1,0 +1,6 @@
+[submodule "dependencies/libopencm3"]
+	path = dependencies/libopencm3
+	url = git@github.com:adolfogc/libopencm3.git
+[submodule "dependencies/qpc"]
+	path = dependencies/qpc
+	url = https://github.com/QuantumLeaps/qpc.git

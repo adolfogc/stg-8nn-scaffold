@@ -1,0 +1,28 @@
+##
+## application::app
+##
+
+set(APP_ELF firmware.elf)
+set(APP_BIN firmware.bin)
+set(APP_DIR app)
+
+list(APPEND APP_SOURCES
+  ${APP_DIR}/main.c
+  ${APP_DIR}/blinky.c
+  ${APP_DIR}/blinky.h
+)
+
+add_executable(${APP_ELF} ${APP_SOURCES})
+
+target_include_directories(${APP_ELF} PRIVATE ${APP_DIR})
+target_include_directories(${APP_ELF} PRIVATE ${BSP_DIR})
+target_include_directories(${APP_ELF} PRIVATE ${QPC_INCLUDE})
+target_link_libraries(${APP_ELF} ${QPC_LIBRARY} ${BSP_LIBRARY} ${LIBOPENCM3_LIBRARY})
+
+add_custom_command(
+  OUTPUT ${APP_BIN}
+  COMMAND ${CMAKE_OBJCOPY} -Obinary ${APP_ELF} ${APP_BIN}
+  MAIN_DEPENDENCY ${APP_ELF}
+)
+
+add_custom_target(bin ALL DEPENDS ${APP_BIN})

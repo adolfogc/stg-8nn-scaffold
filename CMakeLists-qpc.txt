@@ -1,0 +1,34 @@
+##
+## dependencies::qpc(qk)
+##
+
+set(QPC_DIR dependencies/qpc)
+set(QP_PORT_DIR ports/arm-cm/qk/gnu)
+set(QPC_LIBRARY qpc)
+
+list(APPEND QPC_INCLUDE
+  ${QPC_DIR}/include
+  ${QPC_DIR}/src
+  override/${QPC_DIR}/${QP_PORT_DIR}
+)
+
+list(APPEND QPC_SOURCES
+  ${QPC_DIR}/src/qf/qep_hsm.c
+  ${QPC_DIR}/src/qf/qep_msm.c
+  ${QPC_DIR}/src/qf/qf_act.c
+  ${QPC_DIR}/src/qf/qf_actq.c
+  ${QPC_DIR}/src/qf/qf_defer.c
+  ${QPC_DIR}/src/qf/qf_dyn.c
+  ${QPC_DIR}/src/qf/qf_mem.c
+  ${QPC_DIR}/src/qf/qf_ps.c
+  ${QPC_DIR}/src/qf/qf_qact.c
+  ${QPC_DIR}/src/qf/qf_qeq.c
+  ${QPC_DIR}/src/qf/qf_qmact.c
+  ${QPC_DIR}/src/qf/qf_time.c
+  ${QPC_DIR}/src/qk/qk.c
+  override/${QPC_DIR}/${QP_PORT_DIR}/qk_port.c
+)
+
+add_library(${QPC_LIBRARY} STATIC ${QPC_SOURCES})
+target_include_directories(${QPC_LIBRARY} PRIVATE ${QPC_INCLUDE})
+target_include_directories(${QPC_LIBRARY} PRIVATE ${LIBOPENCM3_DIR}/include)

@@ -1,0 +1,47 @@
+STG-8nn-Scaffold - https://github.com/adolfogc/stg-8nn-scaffold
+Copyright (C) 2018 Adolfo E. García
+
+STG-8nn-Scaffold is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+STG-8nn-Scaffold is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
+
+--------------------------------------------------------------------
+
+Format-Specification: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: STG-8nn-Scaffold
+Upstream-Contact: Adolfo E. García <adolfo.garcia.cr@gmail.com>
+Source: https://github.com/adolfogc/stg-8nn-scaffold
+
+Copyright: 2018, Adolfo E. García
+License: AGPL-3
+
+Files: stg-8nn.ld
+Copyright: ?
+License: ?
+
+Files: dependencies/qpc/*
+Copyright: 2005-2018 Quantum Leaps, LLC
+License: GPL-3
+
+Files: dependencies/libopencm3/*
+Copyright:
+License: LGPL-3 or GPL-3
+
+Files: bsp/stm32f091xc/stm32f0xx.h
+       bsp/stm32f091xc/stm32f091xc.h
+       bsp/stm32f091xc/system_stm32f0xx.h
+       bsp/stm32f091xc/system_stm32f0xx.c
+       bsp/stm32f091xc/gnu/startup_stm32f091xc.s
+Copyright: STMicroelectronics
+License: Custom Copyleft
+
+Files:

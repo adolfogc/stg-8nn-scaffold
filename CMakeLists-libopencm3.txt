@@ -1,0 +1,137 @@
+##
+## dependencies::libopencm3
+##
+
+set(LIBOPENCM3_DIR dependencies/libopencm3)
+set(LIBOPENCM3_LIBRARY opencm3_stm32f0)
+
+# generate the linker script using libopencm3's generic template
+list(APPEND LDSCRIPT_DEFS -DSTM32F0 -DSTM32F091xC -D_ROM=256K -D_RAM=32K -D_ROM_OFF=0x08000000 -D_RAM_OFF=0x20000000)
+set(LIBOPENCM3_LDSCRIPT libopencm3_gen/stm32f091xc.ld)
+
+add_custom_command(
+  OUTPUT ${LIBOPENCM3_LDSCRIPT}
+  COMMAND ${CMAKE_C_COMPILER} ${LDSCRIPT_DEFS} -P -E -c ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/ld/linker.ld.S -o ${LIBOPENCM3_LDSCRIPT}
+  MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/ld/linker.ld.S
+)
+
+# use the generated linker script
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T${LIBOPENCM3_LDSCRIPT} -Xlinker -Map=stg-8nn.map")
+
+# generate some libopencm3's files using our modified irq2nvic script
+set(LIBOPENCM3_IRQ2NVIC_SCRIPT ${CMAKE_SOURCE_DIR}/override/${LIBOPENCM3_DIR}/scripts/irq2nvic_h)
+set(LIBOPENCM3_IRQ2NVIC_JSON ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/include/libopencm3/stm32/f0/irq.json)
+
+add_custom_command(
+  OUTPUT libopencm3_gen/include/libopencm3/stm32/f0/nvic.h libopencm3_gen/include/libopencmsis/irqhandlers.h libopencm3_gen/lib/stm32/f0/vector_nvic.c
+  COMMAND ${LIBOPENCM3_IRQ2NVIC_SCRIPT} ${LIBOPENCM3_IRQ2NVIC_JSON}
+  DEPENDS ${LIBOPENCM3_IRQ2NVIC_SCRIPT}
+  MAIN_DEPENDENCY ${LIBOPENCM3_IRQ2NVIC_JSON}
+)
+
+# we need to copy thess files because they use some "relative-path" include statements
+add_custom_command(
+  OUTPUT libopencm3_gen/lib/dispatch/vector_chipset.c
+  COMMAND cp ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_chipset.c libopencm3_gen/lib/dispatch/vector_chipset.c
+  MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_chipset.c
+)
+
+add_custom_command(
+  OUTPUT libopencm3_gen/lib/dispatch/vector_nvic.c
+  COMMAND cp ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_nvic.c libopencm3_gen/lib/dispatch/vector_nvic.c
+  MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_nvic.c
+)
+
+add_custom_command(
+  OUTPUT libopencm3_gen/lib/cm3/vector.c
+  COMMAND cp ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/cm3/vector.c libopencm3_gen/lib/cm3/vector.c
+  MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/cm3/vector.c
+)
+
+# libopencm3's lib/stm32/f0
+list(APPEND LIBOPENCM3_SOURCES
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/adc.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/comparator.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/dac.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/dma.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/flash.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/gpio.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/i2c.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/pwr.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/rcc.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/rtc.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/syscfg.c
+  ${LIBOPENCM3_DIR}/lib/stm32/f0/timer.c
+)
+
+# libopencm3's lib/stm32/common
+list(APPEND LIBOPENCM3_SOURCES
+  ${LIBOPENCM3_DIR}/lib/stm32/common/adc_common_v2.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/crc_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/crc_v2.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/crs_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/dac_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/dma_common_l1f013.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/exti_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/flash_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/flash_common_f.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/flash_common_f01.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/flash_common_idcache.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/gpio_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/gpio_common_f0234.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/i2c_common_v2.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/iwdg_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/pwr_common_v1.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/rcc_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/rtc_common_l1f024.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/spi_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/spi_common_v2.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/st_usbfs_core.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/st_usbfs_core.h
+  ${LIBOPENCM3_DIR}/lib/stm32/common/timer_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/timer_common_f0234.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/usart_common_all.c
+  ${LIBOPENCM3_DIR}/lib/stm32/common/usart_common_v2.c
+)
+
+# libopencm3's lib/stm32
+list(APPEND LIBOPENCM3_SOURCES
+  ${LIBOPENCM3_DIR}/lib/stm32/can.c
+  ${LIBOPENCM3_DIR}/lib/stm32/desig.c
+  ${LIBOPENCM3_DIR}/lib/stm32/st_usbfs_v1.c
+  ${LIBOPENCM3_DIR}/lib/stm32/st_usbfs_v2.c
+)
+
+# libopencm3's lib/cm3
+list(APPEND LIBOPENCM3_SOURCES
+  ${LIBOPENCM3_DIR}/lib/cm3/assert.c
+  ${LIBOPENCM3_DIR}/lib/cm3/dwt.c
+  ${LIBOPENCM3_DIR}/lib/cm3/nvic.c
+  ${LIBOPENCM3_DIR}/lib/cm3/scb.c
+  ${LIBOPENCM3_DIR}/lib/cm3/sync.c
+  ${LIBOPENCM3_DIR}/lib/cm3/systick.c
+  libopencm3_gen/lib/cm3/vector.c
+)
+
+# libopencm3's lib/dispatch
+list(APPEND LIBOPENCM3_SOURCES
+  libopencm3_gen/lib/dispatch/vector_chipset.c
+  libopencm3_gen/lib/dispatch/vector_nvic.c
+)
+
+# generated files
+list(APPEND LIBOPENCM3_SOURCES
+  libopencm3_gen/lib/stm32/f0/vector_nvic.c
+  libopencm3_gen/include/libopencm3/stm32/f0/nvic.h
+  libopencm3_gen/include/libopencmsis/irqhandlers.h
+  ${LIBOPENCM3_LDSCRIPT}
+)
+
+# hack to avoid compiling these .c files, as they are "included" in /lib/cm3/vector.c
+set_source_files_properties(libopencm3_gen/lib/dispatch/vector_chipset.c PROPERTIES HEADER_FILE_ONLY TRUE)
+set_source_files_properties(libopencm3_gen/lib/dispatch/vector_nvic.c PROPERTIES HEADER_FILE_ONLY TRUE)
+set_source_files_properties(libopencm3_gen/lib/stm32/f0/vector_nvic.c PROPERTIES HEADER_FILE_ONLY TRUE)
+
+add_library(${LIBOPENCM3_LIBRARY} STATIC ${LIBOPENCM3_SOURCES})
+target_include_directories(${LIBOPENCM3_LIBRARY} PRIVATE libopencm3_gen/include)
+target_include_directories(${LIBOPENCM3_LIBRARY} PRIVATE ${LIBOPENCM3_DIR}/include)
