@@ -21,12 +21,27 @@ Upstream-Name: STG-8nn-Scaffold
 Upstream-Contact: Adolfo E. García <adolfo.garcia.cr@gmail.com>
 Source: https://github.com/adolfogc/stg-8nn-scaffold
 
-Copyright: 2018, Adolfo E. García
+Copyright: 2018 Adolfo E. García
 License: AGPL-3
 
-Files: stg-8nn.ld
-Copyright: ?
-License: ?
+Files: override/dependencies/libopencm3/scripts/irq2nvic_h
+Copyright: 2012 chrysn <chrysn@fsfe.org>
+           2018 Adolfo E. Garcia
+License: GPL-3
+
+Files: override/dependencies/qpc/ports/arm-cm/qk/gnu/*.h
+Copyright: 2005-2018 Quantum Leaps, LLC
+License: GPL-3
+
+Files: override/dependencies/qpc/ports/arm-cm/qk/gnu/qk_port.c
+Copyright: 2018 Quantum Leaps, LLC
+           2018 Adolfo E. García
+License: GPL-3
+
+Files bsp/bsp_qpc.c
+Copyright: 2018 Quantum Leaps, LLC
+           2018 Adolfo E. García
+License: GPL-3
 
 Files: dependencies/qpc/*
 Copyright: 2005-2018 Quantum Leaps, LLC
@@ -35,13 +50,3 @@ License: GPL-3
 Files: dependencies/libopencm3/*
 Copyright:
 License: LGPL-3 or GPL-3
-
-Files: bsp/stm32f091xc/stm32f0xx.h
-       bsp/stm32f091xc/stm32f091xc.h
-       bsp/stm32f091xc/system_stm32f0xx.h
-       bsp/stm32f091xc/system_stm32f0xx.c
-       bsp/stm32f091xc/gnu/startup_stm32f091xc.s
-Copyright: STMicroelectronics
-License: Custom Copyleft
-
-Files:

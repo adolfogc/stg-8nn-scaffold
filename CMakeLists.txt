@@ -45,6 +45,6 @@ include(CMakeLists-qpc.txt)
 include(CMakeLists-bsp.txt)
 
 ##
-## application::app
+## app
 ##
 include(CMakeLists-app.txt)
