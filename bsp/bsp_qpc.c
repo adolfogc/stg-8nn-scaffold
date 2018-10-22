@@ -13,7 +13,6 @@ void sys_tick_handler(void) {
 /* In Cortex-M0, all are KernelAwareISRs. */
 enum KernelAwareISRs {
   SYSTICK_PRIO = QF_AWARE_ISR_CMSIS_PRI,
-  PENDSV_PRIO,
   /* ... */
   MAX_KERNEL_AWARE_CMSIS_PRI /* keep always last */
 };
@@ -53,7 +52,7 @@ void QF_onStartup(void) {
   * DO NOT LEAVE THE ISR PRIORITIES AT THE DEFAULT VALUE!
   */
   nvic_set_priority(NVIC_SYSTICK_IRQ, SYSTICK_PRIO);
-  nvic_set_priority(NVIC_PENDSV_IRQ, PENDSV_PRIO);
+  //nvic_set_priority(NVIC_PENDSV_IRQ, PENDSV_PRIO);
 
   nvic_enable_irq(NVIC_SYSTICK_IRQ);
 }
