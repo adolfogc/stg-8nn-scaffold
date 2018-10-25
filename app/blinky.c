@@ -55,8 +55,8 @@ static QState Blinky_initial(Blinky * const me, QEvt const * const e) {
     * and periodically every 5 seconds
     */
     QTimeEvt_armX(&me->timeEvt,
-        5*BSP_TICKS_PER_SEC,
-        5*BSP_TICKS_PER_SEC);
+        1*BSP_TICKS_PER_SEC,
+        1*BSP_TICKS_PER_SEC);
     return Q_TRAN(&Blinky_off);
 }
 static QState Blinky_off(Blinky * const me, QEvt const * const e) {
