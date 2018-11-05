@@ -4,3 +4,6 @@
 [submodule "dependencies/qpc"]
 	path = dependencies/qpc
 	url = https://github.com/QuantumLeaps/qpc.git
+[submodule "dependencies/libcanard"]
+	path = dependencies/libcanard
+	url = https://github.com/adolfogc/libcanard.git
