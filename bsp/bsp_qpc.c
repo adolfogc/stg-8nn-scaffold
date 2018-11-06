@@ -51,8 +51,8 @@ void QF_onStartup(void) {
 
   /* Set up the SysTick timer to fire at BSP_TICKS_PER_SEC rate
   *
-  * We want the systick to fire every 10 ms (BSP_TICKS_PER_SEC = 100)
-  * => reload = ms * clockFrequency - 1 = 10 * 10^-3 * 48 * 10^6 - 1 = 479999
+  * We want the systick to fire every 100 us (0.1 ms) => BSP_TICKS_PER_SEC = 10^4
+  * => reload = ms * clockFrequency - 1 = 10^-1 * 10^-3 * 48 * 10^6 - 1 = 4799
   *
   * Useful references here:
   * - https://www.youtube.com/watch?v=aLCUDv_fgoU
@@ -60,7 +60,7 @@ void QF_onStartup(void) {
   * - STM32F0xxx Cortex-M0 programming manual
   */
   systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
-  systick_set_reload(479999);
+  systick_set_reload(4799);
   systick_clear();
   systick_counter_enable();
   systick_interrupt_enable();

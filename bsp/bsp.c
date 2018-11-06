@@ -36,7 +36,7 @@ void BSP_ledOff(void) {
 }
 
 void BSP_init(void) {
-  /* Clock the LED_PORT */
+  /* Enable clock for the LED_PORT */
   rcc_periph_clock_enable(LED_RCC);
   /* Configure the pin as an output */
   gpio_mode_setup(LED_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, LED_PIN);

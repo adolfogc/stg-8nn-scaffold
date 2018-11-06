@@ -51,9 +51,9 @@ void Blinky_ctor(void) {
 }
 
 static QState Blinky_initial(Blinky * const me, QEvt const * const e) {
-    /* arm the private time event to expire in 5s
-    * and periodically every 5 seconds
-    */
+    /* arm the private time event to expire in 1s
+     * and periodically every 1 seconds
+     */
     QTimeEvt_armX(&me->timeEvt,
         1*BSP_TICKS_PER_SEC,
         1*BSP_TICKS_PER_SEC);
