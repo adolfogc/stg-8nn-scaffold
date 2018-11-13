@@ -22,7 +22,9 @@
 
 #include <stdint.h>
 
-#define BSP_TICKS_PER_SEC 100U // 1 tick every 10 ms
+#define BSP_TICKS_PER_SEC 10000U /* 1 tick every 0.1 ms (100 us) */
+#define BSP_TICKS_PER_MS   1000U
+#define BSP_TICKS_PER_US    100U
 
 void BSP_init(void);
 void BSP_terminate(int16_t result);

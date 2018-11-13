@@ -15,41 +15,22 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.5)
-set(CMAKE_TOOLCHAIN_FILE stm32f091xc-toolchain.cmake)
-
-project(STG-8nn-Scaffold C ASM)
-
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING
-      "Choose the type of build, options are: None Debug Release RelWithDebInfo Debug DebugFull Profile MinSizeRel"
-      FORCE)
-    add_definitions(-DNDEBUG) #qpc no debug flag
-endif()
-
-set(BUILD_SHARED_LIBS OFF)
-
-##
-## dependencies::libopencm3
-##
-include(CMakeLists-libopencm3.txt)
-
-##
-## dependencies::qpc(qk)
-##
-include(CMakeLists-qpc.txt)
-
 ##
 ## dependencies::libcanard
 ##
-include(CMakeLists-libcanard.txt)
 
-##
-## bsp
-##
-include(CMakeLists-bsp.txt)
+set(CANARD_DIR dependencies/libcanard)
+set(CANARD_LIBRARY canard)
+set(CANARD_INCLUDE ${CANARD_DIR})
+set(CANARD_SOURCES
+  ${CANARD_DIR}/canard.c
+  ${CANARD_DIR}/canard.h
+  ${CANARD_DIR}/canard_internals.h
+  ${CANARD_DIR}/drivers/stm32/canard_stm32.c
+  ${CANARD_DIR}/drivers/stm32/canard_stm32.h
+  ${CANARD_DIR}/drivers/stm32/_internal_bxcan.h
+)
 
-##
-## app
-##
-include(CMakeLists-app.txt)
+add_library(${CANARD_LIBRARY} STATIC ${CANARD_SOURCES})
+target_include_directories(${CANARD_LIBRARY} PRIVATE ${CANARD_INCLUDE})
+target_include_directories(${CANARD_LIBRARY} PRIVATE ${CANARD_DIR}/drivers/stm32)
