@@ -47,5 +47,6 @@ list(APPEND QPC_SOURCES
 )
 
 add_library(${QPC_LIBRARY} STATIC ${QPC_SOURCES})
+target_link_libraries(${QPC_LIBRARY} ${LIBOPENCM3_LIBRARY})
 target_include_directories(${QPC_LIBRARY} PRIVATE ${QPC_INCLUDE})
-target_include_directories(${QPC_LIBRARY} PRIVATE ${LIBOPENCM3_DIR}/include)
+target_include_directories(${QPC_LIBRARY} PRIVATE ${LIBOPENCM3_INCLUDE})
