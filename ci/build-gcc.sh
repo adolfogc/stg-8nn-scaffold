@@ -2,6 +2,7 @@
 
 cd /build && \
 export CC=arm-none-eabi-gcc && \
+export ASM=arm-none-eabi-gcc && \
 cmake -GNinja /src && \
 cmake --build . && \
 size firmware.elf && \

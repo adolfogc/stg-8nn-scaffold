@@ -23,13 +23,7 @@ SET(CMAKE_CROSSCOMPILING 1)
 
 # Avoid compiler check, as it fails.
 set(CMAKE_C_COMPILER_WORKS 1)
-
-# Useful references:
-# - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
-# - ST's PM0215 Programming manual (STMF32F0xxx Cortex-M0 programming manual)
-set(CMAKE_ASM_FLAGS "-mcpu=cortex-m0 -mtune=cortex-m0 -march=armv6-m -mfloat-abi=soft")
-set(CMAKE_C_FLAGS "${CMAKE_ASM_FLAGS} -mthumb -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -ffunction-sections -fdata-sections -O1 -MD")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_ASM_FLAGS} -mthumb -nostdlib -Wl,--cref,--gc-sections")
+set(CMAKE_ASM_COMPILER_WORKS 1)
 
 add_definitions(-D__ARM_FP=0) # no floating point unit (def. required by QP/C)
 add_definitions(-DSTM32F0)    # libopencm3/cmsis required defs.
