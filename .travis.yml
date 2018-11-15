@@ -1,0 +1,27 @@
+# TIP: validate this file using http://lint.travis-ci.org
+
+sudo: required
+
+language: c
+
+services:
+  - docker
+
+git:
+  depth: 1
+  quiet: true
+  submodules: false
+
+branches:
+  only:
+    master
+
+before_install:
+  - git submodule update --init
+
+install:
+  - docker pull adolfogc/stg-8nn-scaffold
+  - docker build -t adolfogc/stg-8nn-scaffold-travis ci/
+
+script:
+  - docker run --rm -v /tmp/build:/build -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-travis /scripts/build-gcc.sh

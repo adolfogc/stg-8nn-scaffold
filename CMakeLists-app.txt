@@ -34,12 +34,9 @@ add_executable(${APP_ELF} ${APP_SOURCES})
 target_include_directories(${APP_ELF} PRIVATE ${APP_DIR})
 target_include_directories(${APP_ELF} PRIVATE ${BSP_DIR})
 target_include_directories(${APP_ELF} PRIVATE ${QPC_INCLUDE})
-target_link_libraries(${APP_ELF} ${QPC_LIBRARY} ${BSP_LIBRARY} ${LIBOPENCM3_LIBRARY})
+target_link_libraries(${APP_ELF} ${QPC_LIBRARY} ${BSP_LIBRARY})
 
-add_custom_command(
-  OUTPUT ${APP_BIN}
+add_custom_command(TARGET ${APP_ELF}
+  POST_BUILD
   COMMAND ${CMAKE_OBJCOPY} -Obinary ${APP_ELF} ${APP_BIN}
-  MAIN_DEPENDENCY ${APP_ELF}
 )
-
-add_custom_target(bin ALL DEPENDS ${APP_BIN})

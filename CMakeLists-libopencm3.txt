@@ -21,6 +21,7 @@
 
 set(LIBOPENCM3_DIR dependencies/libopencm3)
 set(LIBOPENCM3_LIBRARY opencm3_stm32f0)
+set(LIBOPENCM3_INCLUDE ${PROJECT_BINARY_DIR}/libopencm3_gen/include)
 
 # generate the linker script using libopencm3's generic template
 list(APPEND LDSCRIPT_DEFS -DSTM32F0 -DSTM32F091xC -D_ROM=256K -D_RAM=32K -D_ROM_OFF=0x08000000 -D_RAM_OFF=0x20000000)
@@ -28,16 +29,18 @@ set(LIBOPENCM3_LDSCRIPT libopencm3_gen/stm32f091xc.ld)
 
 add_custom_command(
   OUTPUT ${LIBOPENCM3_LDSCRIPT}
-  COMMAND ${CMAKE_C_COMPILER} ${LDSCRIPT_DEFS} -P -E -c ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/ld/linker.ld.S -o ${LIBOPENCM3_LDSCRIPT}
-  MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/ld/linker.ld.S
+  COMMAND ${CMAKE_C_COMPILER} ${LDSCRIPT_DEFS} -P -E -c ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/ld/linker.ld.S -o ${LIBOPENCM3_LDSCRIPT}
+  MAIN_DEPENDENCY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/ld/linker.ld.S
 )
 
 # use the generated linker script
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T${LIBOPENCM3_LDSCRIPT} -Xlinker -Map=stg-8nn.map")
 
 # generate some libopencm3's files using our modified irq2nvic script
-set(LIBOPENCM3_IRQ2NVIC_SCRIPT ${CMAKE_SOURCE_DIR}/override/${LIBOPENCM3_DIR}/scripts/irq2nvic_h)
-set(LIBOPENCM3_IRQ2NVIC_JSON ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/include/libopencm3/stm32/f0/irq.json)
+file(MAKE_DIRECTORY libopencm3_gen)
+file(COPY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/include DESTINATION libopencm3_gen/)
+set(LIBOPENCM3_IRQ2NVIC_SCRIPT ${PROJECT_SOURCE_DIR}/override/${LIBOPENCM3_DIR}/scripts/irq2nvic_h)
+set(LIBOPENCM3_IRQ2NVIC_JSON ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/include/libopencm3/stm32/f0/irq.json)
 
 add_custom_command(
   OUTPUT libopencm3_gen/include/libopencm3/stm32/f0/nvic.h libopencm3_gen/include/libopencmsis/irqhandlers.h libopencm3_gen/lib/stm32/f0/vector_nvic.c
@@ -46,23 +49,23 @@ add_custom_command(
   MAIN_DEPENDENCY ${LIBOPENCM3_IRQ2NVIC_JSON}
 )
 
-# we need to copy thess files because they use some "relative-path" include statements
+# we need to copy these files because they use some "relative-path" include statements
 add_custom_command(
   OUTPUT libopencm3_gen/lib/dispatch/vector_chipset.c
-  COMMAND cp ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_chipset.c libopencm3_gen/lib/dispatch/vector_chipset.c
-  MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_chipset.c
+  COMMAND cp ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_chipset.c libopencm3_gen/lib/dispatch/vector_chipset.c
+  MAIN_DEPENDENCY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_chipset.c
 )
 
 add_custom_command(
   OUTPUT libopencm3_gen/lib/dispatch/vector_nvic.c
-  COMMAND cp ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_nvic.c libopencm3_gen/lib/dispatch/vector_nvic.c
-  MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_nvic.c
+  COMMAND cp ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_nvic.c libopencm3_gen/lib/dispatch/vector_nvic.c
+  MAIN_DEPENDENCY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_nvic.c
 )
 
 add_custom_command(
   OUTPUT libopencm3_gen/lib/cm3/vector.c
-  COMMAND cp ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/cm3/vector.c libopencm3_gen/lib/cm3/vector.c
-  MAIN_DEPENDENCY ${CMAKE_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/cm3/vector.c
+  COMMAND cp ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/cm3/vector.c libopencm3_gen/lib/cm3/vector.c
+  MAIN_DEPENDENCY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/cm3/vector.c
 )
 
 # libopencm3's lib/stm32/f0
@@ -150,5 +153,4 @@ set_source_files_properties(libopencm3_gen/lib/dispatch/vector_nvic.c PROPERTIES
 set_source_files_properties(libopencm3_gen/lib/stm32/f0/vector_nvic.c PROPERTIES HEADER_FILE_ONLY TRUE)
 
 add_library(${LIBOPENCM3_LIBRARY} STATIC ${LIBOPENCM3_SOURCES})
-target_include_directories(${LIBOPENCM3_LIBRARY} PRIVATE libopencm3_gen/include)
-target_include_directories(${LIBOPENCM3_LIBRARY} PRIVATE ${LIBOPENCM3_DIR}/include)
+target_include_directories(${LIBOPENCM3_LIBRARY} PUBLIC ${LIBOPENCM3_INCLUDE})

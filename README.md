@@ -1,5 +1,7 @@
 # STG-8nn-Scaffold
 
+[![Build Status](https://travis-ci.org/adolfogc/stg-8nn-scaffold.svg?branch=master)](https://travis-ci.org/adolfogc/stg-8nn-scaffold)
+
 <img align="right" width="80" height="100" src="stg-8nn-scaffold-logo.png">
 
 A base project for programming the [BARTH® STG-8nn mini-PLCs](https://barth-elektronik.com/en/mini-plc.html).
@@ -39,16 +41,15 @@ brew tap osx-cross/arm
 brew install arm-gcc-bin stlink open-ocd cmake ninja
 ```
 #### Linux
-Pending.
+Refer to the *Dockerfile* available at [adolfogc/stg-8nn-scaffold-docker](https://github.com/adolfogc/stg-8nn-scaffold-docker)
 
 ### Compiling the project
 ```bash
-mkdir build
-cd build
-
+mkdir build && cd build
 export CC=arm-none-eabi-gcc
-cmake -GNinja ${this_repos_dir}
-ninja
+cmake -GNinja ..
+cmake -GNinja .. # repeat (FIXME)
+cmake --build .
 ```
 
 ### Flashing the firmware
@@ -83,27 +84,25 @@ For more information see [COPYING](COPYING).
 ### QP/C
 - [*"Getting Started with QP/C"* guide](https://state-machine.com/doc/AN_Getting_Started_with_QPC.pdf)
 - [*"QP Ports to ARM Cortex-M"*](http://www.state-machine.com/qpc/arm-cm.html)
-- [*""*](http://www.state-machine.com/doc/AN_ARM-Cortex-M_Interrupt-Priorities.pdf)
 - [*"Practical UML Statecharts in C/C++, 2nd Edition: Event-Driven Programming for Embedded Systems"*](https://www.state-machine.com/psicc2)
+- [*"Setting ARM Cortex-M Interrupt Priorities in QP 5.x"* application note](http://www.state-machine.com/doc/AN_ARM-Cortex-M_Interrupt-Priorities.pdf)
+- [*"Cutting Through the Confusion with ARM Cortex-M Interrupt Priorities"* blog post](https://embeddedgurus.com/state-space/2014/02/cutting-through-the-confusion-with-arm-cortex-m-interrupt-priorities)
 
 ### Bootloaders
-- [CVRA's CAN bootloader](https://github.com/cvra/can-bootloader)
+- [CVRA's CAN Bootloader](https://github.com/cvra/can-bootloader)
 - [STM32 Bootloader](https://github.com/akospasztor/stm32-bootloader)
 - [*"Bootloader on STM32F0"* blog post](http://marcelojo.org/marcelojoeng/2015/09/bootloader-on-stm32f0.html)
 - [*"Why every Cortex-M developer should consider using a bootloader"* article](http://blog.atollic.com/why-every-cortex-m-developer-should-consider-using-a-bootloader)
+- [*"Kochergá: a robust portable multi-protocol bootloader for deeply embedded systems."*](https://github.com/Zubax/kocherga)
 
-## LD Linker scripts
+### LD Linker scripts
 - [*"PC Memory - A tutorial on PC memory and hex arithmetic"*](https://savage.net.au/Ron/html/hex-ram-tutorial.html)
 - [*"Using ld"*](http://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html)
 
-### CMake
+### Tooling
 - [*"An Introduction to Modern CMake"* book](https://cliutils.gitlab.io/modern-cmake)
-
-### Other topics
-- [*"Cutting Through the Confusion with ARM Cortex-M Interrupt Priorities"* blog post](https://embeddedgurus.com/state-space/2014/02/cutting-through-the-confusion-with-arm-cortex-m-interrupt-priorities)
 - [osx-cross/homebrew-arm](https://github.com/osx-cross/homebrew-arm)
 - [texane/stlink](https://github.com/texane/stlink)
 - [libopencm3/libopencm3](https://github.com/libopencm3/libopencm3)
 - [libopencm3/libopencm3-template](https://github.com/libopencm3/libopencm3-template)
 - [libopencm3/libopencm3-examples](https://github.com/libopencm3/libopencm3-examples)
-- [mossmann/hackrf](https://github.com/mossmann/hackrf)
