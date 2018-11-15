@@ -47,8 +47,8 @@ Refer to the *Dockerfile* available at [adolfogc/stg-8nn-scaffold-docker](https:
 ```bash
 mkdir build && cd build
 export CC=arm-none-eabi-gcc
+export ASM=arm-none-eabi-gcc
 cmake -GNinja ..
-cmake -GNinja .. # repeat (FIXME)
 cmake --build .
 ```
 
