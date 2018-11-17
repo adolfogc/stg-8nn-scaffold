@@ -16,7 +16,7 @@ RUN rm -rf /var/lib/apt/lists/* && \
   echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-6.0 main" >> /etc/apt/sources.list && \
   apt-get -y update && \
   apt-get -y --no-install-recommends install \
-    cmake make ninja-build git binutils \
+    cmake make ninja-build git binutils cppcheck \
     libclang-6.0-dev llvm-6.0-dev \
     clang-6.0 clang-tools-6.0 \
     clang-tidy-6.0 clang-format-6.0 && \
