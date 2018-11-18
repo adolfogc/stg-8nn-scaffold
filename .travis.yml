@@ -1,11 +1,6 @@
-# TIP: validate this file using http://lint.travis-ci.org
-
+dist: xenial
 sudo: required
-
 language: c
-
-services:
-  - docker
 
 git:
   depth: 1
@@ -16,13 +11,33 @@ branches:
   only:
     master
 
-before_install:
-  - git submodule update --init
+cache:
+  timeout: 1000
+  directories:
+    - ${HOME}/.cache
+
+addons:
+  apt:
+    update: true
+    sources:
+      - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-7 main'
+        key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+    packages:
+      - cmake
+      - ninja-build
+      - make
+      - binutils
+      - clang++-7
+      - clang-7
+      - curl
 
 install:
-  - docker pull adolfogc/stg-8nn-scaffold
-  - docker build -t adolfogc/stg-8nn-scaffold-ci ci/
+  - ./ci/scripts/install-cppcheck.sh
+  - ./ci/scripts/install-gcc-toolchain.sh
+  - git submodule update --init
 
 script:
-  - docker run --rm -v /tmp/build:/build -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-ci /scripts/test-cppcheck.sh
-  - docker run --rm -v /tmp/build:/build -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-ci /scripts/build-gcc.sh
+  - export PATH="${HOME}/.cache/gcc-arm-none-eabi/bin:${PATH}"
+  - export export PATH="${HOME}/.cache/cppcheck/bin:${PATH}"
+  - ./ci/scripts/test-cppcheck.sh
+  - ./ci/scripts/build-gcc.sh

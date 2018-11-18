@@ -30,3 +30,4 @@
 - [libopencm3/libopencm3](https://github.com/libopencm3/libopencm3)
 - [libopencm3/libopencm3-template](https://github.com/libopencm3/libopencm3-template)
 - [libopencm3/libopencm3-examples](https://github.com/libopencm3/libopencm3-examples)
+- ["Installing dependencies on Travis"](https://docs.travis-ci.com/user/installing-dependencies)

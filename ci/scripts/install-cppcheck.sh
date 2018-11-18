@@ -17,11 +17,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
-wrkdir=${PWD}
-
-mkdir -p build cd build && \
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain.cmake -GNinja ${wrkdir} && \
-cmake --build . && \
-size firmware.elf && \
-echo "firmware.bin size: `du -h firmware.bin | cut -f1`" && \
-rm -rf ./*
+if [ ! -d ${HOME}/.cache/cppcheck ]; then
+  curl -SOL https://github.com/danmar/cppcheck/archive/1.85.tar.gz && \
+  tar xzf 1.85.tar.gz && \
+  (cd cppcheck-1.85 && \
+  mkdir -p ${HOME}/.cache/cppcheck && \
+  make CXX=`which clang++-7` PREFIX=${HOME}/.cache/cppcheck SRCDIR=build CFGDIR=cfg HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function" -j4 && \
+  sudo make install PREFIX=${HOME}/.cache/cppcheck CFGDIR=${HOME}/.cache/cppcheck/cfg)
+fi
