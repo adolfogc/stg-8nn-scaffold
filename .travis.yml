@@ -14,11 +14,7 @@ branches:
 cache:
   timeout: 1000
   directories:
-    - ${HOME}/.cache/cppcheck
-    - ${HOME}/.cache/gcc-arm-none-eabi
-
-before_install:
-  - git submodule update --init
+    - ${HOME}/.cache
 
 addons:
   apt:
@@ -38,6 +34,7 @@ addons:
 install:
   - ./ci/scripts/install-cppcheck.sh
   - ./ci/scripts/install-gcc-toolchain.sh
+  - git submodule update --init
 
 script:
   - ./ci/scripts/test-cppcheck.sh
