@@ -38,17 +38,18 @@ You should be acquainted with the QP™ framework and its concepts in order to u
 #### macOS
 
 1. Installing ARM Embedded (GCC-based)
+
 ```bash
 brew tap osx-cross/arm
 brew install arm-gcc-bin stlink open-ocd cmake ninja
 
 2. Installing Clang-based toolchain
+
 ```bash
 brew tap eblot/armeabi
 brew install armv6m-cortex-m0plus
 ```
 
-```
 #### Linux
 Refer to the *dockerfiles* available in the `ci` directory.
 
