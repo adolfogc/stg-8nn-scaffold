@@ -21,8 +21,8 @@ before_install:
 
 install:
   - docker pull adolfogc/stg-8nn-scaffold
-  - docker build -t adolfogc/stg-8nn-scaffold-travis ci/
+  - docker build -t adolfogc/stg-8nn-scaffold-ci ci/
 
 script:
-  - docker run --rm -v /tmp/build:/build -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-travis /scripts/test-cppcheck.sh
-  - docker run --rm -v /tmp/build:/build -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-travis /scripts/build-gcc.sh
+  - docker run --rm -v /tmp/build:/build -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-ci /scripts/test-cppcheck.sh
+  - docker run --rm -v /tmp/build:/build -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-ci /scripts/build-gcc.sh

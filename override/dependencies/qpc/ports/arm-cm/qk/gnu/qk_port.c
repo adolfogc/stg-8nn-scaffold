@@ -15,7 +15,7 @@
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
+* along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 */
 
 #include <libopencm3/cm3/nvic.h>

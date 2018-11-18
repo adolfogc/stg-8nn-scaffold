@@ -14,7 +14,7 @@
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
+* along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 */
 
 #include <qpc.h>

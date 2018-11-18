@@ -5,17 +5,17 @@
 * This file is part of STG-8nn-Scaffold.
 *
 * STG-8nn-Scaffold is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
+* it under the terms of the GNU Affero General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
 * STG-8nn-Scaffold is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+* GNU Affero General Public License for more details.
 *
-* You should have received a copy of the GNU General Public License
-* along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU Affero General Public License
+* along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 */
 
 #include <libopencm3/cm3/nvic.h>
@@ -55,8 +55,8 @@ void QF_onStartup(void) {
   * => reload = ms * clockFrequency - 1 = 10^-1 * 10^-3 * 48 * 10^6 - 1 = 4799
   *
   * Useful references here:
-  * - https://www.youtube.com/watch?v=aLCUDv_fgoU
-  * - https://www.youtube.com/watch?v=jP1JymlHUtc
+  * - www.youtube.com/watch?v=aLCUDv_fgoU
+  * - www.youtube.com/watch?v=jP1JymlHUtc
   * - STM32F0xxx Cortex-M0 programming manual
   */
   systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
@@ -87,8 +87,6 @@ void Q_onAssert(char const *module, int loc) {
     /*
     * NOTE: add here your application-specific error handling
     */
-    (void)module;
-    (void)loc;
     QS_ASSERTION(module, loc, (uint32_t)10000U); /* report assertion to QS */
     reset_handler();
 }
