@@ -18,10 +18,8 @@
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
 cd /tmp
-export CC=arm-none-eabi-gcc
-export ASM=arm-none-eabi-gcc
 
-cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON /src
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON /src
 
 # checks on libopencm3 are omitted
 
@@ -30,19 +28,24 @@ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON /src
   -i /src/dependencies/libopencm3)
 ec=$?
 
-# MISRA C:2012 checks are not enforced yet
-
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump /src/app/
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump /src/bsp/
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99  --dump /src/override/dependencies/qpc/ports/arm-cm/qk/gnu/
+cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99  --dump /src/override/dependencies/qpc/ports/arm-cm/qk/armclang/
 
 if [ -e /scripts/misra-c-2012-rule-texts.txt ]
 then
   export MISRA_RULES_TEXT="--rule-texts=/scripts/misra-c-2012-rule-texts.txt"
 fi
 
-eval "misra.py ${MISRA_RULES_TEXT} /src/app/*.dump"
-eval "misra.py ${MISRA_RULES_TEXT} /src/bsp/*.dump"
-eval "misra.py ${MISRA_RULES_TEXT} /src/override/dependencies/qpc/ports/arm-cm/qk/gnu/*.dump"
+(eval "misra.py ${MISRA_RULES_TEXT} /src/app/*.dump")
+ec=${ec} && $?
+
+(eval "misra.py ${MISRA_RULES_TEXT} /src/bsp/*.dump")
+ec=${ec} && $?
+
+# MISRA C:2012 checks are not enforced for files in these directories:
+(eval "misra.py ${MISRA_RULES_TEXT} /src/override/dependencies/qpc/ports/arm-cm/qk/gnu/*.dump")
+(eval "misra.py ${MISRA_RULES_TEXT} /src/override/dependencies/qpc/ports/arm-cm/qk/armclang/*.dump")
 
 exit ${ec}

@@ -1,6 +1,6 @@
 /**
 * @file
-* @brief QF/C port to Cortex-M, preemptive QK kernel, GNU-ARM toolset
+* @brief QF/C port to Cortex-M, preemptive QK kernel, ARM-CLANG toolset
 * @cond
 ******************************************************************************
 * Last Updated for Version: 6.1.1

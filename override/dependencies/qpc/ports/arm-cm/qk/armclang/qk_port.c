@@ -24,8 +24,8 @@
 #include "qf_port.h"
 
 /* prototypes --------------------------------------------------------------*/
-//void PendSV_Handler(void);
-//void NMI_Handler(void);
+/*void PendSV_Handler(void);*/
+/*void NMI_Handler(void);*/
 void Thread_ret(void);
 
 #define SCnSCB_ICTR  ((uint32_t volatile *)0xE000E004)
@@ -55,7 +55,7 @@ void Thread_ret(void);
 */
 void QK_init(void) {
 
-#if (__ARM_ARCH != 6) /* NOT Cortex-M0/M0+/M1 (v6-M, v6S-M)? */
+#if (__ARM_ARCH != 6) /* NOT Cortex-M0/M0+/M1(v6-M, v6S-M) */
 
     uint32_t n;
 
@@ -105,20 +105,15 @@ void QK_init(void) {
 * entered immediately after the exit from the *last* nested interrupt (or
 * exception). In QK, this is exactly the time when the QK activator needs to
 * handle the asynchronous preemption.
-*
-* NOTE:
-* The inline GNU assembler does not accept mnemonics MOVS, LSRS and ADDS,
-* but for Cortex-M0/M0+/M1 the mnemonics MOV, LSR and ADD always set the
-* condition flags in the PSR.
 *****************************************************************************/
-__attribute__ ((naked, optimize("-fno-stack-protector")))
+__attribute__ ((naked))
 void pend_sv_handler(void) {
 __asm volatile (
 
     /* Prepare constants in registers before entering critical section */
     "  LDR     r3,=" STRINGIFY(NVIC_ICSR) "\n" /* Interrupt Control and State */
-    "  MOV     r1,#1            \n"
-    "  LSL     r1,r1,#27        \n" /* r0 := (1 << 27) (UNPENDSVSET bit) */
+    "  MOVS    r1,#1            \n"
+    "  LSLS    r1,r1,#27        \n" /* r0 := (1 << 27) (UNPENDSVSET bit) */
 
     /*<<<<<<<<<<<<<<<<<<<<<<< CRITICAL SECTION BEGIN <<<<<<<<<<<<<<<<<<<<<<<<*/
 #if (__ARM_ARCH == 6)               /* Cortex-M0/M0+/M1 (v6-M, v6S-M)? */
@@ -127,7 +122,7 @@ __asm volatile (
 #if (__ARM_FP != 0)                 /* if VFP available... */
     "  PUSH    {r0,lr}          \n" /* ... push lr plus stack-aligner */
 #endif                              /* VFP available */
-    "  MOV     r0,#" STRINGIFY(QF_BASEPRI) "\n"
+    "  MOVS    r0,#" STRINGIFY(QF_BASEPRI) "\n"
     "  CPSID   i                \n" /* disable interrutps with BASEPRI */
     "  MSR     BASEPRI,r0       \n" /* apply the Cortex-M7 erraturm */
     "  CPSIE   i                \n" /* 837070, see ARM-EPM-064408. */
@@ -148,17 +143,17 @@ __asm volatile (
     * NOTE: the QK activator is called with interrupts DISABLED and also
     * returns with interrupts DISABLED.
     */
-    "  LSR     r3,r1,#3         \n" /* r3 := (r1 >> 3), set the T bit (new xpsr) */
+    "  LSRS    r3,r1,#3         \n" /* r3 := (r1 >> 3), set the T bit (new xpsr) */
     "  LDR     r2,=QK_activate_ \n" /* address of QK_activate_ */
-    "  SUB     r2,r2,#1         \n" /* align Thumb-address at halfword (new pc) */
+    "  SUBS    r2,r2,#1         \n" /* align Thumb-address at halfword (new pc) */
     "  LDR     r1,=Thread_ret   \n" /* return address after the call   (new lr) */
 
     "  SUB     sp,sp,#8*4       \n" /* reserve space for exception stack frame */
     "  ADD     r0,sp,#5*4       \n" /* r0 := 5 registers below the SP */
     "  STM     r0!,{r1-r3}      \n" /* save xpsr,pc,lr */
 
-    "  MOV     r0,#6            \n"
-    "  MVN     r0,r0            \n" /* r0 := ~6 == 0xFFFFFFF9 */
+    "  MOVS    r0,#6            \n"
+    "  MVNS    r0,r0            \n" /* r0 := ~6 == 0xFFFFFFF9 */
     "  BX      r0               \n" /* exception-return to the QK activator */
     );
 }
@@ -169,7 +164,7 @@ __asm volatile (
 * NOTE: Thread_ret does not execute in the PendSV context!
 * NOTE: Thread_ret executes entirely with interrupts DISABLED.
 *****************************************************************************/
-__attribute__ ((naked, optimize("-fno-stack-protector")))
+__attribute__ ((naked))
 void Thread_ret(void) {
 __asm volatile (
 
@@ -195,8 +190,8 @@ __asm volatile (
     * NOTE: The NMI exception is triggered with nterrupts DISABLED
     */
     "  LDR     r0,=0xE000ED04   \n" /* Interrupt Control and State Register */
-    "  MOV     r1,#1            \n"
-    "  LSL     r1,r1,#31        \n" /* r1 := (1 << 31) (NMI bit) */
+    "  MOVS    r1,#1            \n"
+    "  LSLS    r1,r1,#31        \n" /* r1 := (1 << 31) (NMI bit) */
     "  STR     r1,[r0]          \n" /* ICSR[31] := 1 (pend NMI) */
     "  B       .                \n" /* wait for preemption by NMI */
     );
@@ -211,7 +206,7 @@ __asm volatile (
 * NOTE: The NMI exception is entered with interrupts DISABLED, so it needs
 * to re-enable interrupts before it returns to the preempted task.
 *****************************************************************************/
-__attribute__ ((naked, optimize("-fno-stack-protector")))
+__attribute__ ((naked))
 void nmi_handler(void) {
 __asm volatile (
 
@@ -221,7 +216,7 @@ __asm volatile (
     "  CPSIE   i                \n" /* enable interrupts (clear PRIMASK) */
     "  BX      lr               \n" /* return to the preempted task */
 #else                               /* M3/M4/M7 */
-    "  MOV     r0,#0            \n"
+    "  MOVS    r0,#0            \n"
     "  MSR     BASEPRI,r0       \n" /* enable interrupts (clear BASEPRI) */
 #if (__ARM_FP != 0)                 /* if VFP available... */
     "  POP     {r0,pc}          \n" /* pop stack aligner and EXC_RETURN to PC */
@@ -232,39 +227,33 @@ __asm volatile (
     );
 }
 
+#if (__ARM_ARCH == 6) /* Cortex-M0/M0+/M1 (v6-M, v6S-M)? */
+
 /*****************************************************************************
 * hand-optimized quick LOG2 in assembly (M0/M0+ have no CLZ instruction)
 *****************************************************************************/
-#if (__ARM_ARCH == 6) /* Cortex-M0/M0+/M1 (v6-M, v6S-M)? */
-
-/*
-* NOTE:
-* The inline GNU assembler does not accept mnemonics MOVS, LSRS and ADDS,
-* but for Cortex-M0/M0+/M1 the mnemonics MOV, LSR and ADD always set the
-* condition flags in the PSR.
-*/
-__attribute__ ((naked, optimize("-fno-stack-protector")))
+__attribute__ ((naked))
 uint_fast8_t QF_qlog2(uint32_t x) {
 __asm volatile (
-    "  MOV     r1,#0            \n"
-    "  LSR     r2,r0,#16        \n"
+    "  MOVS    r1,#0            \n"
+    "  LSRS    r2,r0,#16        \n"
     "  BEQ     QF_qlog2_1       \n"
-    "  MOV     r1,#16           \n"
-    "  MOV     r0,r2            \n"
+    "  MOVS    r1,#16           \n"
+    "  MOVS    r0,r2            \n"
     "QF_qlog2_1:                \n"
-    "  LSR     r2,r0,#8         \n"
+    "  LSRS    r2,r0,#8         \n"
     "  BEQ     QF_qlog2_2       \n"
-    "  ADD     r1, r1,#8        \n"
-    "  MOV     r0, r2           \n"
+    "  ADDS    r1, r1,#8        \n"
+    "  MOVS    r0, r2           \n"
     "QF_qlog2_2:                \n"
-    "  LSR     r2,r0,#4         \n"
+    "  LSRS    r2,r0,#4         \n"
     "  BEQ     QF_qlog2_3       \n"
-    "  ADD     r1,r1,#4         \n"
+    "  ADDS    r1,r1,#4         \n"
     "  MOV     r0,r2            \n"
     "QF_qlog2_3:                \n"
     "  LDR     r2,=QF_qlog2_LUT \n"
     "  LDRB    r0,[r2,r0]       \n"
-    "  ADD     r0,r1, r0        \n"
+    "  ADDS    r0,r1, r0        \n"
     "  BX      lr               \n"
     "QF_qlog2_LUT:              \n"
     "  .byte 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4"

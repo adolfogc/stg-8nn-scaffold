@@ -16,16 +16,25 @@
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.5)
-set(CMAKE_TOOLCHAIN_FILE stm32f091xc-toolchain.cmake)
 
 project(STG-8nn-Scaffold C ASM)
+
+add_definitions(-D__ARM_FP=0) # no floating point unit (def. required by QP/C)
+add_definitions(-DSTM32F0)    # libopencm3/cmsis required defs.
+add_definitions(-DSTM32F091xC)
 
 # Useful references:
 # - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
 # - ST's PM0215 Programming manual (STMF32F0xxx Cortex-M0 programming manual)
-set(CMAKE_ASM_FLAGS "-mcpu=cortex-m0 -mtune=cortex-m0 -march=armv6-m -mfloat-abi=soft")
-set(CMAKE_C_FLAGS "${CMAKE_ASM_FLAGS} -mthumb -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -ffunction-sections -fdata-sections -O1 -MD")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_ASM_FLAGS} -mthumb -nostdlib -Wl,--cref,--gc-sections")
+
+if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+  set(CMAKE_ASM_FLAGS "-mcpu=cortex-m0 -mtune=cortex-m0 -march=armv6-m -mfloat-abi=soft")
+  set(CMAKE_C_FLAGS "${CMAKE_ASM_FLAGS} -mthumb -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -ffunction-sections -fdata-sections -O1 -MD")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_ASM_FLAGS} -mthumb -nostdlib -Wl,--cref,--gc-sections")
+else()
+  set(CMAKE_C_FLAGS "--target=thumbv6m-none-eabi -mcpu=cortex-m0 -mfloat-abi=soft -mthumb -mabi=aapcs -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -ffunction-sections -fdata-sections")
+  set(CMAKE_EXE_LINKER_FLAGS "-nostdlib -Wl,--cref,--gc-sections")
+endif()
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING

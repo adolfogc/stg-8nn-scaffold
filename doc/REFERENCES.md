@@ -21,6 +21,7 @@
 ### LD Linker scripts
 - [*"PC Memory - A tutorial on PC memory and hex arithmetic"*](https://savage.net.au/Ron/html/hex-ram-tutorial.html)
 - [*"Using ld"*](http://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html)
+- [*"ELF for the ARM® Architecture"*](http://infocenter.arm.com/help/topic/com.arm.doc.ihi0044e/IHI0044E_aaelf.pdf)
 
 ### Tooling
 - [*"An Introduction to Modern CMake"* book](https://cliutils.gitlab.io/modern-cmake)
