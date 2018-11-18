@@ -18,10 +18,8 @@
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
 cd /tmp
-export CC=arm-none-eabi-gcc
-export ASM=arm-none-eabi-gcc
 
-cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON /src
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON /src
 
 # checks on libopencm3 are omitted
 
