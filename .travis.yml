@@ -36,8 +36,8 @@ addons:
       - curl
 
 install:
-  - ./scripts/ci/install-cppcheck.sh
-  - ./scripts/ci/install-gcc-toolchain.sh
+  - ./ci/scripts/install-cppcheck.sh
+  - ./ci/scripts/install-gcc-toolchain.sh
 
 script:
   - ./ci/scripts/test-cppcheck.sh
