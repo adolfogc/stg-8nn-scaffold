@@ -21,10 +21,10 @@
 
 set(QPC_DIR dependencies/qpc)
 
-if ("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
-  set(QP_PORT_DIR ports/arm-cm/qk/armclang)
-elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   set(QP_PORT_DIR ports/arm-cm/qk/gnu)
+else()
+  set(QP_PORT_DIR ports/arm-cm/qk/armclang)
 endif()
 
 set(QPC_LIBRARY qpc)

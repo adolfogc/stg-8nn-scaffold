@@ -16,8 +16,7 @@ RUN rm -rf /var/lib/apt/lists/* && \
   echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-7 main" >> /etc/apt/sources.list && \
   apt-get -y update && \
   apt-get -y --no-install-recommends install \
-    cmake make ninja-build git binutils g++ \
-    libpcre3-dev \
+    cmake make ninja-build git binutils g++ libpcre3-dev \
     clang-7 lldb-7 lld-7 clang-format-7 && \
   (cd /tmp && \
   curl -SOL https://github.com/danmar/cppcheck/archive/1.85.tar.gz && \

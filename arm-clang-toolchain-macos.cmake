@@ -15,44 +15,30 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
-# Reference: https://github.com/vpetrigo/arm-cmake-toolchains/blob/master/clang-arm-gcc-toolchain.cmake
-
 cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_SYSTEM_NAME Generic)
-set(CMAKE_SYSTEM_PROCESSOR ARM)
+set(CMAKE_SYSTEM_PROCESSOR arm)
 SET(CMAKE_CROSSCOMPILING 1)
 
-set(TOOLCHAIN_PREFIX arm-none-eabi-)
-set(TOOLCHAIN_TRIPLE arm-none-eabi)
+set(triple thumbv6m-none-eabi)
 
-execute_process(
-  COMMAND which ${TOOLCHAIN_PREFIX}gcc
-  OUTPUT_VARIABLE BINUTILS_PATH
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+set(CMAKE_C_COMPILER /usr/local/opt/arm-none-eabi-llvm/bin/clang)
+set(CMAKE_C_COMPILER_TARGET ${triple})
 
-get_filename_component(ARM_TOOLCHAIN_DIR ${BINUTILS_PATH} DIRECTORY)
+set(CMAKE_CXX_COMPILER /usr/local/opt/arm-none-eabi-llvm/bin/clang++)
+set(CMAKE_CXX_COMPILER_TARGET ${triple})
 
-set(CMAKE_ASM_COMPILER ${TOOLCHAIN_PREFIX}gcc)
-set(CMAKE_C_COMPILER clang-7)
-set(CMAKE_C_COMPILER_TARGET ${TOOLCHAIN_TRIPLE})
-set(CMAKE_CXX_COMPILER clang++7)
-set(CMAKE_CXX_COMPILER_TARGET ${TOOLCHAIN_TRIPLE})
+set(CMAKE_ASM_COMPILER /usr/local/opt/arm-none-eabi-llvm/bin/clang)
 
-set(CMAKE_C_FLAGS_INIT "-B${ARM_TOOLCHAIN_DIR}")
-set(CMAKE_CXX_FLAGS_INIT "-B${ARM_TOOLCHAIN_DIR}")
+set(CMAKE_C_FLAGS_INIT "${CMAKE_C_FLAGS_INIT} --target=${triple}")
 
 # In order to pass CMake compilation test (compiler works):
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-# Provide Clang with GNU toolchain's include directory info.:
-include_directories(${ARM_TOOLCHAIN_DIR}/../${TOOLCHAIN_TRIPLE}/include)
+set(CMAKE_FIND_ROOT_PATH /usr/local/opt/arm-none-eabi-llvm)
+include_directories(/usr/local/opt/armv6m-cortex-m0plus/armv6m-none-eabi/cortex-m0plus/include)
 
-set(CMAKE_OBJCOPY ${ARM_TOOLCHAIN_DIR}/${TOOLCHAIN_PREFIX}objcopy CACHE INTERNAL "objcopy tool")
-set(CMAKE_SIZE_UTIL ${ARM_TOOLCHAIN_DIR}/${TOOLCHAIN_PREFIX}size CACHE INTERNAL "size tool")
-
-set(CMAKE_FIND_ROOT_PATH ${ARM_TOOLCHAIN_DIR})
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)

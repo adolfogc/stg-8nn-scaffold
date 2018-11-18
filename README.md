@@ -36,19 +36,36 @@ You should be acquainted with the QP™ framework and its concepts in order to u
 
 ### Getting the toolchain and the flashing utility
 #### macOS
+
+1. Installing ARM Embedded (GCC-based)
 ```bash
 brew tap osx-cross/arm
 brew install arm-gcc-bin stlink open-ocd cmake ninja
+
+2. Installing Clang-based toolchain
+```bash
+brew tap eblot/armeabi
+brew install armv6m-cortex-m0plus
+```
+
 ```
 #### Linux
 Refer to the *dockerfiles* available in the `ci` directory.
 
 ### Compiling the project
+
+1. Using GCC
+
 ```bash
 mkdir build && cd build
-export CC=arm-none-eabi-gcc
-export ASM=arm-none-eabi-gcc
-cmake -GNinja ..
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -GNinja ..
+cmake --build .
+```
+
+2. Using Clang (currently not working)
+```bash
+mkdir build && cd build
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain-macos.cmake -GNinja ..
 cmake --build .
 ```
 
