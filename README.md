@@ -42,6 +42,7 @@ You should be acquainted with the QP™ framework and its concepts in order to u
 ```bash
 brew tap osx-cross/arm
 brew install arm-gcc-bin stlink open-ocd cmake ninja
+```
 
 2. Installing Clang-based toolchain
 
