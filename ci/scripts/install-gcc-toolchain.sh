@@ -23,5 +23,3 @@ if [ ! -d ${HOME}/.cache/gcc-arm-none-eabi ]; then
   mkdir -p ${HOME}/.cache/gcc-arm-none-eabi && \
   cp -r ./gcc-arm-none-eabi-7-2018-q2-update/* ${HOME}/.cache/gcc-arm-none-eabi
 fi
-
-export PATH="${HOME}/.cache/gcc-arm-none-eabi/bin:${PATH}"

@@ -23,7 +23,5 @@ if [ ! -d ${HOME}/.cache/cppcheck ]; then
   (cd cppcheck-1.85 && \
   make CXX=`which clang++-7` SRCDIR=build CFGDIR=cfg HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function" -j4 && \
   mkdir -p ${HOME}/.cache/cppcheck && \
-  sudo make install install prefix=${HOME}/.cache/cppcheck CFGDIR=cfg)
+  sudo make install prefix=${HOME}/.cache/cppcheck CFGDIR=cfg)
 fi
-
-export PATH="${HOME}/.cache/cppcheck/bin:${PATH}"

@@ -37,5 +37,7 @@ install:
   - git submodule update --init
 
 script:
+  - export PATH="${HOME}/.cache/gcc-arm-none-eabi/bin:${PATH}"
+  - export export PATH="${HOME}/.cache/cppcheck/bin:${PATH}"
   - ./ci/scripts/test-cppcheck.sh
   - ./ci/scripts/build-gcc.sh
