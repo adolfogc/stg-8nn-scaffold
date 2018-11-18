@@ -18,6 +18,8 @@
 * along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 */
 
+/* Last Updated for Version: 6.1.1 */
+
 #include <libopencm3/cm3/nvic.h>
 #include "qf_port.h"
 

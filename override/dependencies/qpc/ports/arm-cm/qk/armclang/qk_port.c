@@ -1,46 +1,31 @@
-/**
-* @file
-* @brief QK/C port to ARM Cortex-M, ARM-CLANG toolset
-* @cond
-******************************************************************************
-* Last Updated for Version: 6.1.1
-* Date of the Last Update:  2018-03-06
-*
-*                    Q u a n t u m     L e a P s
-*                    ---------------------------
-*                    innovating embedded systems
-*
+/*
 * Copyright (C) 2005-2018 Quantum Leaps, LLC. All rights reserved.
+* Copyright (C) 2018 Adolfo E. García
 *
-* This program is open source software: you can redistribute it and/or
-* modify it under the terms of the GNU General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
+* This file is part of STG-8nn-Scaffold.
+*
+* STG-8nn-Scaffold is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* Alternatively, this program may be distributed and modified under the
-* terms of Quantum Leaps commercial licenses, which expressly supersede
-* the GNU General Public License and are specifically designed for
-* licensees interested in retaining the proprietary status of their code.
-*
-* This program is distributed in the hope that it will be useful,
+* STG-8nn-Scaffold is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-* Contact information:
-* https://www.state-machine.com
-* mailto:info@state-machine.com
-******************************************************************************
-* @endcond
+* along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 */
+
+/* Last Updated for Version: 6.1.1 */
+
+#include <libopencm3/cm3/nvic.h>
 #include "qf_port.h"
 
 /* prototypes --------------------------------------------------------------*/
-void PendSV_Handler(void);
-void NMI_Handler(void);
+/*void PendSV_Handler(void);*/
+/*void NMI_Handler(void);*/
 void Thread_ret(void);
 
 #define SCnSCB_ICTR  ((uint32_t volatile *)0xE000E004)
@@ -122,7 +107,7 @@ void QK_init(void) {
 * handle the asynchronous preemption.
 *****************************************************************************/
 __attribute__ ((naked))
-void PendSV_Handler(void) {
+void pend_sv_handler(void) {
 __asm volatile (
 
     /* Prepare constants in registers before entering critical section */
@@ -222,7 +207,7 @@ __asm volatile (
 * to re-enable interrupts before it returns to the preempted task.
 *****************************************************************************/
 __attribute__ ((naked))
-void NMI_Handler(void) {
+void nmi_handler(void) {
 __asm volatile (
 
     "  ADD     sp,sp,#(8*4)     \n" /* remove one 8-register exception frame */
