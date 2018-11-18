@@ -18,8 +18,6 @@ cache:
     - ${HOME}/.cache/gcc-arm-none-eabi
 
 before_install:
-  - ./scripts/ci/install-cppcheck.sh
-  - ./scripts/ci/install-gcc-toolchain.sh
   - git submodule update --init
 
 addons:
@@ -36,6 +34,10 @@ addons:
       - clang++-7
       - clang-7
       - curl
+
+install:
+  - ./scripts/ci/install-cppcheck.sh
+  - ./scripts/ci/install-gcc-toolchain.sh
 
 script:
   - ./ci/scripts/test-cppcheck.sh
