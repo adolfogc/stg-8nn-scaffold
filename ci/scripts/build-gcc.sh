@@ -17,9 +17,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
-mkdir -p build && \
-cd /build && \
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -GNinja .. && \
+wrkdir=${PWD}
+
+mkdir -p build cd build && \
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -GNinja ${wrkdir} && \
 cmake --build . && \
 size firmware.elf && \
 echo "firmware.bin size: `du -h firmware.bin | cut -f1`" && \

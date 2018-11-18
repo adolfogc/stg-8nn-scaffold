@@ -17,11 +17,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
-wrkdir=${PWD}
+if [ ! -d ${HOME}/.cache/gcc-arm-none-eabi ]; then
+  curl -SOL https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2018q2/gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2 && \
+  tar xjf gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2 && \
+  mkdir -p ${HOME}/.cache/gcc-arm-none-eabi && \
+  cp -r ./gcc-arm-none-eabi-7-2018-q2-update/* ${HOME}/.cache/gcc-arm-none-eabi
+fi
 
-mkdir -p build cd build && \
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain.cmake -GNinja ${wrkdir} && \
-cmake --build . && \
-size firmware.elf && \
-echo "firmware.bin size: `du -h firmware.bin | cut -f1`" && \
-rm -rf ./*
+export PATH="${HOME}/.cache/gcc-arm-none-eabi/bin:${PATH}"
