@@ -76,7 +76,7 @@ void QK_init(void) {
         --n;
         NVIC_IP[n] = (QF_BASEPRI << 24) | (QF_BASEPRI << 16)
                      | (QF_BASEPRI << 8) | QF_BASEPRI;
-    } while (n != 0);
+    } while (n != 0U);
 
 #endif /* NOT Cortex-M0/M0+/M1(v6-M, v6S-M) */
 

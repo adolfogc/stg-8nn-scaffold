@@ -33,6 +33,7 @@ ec=$?
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump /src/app/
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump /src/bsp/
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99  --dump /src/override/dependencies/qpc/ports/arm-cm/qk/gnu/
+cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99  --dump /src/override/dependencies/qpc/ports/arm-cm/qk/armclang/
 
 if [ -e /scripts/misra-c-2012-rule-texts.txt ]
 then
@@ -45,7 +46,8 @@ ec=${ec} && $?
 (eval "misra.py ${MISRA_RULES_TEXT} /src/bsp/*.dump")
 ec=${ec} && $?
 
-# MISRA C:2012 checks are not enforced for files in this directory:
-eval "misra.py ${MISRA_RULES_TEXT} /src/override/dependencies/qpc/ports/arm-cm/qk/gnu/*.dump"
+# MISRA C:2012 checks are not enforced for files in these directories:
+(eval "misra.py ${MISRA_RULES_TEXT} /src/override/dependencies/qpc/ports/arm-cm/qk/gnu/*.dump")
+(eval "misra.py ${MISRA_RULES_TEXT} /src/override/dependencies/qpc/ports/arm-cm/qk/armclang/*.dump")
 
 exit ${ec}

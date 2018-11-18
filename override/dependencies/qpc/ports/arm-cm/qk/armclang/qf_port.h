@@ -81,7 +81,7 @@
     #define QF_CRIT_EXIT(dummy)  QF_INT_ENABLE()
 
     /* BASEPRI threshold for "QF-aware" interrupts, see NOTE3 */
-    #define QF_BASEPRI           0x3F
+    #define QF_BASEPRI           0x3FU
 
     /* CMSIS threshold for "QF-aware" interrupts, see NOTE5 */
     #define QF_AWARE_ISR_CMSIS_PRI (QF_BASEPRI >> (8 - __NVIC_PRIO_BITS))
@@ -148,4 +148,3 @@
 */
 
 #endif /* qf_port_h */
-
