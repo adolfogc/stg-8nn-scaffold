@@ -28,13 +28,14 @@ addons:
       - clang++-7
       - clang-7
       - curl
-    snaps:
-      - cppcheck
 
 install:
   - curl -SOL https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2018q2/gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2
   - tar xjf gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2
   - sudo cp -r ./gcc-arm-none-eabi-7-2018-q2-update/* /usr/local/
+  - curl -SOL https://github.com/danmar/cppcheck/archive/1.85.tar.gz
+  - tar xzf 1.85.tar.gz
+  - (cd cppcheck-1.85 && make CXX=`which clang++-7` SRCDIR=build CFGDIR=/usr/share/cppcheck/ HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function" -j2 && make install CFGDIR=/usr/share/cppcheck/)
 
 script:
   - ./ci/scripts/test-cppcheck.sh
