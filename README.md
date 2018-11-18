@@ -82,6 +82,8 @@ docker build -t adolfogc/stg-8nn-scaffold-ci ci
 docker run --rm -i -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-ci /scripts/test-cppcheck.sh
 ```
 
+**Note:** No compliance with any MISRA guidelines is claimed here, *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* is only used as a reference for best practices to follow when developing embedded code using ISO C99. The QP™/C framework is MISRA C:2004 compliant, as described in [that project's compliance matrix](http://www.state-machine.com/doc/AN_QP-C_MISRA.pdf), but other libraries used in this project aren't.
+
 ## License
 ![AGPL-3](https://www.gnu.org/graphics/agplv3-with-text-162x68.png)
 For more information see [COPYING](COPYING).
