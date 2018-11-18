@@ -16,17 +16,15 @@ RUN rm -rf /var/lib/apt/lists/* && \
   echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-6.0 main" >> /etc/apt/sources.list && \
   apt-get -y update && \
   apt-get -y --no-install-recommends install \
-    cmake make ninja-build git binutils cppcheck \
-    libclang-6.0-dev llvm-6.0-dev \
-    clang-6.0 clang-tools-6.0 \
-    clang-tidy-6.0 clang-format-6.0 && \
+    cmake make ninja-build git binutils g++ \
+    libpcre3-dev \
+    clang-6.0 clang-tidy-6.0 clang-format-6.0 && \
   (cd /tmp && \
-  git clone --depth=1 https://github.com/bloodstalker/mutator && \
-  cd mutator && \
-  git submodule init && \
-  git submodule update && \
-  make -j2 mutator-lvl0 CXX=clang++-6.0 LLVM_CONF=llvm-config-6.0 BUILD_MODE=COV_NO_CLANG && \
-  cp m0/mutator-lvl0 /usr/local/bin) && \
+  curl -SOL https://github.com/danmar/cppcheck/archive/1.85.tar.gz && \
+  tar xzvf 1.85.tar.gz && \
+  cd cppcheck-1.85 && \
+  make SRCDIR=build CFGDIR=/usr/share/cppcheck/ HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function" -j2 && \
+  make install CFGDIR=/usr/share/cppcheck/) && \
   (cd /tmp && \
   curl -SOL https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2018q2/gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2 && \
   tar xjvf gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2 && \
