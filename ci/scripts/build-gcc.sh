@@ -18,9 +18,7 @@
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
 cd /build && \
-export CC=arm-none-eabi-gcc && \
-export ASM=arm-none-eabi-gcc && \
-cmake -GNinja /src && \
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -GNinja /src && \
 cmake --build . && \
 size firmware.elf && \
 echo "firmware.bin size: `du -h firmware.bin | cut -f1`"

@@ -12,13 +12,13 @@ RUN rm -rf /var/lib/apt/lists/* && \
   apt-get -y update && \
   apt-get -y --no-install-recommends install apt-utils curl ca-certificates bzip2 gnupg2 && \
   curl -SL https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-  echo "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-6.0 main" >> /etc/apt/sources.list && \
-  echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-6.0 main" >> /etc/apt/sources.list && \
+  echo "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-7 main" >> /etc/apt/sources.list && \
+  echo "deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch-7 main" >> /etc/apt/sources.list && \
   apt-get -y update && \
   apt-get -y --no-install-recommends install \
     cmake make ninja-build git binutils g++ \
     libpcre3-dev \
-    clang-6.0 clang-tidy-6.0 clang-format-6.0 && \
+    clang-7 lldb-7 lld-7 clang-format-7 && \
   (cd /tmp && \
   curl -SOL https://github.com/danmar/cppcheck/archive/1.85.tar.gz && \
   tar xzvf 1.85.tar.gz && \

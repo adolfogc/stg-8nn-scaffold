@@ -67,9 +67,9 @@ st-flash write firmware.bin 0x0800000
 
 Note: You can use the [STM32 ST-LINK utility](https://www.st.com/en/development-tools/stsw-link004.html) to update the ST-Link's firmware, but it only runs on Windows.
 
-### Other
+## Other
 
-#### Checking compliance with some MISRA C:2012 rules using Cppcheck v1.85+
+### Checking compliance with some MISRA C:2012 rules using Cppcheck v1.85+
 1. Generate your "rule texts file" using [this Python script](https://github.com/ChisholmKyle/SublimeLinter-contrib-cppcheck-misra/blob/master/scripts/cppcheck-misra-parsetexts.py) and your PDF copy of *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* and place it in `ci/scripts/misra-c-2012-rule-texts.txt`.
 
 2. Use the provided Docker image and scripts in the `ci` directory:
@@ -86,6 +86,7 @@ docker run --rm -i -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-ci /scripts/test-
 
 ## License
 ![AGPL-3](https://www.gnu.org/graphics/agplv3-with-text-162x68.png)
+
 For more information see [COPYING](COPYING).
 
 ## References
