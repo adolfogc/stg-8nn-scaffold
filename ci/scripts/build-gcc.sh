@@ -19,9 +19,9 @@
 
 wrkdir=${PWD}
 
-mkdir -p build cd build && \
+(mkdir -p build && cd build && \
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -GNinja ${wrkdir} && \
 cmake --build . && \
 size firmware.elf && \
 echo "firmware.bin size: `du -h firmware.bin | cut -f1`" && \
-rm -rf ./*
+rm -rf ./*)

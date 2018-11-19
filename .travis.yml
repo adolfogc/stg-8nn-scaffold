@@ -30,6 +30,11 @@ addons:
       - clang++-7
       - clang-7
       - curl
+  sonarcloud:
+    organization: 'adolfogc-github'
+    token:
+      secure: "O94/Mj/A2EirDE8jLLXyippggg66D5RN7YHd+rLr6IqRSq+TFmA8TYs6t9FqfLTUz9oJIOnhbgIFeAehfgGL9DmdXX6gQqYl4H1GM9s5t/wWJpVm3/ZH6HpgIlnvIlPm1WlsePgairsF7WmAdsaL1gRWkjmnPEexeBg3/JxwkpwEJF1wBeI1PE3Z6L21NreWddLnnvSI5empXYYmNXMR7+y6bXEYCSolmFueEVBrii3cQI/x3y3eQkPyuwhEd1U6nrRyivr2CqaZNl56Y7HUCdkHQefCKhS/8X9v/LFb/23O1XYCN2FPjQt80/8x+v7oeZijM6Br4V61Niz61N2IAehXUuST6iW15TGWc9V4xBD07aoaCAmrTppLyqJBlJ2fz92jUY8ReqE452/ZgBZeOMLR7Gz9A9WoKg3v4SrfVz7euu/hqH3VQpk5Aj8oDZKdPGVs4y3ZRFzjdwJmUGFSBtLMepqKXWWB3CCjp4BBD6Lymg8zia4ITVtxPcbwKtOXA9muxMK6xMYNUuChjoPA/VMVs8dVUJjizccBP8aVVsDWuOvzSFEALnhM7LV7M5EA3t+Mnhc6XDhNO3nXijEMV5pb563Ob2DdMi0LHid2YwgxBxItSLxeKzXcW7RiM5MVkGpsErH8lfacOT8bECIM+ClfWyUAmC/mvXhXmTFy1+k="
+
 
 install:
   - ./ci/scripts/install-cppcheck.sh
@@ -37,7 +42,9 @@ install:
   - git submodule update --init
 
 script:
-  - export PATH="${HOME}/.cache/gcc-arm-none-eabi/bin:${PATH}"
-  - export export PATH="${HOME}/.cache/cppcheck/bin:${PATH}"
-  - ./ci/scripts/test-cppcheck.sh
+  - |
+    export PATH="${HOME}/.cache/gcc-arm-none-eabi/bin:${PATH}"
+    export export PATH="${HOME}/.cache/cppcheck/bin:${PATH}"
   - ./ci/scripts/build-gcc.sh
+  - ./ci/scripts/test-cppcheck.sh
+  - ./ci/scripts/test-sonarcloud.sh

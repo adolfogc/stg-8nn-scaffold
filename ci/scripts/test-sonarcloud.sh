@@ -20,8 +20,6 @@
 wrkdir=${PWD}
 
 (mkdir -p build && cd build && \
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain.cmake -GNinja ${wrkdir} && \
-cmake --build . && \
-size firmware.elf && \
-echo "firmware.bin size: `du -h firmware.bin | cut -f1`" && \
-rm -rf ./*)
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake ${wrkdir} && \
+build-wrapper-linux-x86-64 --out-dir bw-output make && \
+cd .. && sonar-scanner)
