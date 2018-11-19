@@ -1,6 +1,7 @@
 # STG-8nn-Scaffold
 
 [![Build Status](https://travis-ci.org/adolfogc/stg-8nn-scaffold.svg?branch=master)](https://travis-ci.org/adolfogc/stg-8nn-scaffold)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=alert_status)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
 
 <img align="right" width="80" height="100" src="stg-8nn-scaffold-logo.png">
 
