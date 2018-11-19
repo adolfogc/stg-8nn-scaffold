@@ -31,3 +31,12 @@
 - [libopencm3/libopencm3-template](https://github.com/libopencm3/libopencm3-template)
 - [libopencm3/libopencm3-examples](https://github.com/libopencm3/libopencm3-examples)
 - ["Installing dependencies on Travis"](https://docs.travis-ci.com/user/installing-dependencies)
+
+### MISRA C
+- [*"The MISRA C Coding Standard and its Role in the Development and Analysis of Safety- and Security-Critical Embedded Software"*](https://arxiv.org/abs/1809.00821)
+
+- [*"MISRA C:2012 - Guidelines for the use of the C language in critical systems"*](https://www.misra.org.uk/MISRAHome/MISRAC2012/tabid/196/Default.aspx)
+
+- [*"QP/C™ MISRA-C:2004 Compliance Matrix"*](http://www.state-machine.com/doc/AN_QP-C_MISRA.pdf)
+
+- [*"SonarSource's MISRA C rules"*](https://rules.sonarsource.com/c/tag/misra)
