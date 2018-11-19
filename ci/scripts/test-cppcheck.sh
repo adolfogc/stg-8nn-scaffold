@@ -50,6 +50,6 @@ ec=${ec} && $?
 (eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/override/dependencies/qpc/ports/arm-cm/qk/gnu/*.dump")
 (eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/override/dependencies/qpc/ports/arm-cm/qk/armclang/*.dump")
 
-rm -rf ./*
-
+cd ${wrkdir}
+rm -rf build
 exit ${ec}

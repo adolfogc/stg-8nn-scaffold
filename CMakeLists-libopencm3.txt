@@ -38,34 +38,19 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T${LIBOPENCM3_LDSCRIPT} -
 
 # generate some libopencm3's files using our modified irq2nvic script
 file(MAKE_DIRECTORY libopencm3_gen)
-file(COPY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/include DESTINATION libopencm3_gen/)
+file(COPY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/include DESTINATION ${PROJECT_BINARY_DIR}/libopencm3_gen/)
+file(COPY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_chipset.c DESTINATION ${PROJECT_BINARY_DIR}/libopencm3_gen/lib/dispatch/)
+file(COPY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_nvic.c DESTINATION ${PROJECT_BINARY_DIR}/libopencm3_gen/lib/dispatch/)
+file(COPY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/cm3/vector.c DESTINATION ${PROJECT_BINARY_DIR}/libopencm3_gen/lib/cm3/)
+
 set(LIBOPENCM3_IRQ2NVIC_SCRIPT ${PROJECT_SOURCE_DIR}/override/${LIBOPENCM3_DIR}/scripts/irq2nvic_h)
 set(LIBOPENCM3_IRQ2NVIC_JSON ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/include/libopencm3/stm32/f0/irq.json)
 
 add_custom_command(
-  OUTPUT libopencm3_gen/include/libopencm3/stm32/f0/nvic.h libopencm3_gen/include/libopencmsis/irqhandlers.h libopencm3_gen/lib/stm32/f0/vector_nvic.c
+  OUTPUT ${PROJECT_BINARY_DIR}/libopencm3_gen/include/libopencm3/stm32/f0/nvic.h ${PROJECT_BINARY_DIR}/libopencm3_gen/include/libopencmsis/irqhandlers.h ${PROJECT_BINARY_DIR}/libopencm3_gen/lib/stm32/f0/vector_nvic.c
   COMMAND ${LIBOPENCM3_IRQ2NVIC_SCRIPT} ${LIBOPENCM3_IRQ2NVIC_JSON}
   DEPENDS ${LIBOPENCM3_IRQ2NVIC_SCRIPT}
   MAIN_DEPENDENCY ${LIBOPENCM3_IRQ2NVIC_JSON}
-)
-
-# we need to copy these files because they use some "relative-path" include statements
-add_custom_command(
-  OUTPUT libopencm3_gen/lib/dispatch/vector_chipset.c
-  COMMAND cp ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_chipset.c libopencm3_gen/lib/dispatch/vector_chipset.c
-  MAIN_DEPENDENCY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_chipset.c
-)
-
-add_custom_command(
-  OUTPUT libopencm3_gen/lib/dispatch/vector_nvic.c
-  COMMAND cp ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_nvic.c libopencm3_gen/lib/dispatch/vector_nvic.c
-  MAIN_DEPENDENCY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/dispatch/vector_nvic.c
-)
-
-add_custom_command(
-  OUTPUT libopencm3_gen/lib/cm3/vector.c
-  COMMAND cp ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/cm3/vector.c libopencm3_gen/lib/cm3/vector.c
-  MAIN_DEPENDENCY ${PROJECT_SOURCE_DIR}/${LIBOPENCM3_DIR}/lib/cm3/vector.c
 )
 
 # libopencm3's lib/stm32/f0
