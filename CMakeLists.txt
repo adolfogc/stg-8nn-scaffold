@@ -43,6 +43,8 @@ if(NOT CMAKE_BUILD_TYPE)
     add_definitions(-DNDEBUG) #qpc no debug flag
 endif()
 
+set(CMAKE_C_STANDARD 99)
+
 set(BUILD_SHARED_LIBS OFF)
 
 ##
