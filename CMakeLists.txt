@@ -48,11 +48,6 @@ set(CMAKE_C_STANDARD 99)
 set(BUILD_SHARED_LIBS OFF)
 
 ##
-## dependencies::libopencm3
-##
-include(CMakeLists-libopencm3.txt)
-
-##
 ## dependencies::qpc(qk)
 ##
 include(CMakeLists-qpc.txt)

@@ -29,7 +29,5 @@ list(APPEND BSP_SOURCES
 )
 
 add_library(${BSP_LIBRARY} STATIC ${BSP_SOURCES})
-target_link_libraries(${BSP_LIBRARY} ${LIBOPENCM3_LIBRARY})
 target_include_directories(${BSP_LIBRARY} PRIVATE ${BSP_DIR})
 target_include_directories(${BSP_LIBRARY} PRIVATE ${QPC_INCLUDE})
-target_include_directories(${BSP_LIBRARY} PRIVATE ${LIBOPENCM3_INCLUDE})
