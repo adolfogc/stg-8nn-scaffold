@@ -85,7 +85,7 @@ void SystemClock_Config(void) {
    * - www.youtube.com/watch?v=aLCUDv_fgoU
    * - www.youtube.com/watch?v=jP1JymlHUtc
   */
-  const uint32_t reload = HAL_RCC_GetHCLKFreq() / BSP_TICKS_PER_SEC - 1;
+  const uint32_t reload = (HAL_RCC_GetHCLKFreq() / BSP_TICKS_PER_SEC) - 1;
 
   HAL_SYSTICK_Config(reload);
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
