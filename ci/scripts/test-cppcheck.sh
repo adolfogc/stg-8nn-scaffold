@@ -23,13 +23,6 @@ mkdir -p build && cd build
 
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${wrkdir}
 
-# checks on libopencm3 are omitted
-
-(cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --quiet \
-  --project=compile_commands.json \
-  -i ${wrkdir}/dependencies/libopencm3)
-ec=$?
-
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/app/
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/bsp/
 #cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/dependencies/stm32cube
