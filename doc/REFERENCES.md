@@ -3,6 +3,7 @@
 - [STM32F091CC's web page](https://www.st.com/en/microcontrollers/stm32f091cc.html)
 - [STM32F0xxx's Cortex-M0 programming manual](https://www.st.com/content/ccc/resource/technical/document/programming_manual/fc/90/c7/17/a1/44/43/89/DM00051352.pdf/files/DM00051352.pdf/jcr:content/translations/en.DM00051352.pdf)
 - [STM32CubeF0's web page](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html)
+- [ST's UM1785 User Manual - Description of STM32F0 HAL and low-layer drivers](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/77/25/0f/5c/38/48/80/DM00122015.pdf/files/DM00122015.pdf/jcr:content/translations/en.DM00122015.pdf)
 
 ### QP/C
 - [*"Getting Started with QP/C"* guide](https://state-machine.com/doc/AN_Getting_Started_with_QPC.pdf)
@@ -27,9 +28,6 @@
 - [*"An Introduction to Modern CMake"* book](https://cliutils.gitlab.io/modern-cmake)
 - [osx-cross/homebrew-arm](https://github.com/osx-cross/homebrew-arm)
 - [texane/stlink](https://github.com/texane/stlink)
-- [libopencm3/libopencm3](https://github.com/libopencm3/libopencm3)
-- [libopencm3/libopencm3-template](https://github.com/libopencm3/libopencm3-template)
-- [libopencm3/libopencm3-examples](https://github.com/libopencm3/libopencm3-examples)
 - ["Installing dependencies on Travis"](https://docs.travis-ci.com/user/installing-dependencies)
 
 ### MISRA C

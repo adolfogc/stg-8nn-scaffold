@@ -25,6 +25,13 @@ int main(void) {
   static QEvt const *blinky_queueSto[10]; /* event queue buffer for Blinky */
 
   QF_init();
+
+  /* Initialize the Board Support Package
+   * Note: BSP_init() has to be called *after* initializing publish-subscribe and
+   * event pools, to make the system ready to accept SysTick interrupts.
+   * Unfortunately, the STM32Cube code that must be called from the BSP,
+   * configures and starts SysTick.
+  */
   BSP_init();
 
   /* instantiate and start the Blinky active object */

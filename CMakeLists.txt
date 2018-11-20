@@ -31,9 +31,6 @@ if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_ASM_FLAGS "-mcpu=cortex-m0 -mtune=cortex-m0 -march=armv6-m -mfloat-abi=soft")
   set(CMAKE_C_FLAGS "${CMAKE_ASM_FLAGS} -mthumb -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -ffunction-sections -fdata-sections -O1 -MD")
   set(CMAKE_EXE_LINKER_FLAGS "-nostdlib -Wl,--cref,--gc-sections")
-else()
-  set(CMAKE_C_FLAGS "--target=thumbv6m-none-eabi -mcpu=cortex-m0 -mfloat-abi=soft -mthumb -mabi=aapcs -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -ffunction-sections -fdata-sections")
-  set(CMAKE_EXE_LINKER_FLAGS "-nostdlib -Wl,--cref,--gc-sections")
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -46,12 +43,6 @@ endif()
 set(CMAKE_C_STANDARD 99)
 
 set(BUILD_SHARED_LIBS OFF)
-
-##
-## linker script
-##
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -Tgcc_arm.ld -Xlinker -Map=stg-8nn.map")
-file(COPY ${PROJECT_SOURCE_DIR}/gcc_arm.ld DESTINATION ${PROJECT_BINARY_DIR})
 
 ##
 ## dependencies::stm32cube

@@ -23,7 +23,7 @@ set(QPC_DIR dependencies/qpc)
 
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   set(QP_PORT_DIR ports/arm-cm/qk/gnu)
-else()
+elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
   set(QP_PORT_DIR ports/arm-cm/qk/armclang)
 endif()
 
@@ -32,7 +32,7 @@ set(QPC_LIBRARY qpc)
 list(APPEND QPC_INCLUDE
   ${QPC_DIR}/include
   ${QPC_DIR}/src
-  override/${QPC_DIR}/${QP_PORT_DIR}
+  ${QPC_DIR}/${QP_PORT_DIR}
 )
 
 list(APPEND QPC_SOURCES
@@ -49,9 +49,11 @@ list(APPEND QPC_SOURCES
   ${QPC_DIR}/src/qf/qf_qmact.c
   ${QPC_DIR}/src/qf/qf_time.c
   ${QPC_DIR}/src/qk/qk.c
-  override/${QPC_DIR}/${QP_PORT_DIR}/qk_port.c
+  ${QPC_DIR}/${QP_PORT_DIR}/qk_port.c
 )
 
 add_library(${QPC_LIBRARY} STATIC ${QPC_SOURCES})
+target_link_libraries(${QPC_LIBRARY} ${STM32CUBE_LIBRARY})
+target_include_directories(${QPC_LIBRARY} PRIVATE ${STM32CUBE_INCLUDE})
 target_include_directories(${QPC_LIBRARY} PRIVATE ${QPC_INCLUDE})
-target_include_directories(${QPC_LIBRARY} PRIVATE override/${QPC_DIR}/${QP_PORT_DIR})
+target_include_directories(${QPC_LIBRARY} PRIVATE ${QPC_DIR}/${QP_PORT_DIR})

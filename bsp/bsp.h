@@ -20,16 +20,12 @@
 #ifndef BSP_H
 #define BSP_H
 
-#include <stdint.h>
-
 #define BSP_TICKS_PER_SEC 10000U /* 1 tick every 0.1 ms (100 us) */
-#define BSP_TICKS_PER_MS   1000U
-#define BSP_TICKS_PER_US    100U
+#define BSP_TICKS_PER_MS  (BSP_TICKS_PER_SEC / 10)
+#define BSP_TICKS_PER_US  (BSP_TICKS_PER_MS / 10)
 
 void BSP_init(void);
-void BSP_terminate(int16_t result);
 
-void BSP_ledOn(void);
-void BSP_ledOff(void);
+#include "stg_850.h" /* Select your STG-8nn */
 
 #endif // BSP_H

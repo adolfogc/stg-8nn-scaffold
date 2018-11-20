@@ -18,87 +18,108 @@
 * along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 */
 
-#include <libopencm3/cm3/nvic.h>
-#include <libopencm3/cm3/systick.h>
-#include <libopencm3/stm32/rcc.h>
+#include <stm32f0xx_hal.h>
 #include <qpc.h>
 #include "bsp.h"
 
-void sys_tick_handler(void) {
-  QK_ISR_ENTRY();
-  QF_TICK_X(0U, (void *)0);
-  QK_ISR_EXIT();
-}
+/* Internal prototypes */
+void SysTick_Handler(void);
+void SystemClock_Config(void);
 
-/* In Cortex-M0, all are KernelAwareISRs. */
+/* The QF_AWARE_ISR_CMSIS_PRI constant from the QF port specifies the highest
+ * ISR priority that is disabled by the QF framework. The value is suitable
+ * for the NVIC_SetPriority() CMSIS function.
+ *
+ * Only ISRs prioritized at or below the QF_AWARE_ISR_CMSIS_PRI level (i.e.,
+ * with the numerical values of priorities equal or higher than
+ * QF_AWARE_ISR_CMSIS_PRI) are allowed to call any QF services. These ISRs
+ * are "QF-aware".
+*/
+
+/* In Cortex-M0, there are 4 priority levels only, given by the upper two bits
+ * of the priority byte. No grouping available. All ISRs are KernelAware.
+*/
 enum KernelAwareISRs {
   SYSTICK_PRIO = QF_AWARE_ISR_CMSIS_PRI,
   /* ... */
   MAX_KERNEL_AWARE_CMSIS_PRI /* keep always last */
 };
 
-/* In Cortex-M0, there are 4 priority levels only, given by the upper two bits
-* of the priority byte. No grouping available.
-* "kernel-aware" interrupts should not overlap the PendSV priority
-*/
-//Q_ASSERT_COMPILE(MAX_KERNEL_AWARE_CMSIS_PRI <= (0xFF >>(8-__NVIC_PRIO_BITS)));
+void SysTick_Handler(void) {
+  QK_ISR_ENTRY();
+  QF_TICK_X(0U, (void *)0);
+  QK_ISR_EXIT();
+}
+
+void SystemClock_Config(void) {
+  RCC_OscInitTypeDef RCC_OscInitStruct;
+  RCC_ClkInitTypeDef RCC_ClkInitStruct;
+  RCC_PeriphCLKInitTypeDef PeriphClkInit;
+
+  /* Initializes the CPU, AHB and APB busses clocks */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI14|RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
+  RCC_OscInitStruct.HSI14CalibrationValue = 16;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    /* FIXME: call error handler */
+  }
+
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_PCLK1;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSE;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  {
+    /* FIXME: call error handler */
+  }
+
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_RTC;
+  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
+  PeriphClkInit.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
+  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_HSE_DIV32;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    /* FIXME: call error handler */
+  }
+
+  /* Set up the SysTick timer to fire at BSP_TICKS_PER_SEC rate */
+
+  /* Useful references on how to calculate the reload value:
+   * - www.youtube.com/watch?v=aLCUDv_fgoU
+   * - www.youtube.com/watch?v=jP1JymlHUtc
+  */
+  const uint32_t reload = HAL_RCC_GetHCLKFreq() / BSP_TICKS_PER_SEC - 1;
+
+  HAL_SYSTICK_Config(reload);
+  HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
+  /* Note: SubPriority (third argument) is given a dummy value (0), as it is ignored for Cortex-M0 devices */
+  HAL_NVIC_SetPriority(SysTick_IRQn, SYSTICK_PRIO,0);
+}
+
+void BSP_init(void) {
+  HAL_Init();
+  SystemCoreClockUpdate();
+  BSP_GPIO_init();
+}
+
 
 void QF_onStartup(void) {
-  /* Set up the system clock */
-  rcc_clock_setup_in_hsi48_out_48mhz();
-  rcc_osc_ready_int_clear(RCC_HSI48);
-  rcc_osc_ready_int_enable(RCC_HSI48);
-
-  /* Set up the SysTick timer to fire at BSP_TICKS_PER_SEC rate
-  *
-  * We want the systick to fire every 100 us (0.1 ms) => BSP_TICKS_PER_SEC = 10^4
-  * => reload = ms * clockFrequency - 1 = 10^-1 * 10^-3 * 48 * 10^6 - 1 = 4799
-  *
-  * Useful references here:
-  * - www.youtube.com/watch?v=aLCUDv_fgoU
-  * - www.youtube.com/watch?v=jP1JymlHUtc
-  * - STM32F0xxx Cortex-M0 programming manual
-  */
-  systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
-  systick_set_reload(4799);
-  systick_clear();
-  systick_counter_enable();
-  systick_interrupt_enable();
-
-  /* set priorities of ALL ISRs used in the system, see NOTE00 below.
-  *
-  * !!!!!!!!!!!!!!!!!!!!!!!!!!!! CAUTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  * Assign a priority to EVERY ISR explicitly by calling nvic_set_priority().
-  * DO NOT LEAVE THE ISR PRIORITIES AT THE DEFAULT VALUE!
-  */
-  nvic_set_priority(NVIC_SYSTICK_IRQ, SYSTICK_PRIO);
-  //nvic_set_priority(NVIC_PENDSV_IRQ, PENDSV_PRIO);
-
-  nvic_enable_irq(NVIC_SYSTICK_IRQ);
+  SystemClock_Config();
 }
 
 void QF_onCleanup(void) {
+  /* Not implemented */
 }
 
 void QK_onIdle(void) {
+  /* Not implemented */
 }
 
 void Q_onAssert(char const *module, int loc) {
-    /*
-    * NOTE: add here your application-specific error handling
-    */
-    QS_ASSERTION(module, loc, (uint32_t)10000U); /* report assertion to QS */
-    reset_handler();
+    /* Application-specific error handling goes here */
+    NVIC_SystemReset();
 }
-
-/*****************************************************************************
-* NOTE00:
-* The QF_AWARE_ISR_CMSIS_PRI constant from the QF port specifies the highest
-* ISR priority that is disabled by the QF framework. The value is suitable
-* for the NVIC_SetPriority() CMSIS function.
-*
-* Only ISRs prioritized at or below the QF_AWARE_ISR_CMSIS_PRI level (i.e.,
-* with the numerical values of priorities equal or higher than
-* QF_AWARE_ISR_CMSIS_PRI) are allowed to call any QF services. These ISRs
-* are "QF-aware".
-*/

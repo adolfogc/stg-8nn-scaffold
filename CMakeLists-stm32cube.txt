@@ -49,7 +49,7 @@ list(APPEND STM32CUBE_SOURCES
 )
 
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-  list(APPEND STM32CUBE_SOURCES ${STM32CUBE_DIR}/gnu/startup_ARMCM0.c)
+  list(APPEND STM32CUBE_SOURCES ${STM32CUBE_DIR}/gnu/startup_stm32f091xc.c)
 endif()
 
 ## HAL include
@@ -115,3 +115,12 @@ list(APPEND STM32CUBE_SOURCES
 
 add_library(${STM32CUBE_LIBRARY} STATIC ${STM32CUBE_SOURCES})
 target_include_directories(${STM32CUBE_LIBRARY} PRIVATE ${STM32CUBE_INCLUDE})
+
+##
+## linker script
+##
+add_custom_command(
+  TARGET ${STM32CUBE_LIBRARY} PRE_LINK
+  COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/gcc_arm.ld ${PROJECT_BINARY_DIR}/gcc_arm.ld
+)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -Tgcc_arm.ld -Xlinker -Map=gcc_arm.map")
