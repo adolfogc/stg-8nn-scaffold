@@ -62,19 +62,16 @@ static QState Blinky_initial(Blinky * const me, QEvt const * const e) {
 static QState Blinky_off(Blinky * const me, QEvt const * const e) {
     QState status_;
     switch (e->sig) {
-        case Q_ENTRY_SIG: {
-            BSP_ledOff();
-            status_ = Q_HANDLED();
-            break;
-        }
-        case TIMEOUT_SIG: {
-            status_ = Q_TRAN(&Blinky_on);
-            break;
-        }
-        default: {
-            status_ = Q_SUPER(&QHsm_top);
-            break;
-        }
+        case Q_ENTRY_SIG:
+          BSP_ledOff();
+          status_ = Q_HANDLED();
+          break;
+        case TIMEOUT_SIG:
+          status_ = Q_TRAN(&Blinky_on);
+          break;
+        default:
+          status_ = Q_SUPER(&QHsm_top);
+          break;
     }
     return status_;
 }
@@ -82,19 +79,16 @@ static QState Blinky_off(Blinky * const me, QEvt const * const e) {
 static QState Blinky_on(Blinky * const me, QEvt const * const e) {
     QState status_;
     switch (e->sig) {
-        case Q_ENTRY_SIG: {
-            BSP_ledOn();
-            status_ = Q_HANDLED();
-            break;
-        }
-        case TIMEOUT_SIG: {
-            status_ = Q_TRAN(&Blinky_off);
-            break;
-        }
-        default: {
-            status_ = Q_SUPER(&QHsm_top);
-            break;
-        }
+        case Q_ENTRY_SIG:
+          BSP_ledOn();
+          status_ = Q_HANDLED();
+          break;
+        case TIMEOUT_SIG:
+          status_ = Q_TRAN(&Blinky_off);
+          break;
+        default:
+          status_ = Q_SUPER(&QHsm_top);
+          break;
     }
     return status_;
 }

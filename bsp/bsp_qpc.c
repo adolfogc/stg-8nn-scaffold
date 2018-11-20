@@ -112,7 +112,7 @@ void QK_onIdle(void) {
   /* Not implemented */
 }
 
-void Q_onAssert(char const *module, int loc) {
-    /* Application-specific error handling goes here */
-    NVIC_SystemReset();
+void Q_onAssert(char const * module, int loc) {
+  /* Application-specific error handling goes here */
+  NVIC_SystemReset();
 }
