@@ -20,7 +20,7 @@ cmake_minimum_required(VERSION 3.5)
 project(STG-8nn-Scaffold C ASM)
 
 add_definitions(-D__ARM_FP=0) # no floating point unit (def. required by QP/C)
-add_definitions(-DSTM32F0)    # libopencm3/cmsis required defs.
+add_definitions(-DSTM32F0)
 add_definitions(-DSTM32F091xC)
 
 # Useful references:
@@ -30,7 +30,7 @@ add_definitions(-DSTM32F091xC)
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_ASM_FLAGS "-mcpu=cortex-m0 -mtune=cortex-m0 -march=armv6-m -mfloat-abi=soft")
   set(CMAKE_C_FLAGS "${CMAKE_ASM_FLAGS} -mthumb -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -ffunction-sections -fdata-sections -O1 -MD")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_ASM_FLAGS} -mthumb -nostdlib -Wl,--cref,--gc-sections")
+  set(CMAKE_EXE_LINKER_FLAGS "-nostdlib -Wl,--cref,--gc-sections")
 else()
   set(CMAKE_C_FLAGS "--target=thumbv6m-none-eabi -mcpu=cortex-m0 -mfloat-abi=soft -mthumb -mabi=aapcs -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -ffunction-sections -fdata-sections")
   set(CMAKE_EXE_LINKER_FLAGS "-nostdlib -Wl,--cref,--gc-sections")
@@ -46,6 +46,17 @@ endif()
 set(CMAKE_C_STANDARD 99)
 
 set(BUILD_SHARED_LIBS OFF)
+
+##
+## linker script
+##
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -Tgcc_arm.ld -Xlinker -Map=stg-8nn.map")
+file(COPY ${PROJECT_SOURCE_DIR}/gcc_arm.ld DESTINATION ${PROJECT_BINARY_DIR})
+
+##
+## dependencies::stm32cube
+##
+include(CMakeLists-stm32cube.txt)
 
 ##
 ## dependencies::qpc(qk)

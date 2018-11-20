@@ -34,267 +34,229 @@
 
 #include <stdint.h>
 
+/* start and end of stack defined in the linker script ---------------------*/
+extern int __stack_start__;
+extern int __stack_end__;
+
+/* Weak prototypes for error handlers --------------------------------------*/
+/**
+* The function assert_failed defined at the end of this file defines
+* the error/assertion handling policy for the application and might
+* need to be customized for each project. This function is defined in
+* assembly to avoid accessing the stack, which might be corrupted by
+* the time assert_failed is called.
+*/
+__attribute__ ((naked)) void assert_failed(char const *module, int loc);
 
 /*----------------------------------------------------------------------------
-  Linker generated Symbols
+  Prototypes
  *----------------------------------------------------------------------------*/
-extern uint32_t __etext;
-extern uint32_t __data_start__;
-extern uint32_t __data_end__;
-extern uint32_t __copy_table_start__;
-extern uint32_t __copy_table_end__;
-extern uint32_t __zero_table_start__;
-extern uint32_t __zero_table_end__;
-extern uint32_t __bss_start__;
-extern uint32_t __bss_end__;
-extern uint32_t __StackTop;
-
-/*----------------------------------------------------------------------------
-  Exception / Interrupt Handler Function Prototype
- *----------------------------------------------------------------------------*/
-typedef void( *pFunc )( void );
-
-
-/*----------------------------------------------------------------------------
-  External References
- *----------------------------------------------------------------------------*/
-#ifndef __START
-extern void  _start(void) __attribute__((noreturn));    /* PreeMain (C library entry point) */
-#else
-extern int  __START(void) __attribute__((noreturn));    /* main entry point */
-#endif
-
-#ifndef __NO_SYSTEM_INIT
-extern void SystemInit (void);            /* CMSIS System Initialization      */
-#endif
-
-
-/*----------------------------------------------------------------------------
-  Internal References
- *----------------------------------------------------------------------------*/
-void Default_Handler(void);                          /* Default empty handler */
-void Reset_Handler(void);                            /* Reset Handler */
-
-
-/*----------------------------------------------------------------------------
-  User Initial Stack & Heap
- *----------------------------------------------------------------------------*/
-#ifndef __STACK_SIZE
-  #define	__STACK_SIZE  0x00000400
-#endif
-static uint8_t stack[__STACK_SIZE] __attribute__ ((aligned(8), used, section(".stack")));
-
-#ifndef __HEAP_SIZE
-  #define	__HEAP_SIZE   0x00000C00
-#endif
-#if __HEAP_SIZE > 0
-static uint8_t heap[__HEAP_SIZE]   __attribute__ ((aligned(8), used, section(".heap")));
-#endif
-
+__attribute__ ((naked)) void Default_Handler(void);                   /* Default empty handler */
+__attribute__ ((naked)) void Reset_Handler(void);                     /* Reset Handler */
+__attribute__ ((naked)) void Q_onAssert(char const *module, int loc); /* QP assertion handler */
+void SystemInit(void);                                                /* CMSIS system initialization */
 
 /*----------------------------------------------------------------------------
   Exception / Interrupt Handler
  *----------------------------------------------------------------------------*/
 /* Cortex-M0 Processor Exceptions */
-void NMI_Handler         (void) __attribute__ ((weak, alias("Default_Handler")));
-void HardFault_Handler   (void) __attribute__ ((weak, alias("Default_Handler")));
-void SVC_Handler         (void) __attribute__ ((weak, alias("Default_Handler")));
-void PendSV_Handler      (void) __attribute__ ((weak, alias("Default_Handler")));
-void SysTick_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+/* Fault */
+void NMI_Handler                      (void) __attribute__ ((weak));
+void HardFault_Handler                (void) __attribute__ ((weak));
+/* Non-fault */
+void SVC_Handler                      (void) __attribute__ ((weak, alias("Default_Handler")));
+void PendSV_Handler                   (void) __attribute__ ((weak, alias("Default_Handler")));
+void SysTick_Handler                  (void) __attribute__ ((weak, alias("Default_Handler")));
 
-/* ARMCM0 Specific Interrupts */
-void WDT_IRQHandler      (void) __attribute__ ((weak, alias("Default_Handler")));
-void RTC_IRQHandler      (void) __attribute__ ((weak, alias("Default_Handler")));
-void TIM0_IRQHandler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void TIM2_IRQHandler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void MCIA_IRQHandler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void MCIB_IRQHandler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void UART0_IRQHandler    (void) __attribute__ ((weak, alias("Default_Handler")));
-void UART1_IRQHandler    (void) __attribute__ ((weak, alias("Default_Handler")));
-void UART2_IRQHandler    (void) __attribute__ ((weak, alias("Default_Handler")));
-void UART4_IRQHandler    (void) __attribute__ ((weak, alias("Default_Handler")));
-void AACI_IRQHandler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void CLCD_IRQHandler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void ENET_IRQHandler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void USBDC_IRQHandler    (void) __attribute__ ((weak, alias("Default_Handler")));
-void USBHC_IRQHandler    (void) __attribute__ ((weak, alias("Default_Handler")));
-void CHLCD_IRQHandler    (void) __attribute__ ((weak, alias("Default_Handler")));
-void FLEXRAY_IRQHandler  (void) __attribute__ ((weak, alias("Default_Handler")));
-void CAN_IRQHandler      (void) __attribute__ ((weak, alias("Default_Handler")));
-void LIN_IRQHandler      (void) __attribute__ ((weak, alias("Default_Handler")));
-void I2C_IRQHandler      (void) __attribute__ ((weak, alias("Default_Handler")));
-void CPU_CLCD_IRQHandler (void) __attribute__ ((weak, alias("Default_Handler")));
-void UART3_IRQHandler    (void) __attribute__ ((weak, alias("Default_Handler")));
-void SPI_IRQHandler      (void) __attribute__ ((weak, alias("Default_Handler")));
-
+/* External Interrupts */
+void WWDG_IRQHandler                  (void) __attribute__ ((weak, alias("Default_Handler")));
+void PVD_VDDIO2_IRQHandler            (void) __attribute__ ((weak, alias("Default_Handler")));
+void RTC_IRQHandler                   (void) __attribute__ ((weak, alias("Default_Handler")));
+void FLASH_IRQHandler                 (void) __attribute__ ((weak, alias("Default_Handler")));
+void RCC_CRS_IRQHandler               (void) __attribute__ ((weak, alias("Default_Handler")));
+void EXTI0_1_IRQHandler               (void) __attribute__ ((weak, alias("Default_Handler")));
+void EXTI2_3_IRQHandler               (void) __attribute__ ((weak, alias("Default_Handler")));
+void EXTI4_15_IRQHandler              (void) __attribute__ ((weak, alias("Default_Handler")));
+void TSC_IRQHandler                   (void) __attribute__ ((weak, alias("Default_Handler")));
+void DMA1_Ch1_IRQHandler              (void) __attribute__ ((weak, alias("Default_Handler")));
+void DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler (void) __attribute__ ((weak, alias("Default_Handler")));
+void DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler (void) __attribute__ ((weak, alias("Default_Handler")));
+void ADC1_COMP_IRQHandler             (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM1_BRK_UP_TRG_COM_IRQHandler   (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM1_CC_IRQHandler               (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM2_IRQHandler                  (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM3_IRQHandler                  (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM6_DAC_IRQHandler              (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM7_IRQHandler                  (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM14_IRQHandler                 (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM15_IRQHandler                 (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM16_IRQHandler                 (void) __attribute__ ((weak, alias("Default_Handler")));
+void TIM17_IRQHandler                 (void) __attribute__ ((weak, alias("Default_Handler")));
+void I2C1_IRQHandler                  (void) __attribute__ ((weak, alias("Default_Handler")));
+void I2C2_IRQHandler                  (void) __attribute__ ((weak, alias("Default_Handler")));
+void SPI1_IRQHandler                  (void) __attribute__ ((weak, alias("Default_Handler")));
+void SPI2_IRQHandler                  (void) __attribute__ ((weak, alias("Default_Handler")));
+void USART1_IRQHandler                (void) __attribute__ ((weak, alias("Default_Handler")));
+void USART2_IRQHandler                (void) __attribute__ ((weak, alias("Default_Handler")));
+void USART3_8_IRQHandler              (void) __attribute__ ((weak, alias("Default_Handler")));
+void CEC_CAN_IRQHandler               (void) __attribute__ ((weak, alias("Default_Handler")));
 
 /*----------------------------------------------------------------------------
   Exception / Interrupt Vector table
  *----------------------------------------------------------------------------*/
-const pFunc __Vectors[] __attribute__ ((section(".vectors"))) = {
+__attribute__ ((section(".isr_vector")))
+int const g_pfnVectors[] = {
   /* Cortex-M0 Exceptions Handler */
-  (pFunc)&__StackTop,                       /*      Initial Stack Pointer     */
-  Reset_Handler,                            /*      Reset Handler             */
-  NMI_Handler,                              /*      NMI Handler               */
-  HardFault_Handler,                        /*      Hard Fault Handler        */
-  0,                                        /*      Reserved                  */
-  0,                                        /*      Reserved                  */
-  0,                                        /*      Reserved                  */
-  0,                                        /*      Reserved                  */
-  0,                                        /*      Reserved                  */
-  0,                                        /*      Reserved                  */
-  0,                                        /*      Reserved                  */
-  SVC_Handler,                              /*      SVCall Handler            */
-  0,                                        /*      Reserved                  */
-  0,                                        /*      Reserved                  */
-  PendSV_Handler,                           /*      PendSV Handler            */
-  SysTick_Handler,                          /*      SysTick Handler           */
-
+  (int)&__stack_end__,                      /*      Initial Stack Pointer                          */
+  (int)&Reset_Handler,                      /*      Reset Handler                                  */
+  (int)&NMI_Handler,                        /*      NMI Handler                                    */
+  (int)&HardFault_Handler,                  /*      Hard Fault Handler                             */
+  0,                                        /*      Reserved                                       */
+  0,                                        /*      Reserved                                       */
+  0,                                        /*      Reserved                                       */
+  0,                                        /*      Reserved                                       */
+  0,                                        /*      Reserved                                       */
+  0,                                        /*      Reserved                                       */
+  0,                                        /*      Reserved                                       */
+  (int)&SVC_Handler,                        /*      SVCall Handler                                 */
+  0,                                        /*      Reserved                                       */
+  0,                                        /*      Reserved                                       */
+  (int)&PendSV_Handler,                     /*      PendSV Handler                                 */
+  (int)&SysTick_Handler,                    /*      SysTick Handler                                */
   /* External interrupts */
-  WDT_IRQHandler,                           /*  0:  Watchdog Timer            */
-  RTC_IRQHandler,                           /*  1:  Real Time Clock           */
-  TIM0_IRQHandler,                          /*  2:  Timer0 / Timer1           */
-  TIM2_IRQHandler,                          /*  3:  Timer2 / Timer3           */
-  MCIA_IRQHandler,                          /*  4:  MCIa                      */
-  MCIB_IRQHandler,                          /*  5:  MCIb                      */
-  UART0_IRQHandler,                         /*  6:  UART0 - DUT FPGA          */
-  UART1_IRQHandler,                         /*  7:  UART1 - DUT FPGA          */
-  UART2_IRQHandler,                         /*  8:  UART2 - DUT FPGA          */
-  UART4_IRQHandler,                         /*  9:  UART4 - not connected     */
-  AACI_IRQHandler,                          /* 10: AACI / AC97                */
-  CLCD_IRQHandler,                          /* 11: CLCD Combined Interrupt    */
-  ENET_IRQHandler,                          /* 12: Ethernet                   */
-  USBDC_IRQHandler,                         /* 13: USB Device                 */
-  USBHC_IRQHandler,                         /* 14: USB Host Controller        */
-  CHLCD_IRQHandler,                         /* 15: Character LCD              */
-  FLEXRAY_IRQHandler,                       /* 16: Flexray                    */
-  CAN_IRQHandler,                           /* 17: CAN                        */
-  LIN_IRQHandler,                           /* 18: LIN                        */
-  I2C_IRQHandler,                           /* 19: I2C ADC/DAC                */
-  0,                                        /* 20: Reserved                   */
-  0,                                        /* 21: Reserved                   */
-  0,                                        /* 22: Reserved                   */
-  0,                                        /* 23: Reserved                   */
-  0,                                        /* 24: Reserved                   */
-  0,                                        /* 25: Reserved                   */
-  0,                                        /* 26: Reserved                   */
-  0,                                        /* 27: Reserved                   */
-  CPU_CLCD_IRQHandler,                      /* 28: Reserved - CPU FPGA CLCD   */
-  0,                                        /* 29: Reserved - CPU FPGA        */
-  UART3_IRQHandler,                         /* 30: UART3    - CPU FPGA        */
-  SPI_IRQHandler                            /* 31: SPI Touchscreen - CPU FPGA */
+  (int)&WWDG_IRQHandler,                    /*  0:  Watchdog Timer                                 */
+  (int)&PVD_VDDIO2_IRQHandler,              /*  1:  PVD through EXTI Line detect                   */
+  (int)&RTC_IRQHandler,                     /*  2:  RTC through EXTI Line                          */
+  (int)&FLASH_IRQHandler,                   /*  3:  FLASH                                          */
+  (int)&RCC_CRS_IRQHandler,                 /*  4:  RCC and CRS                                    */
+  (int)&EXTI0_1_IRQHandler,                 /*  5:  EXTI Line 0 and 1                              */
+  (int)&EXTI2_3_IRQHandler,                 /*  6:  EXTI Line 2 and 3                              */
+  (int)&EXTI4_15_IRQHandler,                /*  7:  EXTI Line 4 to 15                              */
+  (int)&TSC_IRQHandler,                     /*  8:  TS                                             */
+  (int)&DMA1_Ch1_IRQHandler,                /*  9:  DMA1 Channel 1                                 */
+  (int)&DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler,   /* 10:  DMA1 Channel 2 and 3 & DMA2 Channel 1 and 2    */
+  (int)&DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler,   /* 11:  DMA1 Channel 4 to 7 & DMA2 Channel 3 to 5      */
+  (int)&ADC1_COMP_IRQHandler,               /* 12:  ADC1, COMP1 and COMP2                          */
+  (int)&TIM1_BRK_UP_TRG_COM_IRQHandler,     /* 13:  TIM1 Break, Update, Trigger and Commutation    */
+  (int)&TIM1_CC_IRQHandler,                 /* 14:  TIM1 Capture Compare                           */
+  (int)&TIM2_IRQHandler,                    /* 15:  TIM2                                           */
+  (int)&TIM3_IRQHandler,                    /* 16:  TIM3                                           */
+  (int)&TIM6_DAC_IRQHandler,                /* 17:  TIM6 and DAC                                   */
+  (int)&TIM7_IRQHandler,                    /* 18:  TIM7                                           */
+  (int)&TIM14_IRQHandler,                   /* 19:  TIM14                                          */
+  (int)&TIM15_IRQHandler,                   /* 20:  TIM15                                          */
+  (int)&TIM16_IRQHandler,                   /* 21:  TIM16                                          */
+  (int)&TIM17_IRQHandler,                   /* 22:  TIM17                                          */
+  (int)&I2C1_IRQHandler,                    /* 23:  I2C1                                           */
+  (int)&I2C2_IRQHandler,                    /* 24:  I2C2                                           */
+  (int)&SPI1_IRQHandler,                    /* 25:  SPI1                                           */
+  (int)&SPI2_IRQHandler,                    /* 26:  SPI2                                           */
+  (int)&USART1_IRQHandler,                  /* 27:  USART1                                         */
+  (int)&USART2_IRQHandler,                  /* 28:  USART2                                         */
+  (int)&USART3_8_IRQHandler,                /* 29:  USART3, USART4, USART5, USART6, USART7, USART8 */
+  (int)&CEC_CAN_IRQHandler,                 /* 30:  CEC and CAN                                    */
+  0                                         /* 31:  Not used                                       */
 };
-
 
 /*----------------------------------------------------------------------------
   Reset Handler called on controller reset
  *----------------------------------------------------------------------------*/
 void Reset_Handler(void) {
-  uint32_t *pSrc, *pDest;
-  uint32_t *pTable __attribute__((unused));
+  extern int main(void);
+  extern int __libc_init_array(void);
+  extern unsigned __data_start;  /* start of .data in the linker script */
+  extern unsigned __data_end__;  /* end of .data in the linker script */
+  extern unsigned const __data_load; /* initialization values for .data  */
+  extern unsigned __bss_start__; /* start of .bss in the linker script */
+  extern unsigned __bss_end__;   /* end of .bss in the linker script */
+  extern void software_init_hook(void) __attribute__((weak));
 
-/*  Firstly it copies data from read only memory to RAM. There are two schemes
- *  to copy. One can copy more than one sections. Another can only copy
- *  one section.  The former scheme needs more instructions and read-only
- *  data to implement than the latter.
- *  Macro __STARTUP_COPY_MULTIPLE is used to choose between two schemes.  */
+  unsigned const *src;
+  unsigned *dst;
 
-#ifdef __STARTUP_COPY_MULTIPLE
-/*  Multiple sections scheme.
- *
- *  Between symbol address __copy_table_start__ and __copy_table_end__,
- *  there are array of triplets, each of which specify:
- *    offset 0: LMA of start of a section to copy from
- *    offset 4: VMA of start of a section to copy to
- *    offset 8: size of the section to copy. Must be multiply of 4
- *
- *  All addresses must be aligned to 4 bytes boundary.
- */
-  pTable = &__copy_table_start__;
+  SystemInit(); /* CMSIS system initialization */
 
-  for (; pTable < &__copy_table_end__; pTable = pTable + 3) {
-		pSrc  = (uint32_t*)*(pTable + 0);
-		pDest = (uint32_t*)*(pTable + 1);
-		for (; pDest < (uint32_t*)(*(pTable + 1) + *(pTable + 2)) ; ) {
-      *pDest++ = *pSrc++;
-		}
-	}
-#else
-/*  Single section scheme.
- *
- *  The ranges of copy from/to are specified by following symbols
- *    __etext: LMA of start of the section to copy from. Usually end of text
- *    __data_start__: VMA of start of the section to copy to
- *    __data_end__: VMA of end of the section to copy to
- *
- *  All addresses must be aligned to 4 bytes boundary.
- */
-  pSrc  = &__etext;
-  pDest = &__data_start__;
-
-  for ( ; pDest < &__data_end__ ; ) {
-    *pDest++ = *pSrc++;
+  /* copy the data segment initializers from flash to RAM... */
+  src = &__data_load;
+  for (dst = &__data_start; dst < &__data_end__; ++dst, ++src) {
+      *dst = *src;
   }
-#endif /*__STARTUP_COPY_MULTIPLE */
 
-/*  This part of work usually is done in C library startup code. Otherwise,
- *  define this macro to enable it in this startup.
- *
- *  There are two schemes too. One can clear multiple BSS sections. Another
- *  can only clear one section. The former is more size expensive than the
- *  latter.
- *
- *  Define macro __STARTUP_CLEAR_BSS_MULTIPLE to choose the former.
- *  Otherwise efine macro __STARTUP_CLEAR_BSS to choose the later.
- */
-#ifdef __STARTUP_CLEAR_BSS_MULTIPLE
-/*  Multiple sections scheme.
- *
- *  Between symbol address __copy_table_start__ and __copy_table_end__,
- *  there are array of tuples specifying:
- *    offset 0: Start of a BSS section
- *    offset 4: Size of this BSS section. Must be multiply of 4
- */
-  pTable = &__zero_table_start__;
-
-  for (; pTable < &__zero_table_end__; pTable = pTable + 2) {
-		pDest = (uint32_t*)*(pTable + 0);
-		for (; pDest < (uint32_t*)(*(pTable + 0) + *(pTable + 1)) ; ) {
-      *pDest++ = 0;
-		}
-	}
-#elif defined (__STARTUP_CLEAR_BSS)
-/*  Single BSS section scheme.
- *
- *  The BSS section is specified by following symbols
- *    __bss_start__: start of the BSS section.
- *    __bss_end__: end of the BSS section.
- *
- *  Both addresses must be aligned to 4 bytes boundary.
- */
-  pDest = &__bss_start__;
-
-  for ( ; pDest < &__bss_end__ ; ) {
-    *pDest++ = 0ul;
+  /* zero fill the .bss segment in RAM... */
+  for (dst = &__bss_start__; dst < &__bss_end__; ++dst) {
+      *dst = 0;
   }
-#endif /* __STARTUP_CLEAR_BSS_MULTIPLE || __STARTUP_CLEAR_BSS */
 
-#ifndef __NO_SYSTEM_INIT
-	SystemInit();
-#endif
+  /* init hook provided? */
+  if (&software_init_hook != (void (*)(void))(0)) {
+      /* give control to the RTOS */
+      software_init_hook(); /* this will also call __libc_init_array */
+  }
+  else {
+      /* call all static constructors in C++ (comment out in C programs) */
+      //__libc_init_array();
+      (void)main(); /* application's entry point; should never return! */
+  }
 
-#ifndef __START
-#define __START _start
-#endif
-	__START();
-
+  /* the previous code should not return, but assert just in case... */
+  assert_failed("Reset_Handler", __LINE__);
 }
 
+/*----------------------------------------------------------------------------
+  Fault Exception Handlers
+ *----------------------------------------------------------------------------*/
+__attribute__ ((naked))
+void NMI_Handler(void) {
+    __asm volatile (
+        "    ldr r0,=str_nmi\n\t"
+        "    mov r1,#1\n\t"
+        "    b assert_failed\n\t"
+        "str_nmi: .asciz \"NMI\"\n\t"
+        "  .align 2\n\t"
+    );
+}
+
+__attribute__ ((naked))
+void HardFault_Handler(void) {
+    __asm volatile (
+        "    ldr r0,=str_hrd\n\t"
+        "    mov r1,#1\n\t"
+        "    b assert_failed\n\t"
+        "str_hrd: .asciz \"HardFault\"\n\t"
+        "  .align 2\n\t"
+    );
+}
 
 /*----------------------------------------------------------------------------
   Default Handler for Exceptions / Interrupts
  *----------------------------------------------------------------------------*/
-void Default_Handler(void) {
+__attribute__ ((naked))
+ void Default_Handler(void) {
+     __asm volatile (
+         "    ldr r0,=str_dflt\n\t"
+         "    mov r1,#1\n\t"
+         "    b assert_failed\n\t"
+         "str_dflt: .asciz \"Default\"\n\t"
+         "  .align 2\n\t"
+     );
+ }
 
-	while(1);
+/*****************************************************************************
+* The function assert_failed defines the error/assertion handling policy
+* for the application. After making sure that the stack is OK, this function
+* calls Q_onAssert, which should NOT return (typically reset the CPU).
+*
+* NOTE: the function Q_onAssert should NOT return.
+*****************************************************************************/
+__attribute__ ((naked))
+void assert_failed(char const *module, int loc) {
+    /* re-set the SP in case of stack overflow */
+    __asm volatile (
+        "  MOV sp,%0\n\t"
+        : : "r" (&__stack_end__));
+
+    Q_onAssert(module, loc); /* call the application-specific QP handler */
+
+    for (;;) { /* should not be reached, but just in case loop forever... */
+    }
 }
