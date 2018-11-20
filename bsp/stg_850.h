@@ -72,11 +72,4 @@
 #define ADC_IN5 6
 #define ADC_IN6 7
 
-#include <stdint.h>
-
-/* BSP prototypes */
-void BSP_GPIO_init(void);
-void BSP_GPIO_ledOn(void);
-void BSP_GPIO_lenOff(void);
-void BSP_terminate(int16_t result);
 #endif /* _STG_850_H */

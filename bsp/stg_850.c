@@ -18,7 +18,7 @@
 */
 
 #include <stm32f0xx_hal.h>
-#include "stg_850.h"
+#include "bsp.h"
 
 void BSP_GPIO_init(void) {
   GPIO_InitTypeDef GPIO_InitStruct;
