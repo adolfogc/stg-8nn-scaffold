@@ -32,10 +32,10 @@ then
   export MISRA_RULES_TEXT="--rule-texts=${wrkdir}/ci/scripts/misra-c-2012-rule-texts.txt"
 fi
 
-(eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/app/*.dump")
+eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/app/*.dump"
 ec=${ec} && $?
 
-(eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/bsp/*.dump")
+eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/bsp/*.dump"
 ec=${ec} && $?
 
 # MISRA C:2012 checks are not enforced for files in these directories:
