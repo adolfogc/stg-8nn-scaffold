@@ -45,7 +45,7 @@ brew tap osx-cross/arm
 brew install arm-gcc-bin stlink open-ocd cmake ninja
 ```
 
-2. Installing Clang-based toolchain
+2. Installing a Clang-based toolchain
 
 ```bash
 brew tap eblot/armeabi
@@ -53,7 +53,7 @@ brew install armv6m-cortex-m0plus
 ```
 
 #### Linux
-Refer to the *dockerfiles* available in the `ci` directory.
+Refer to `ci/Dockerfile`.
 
 ### Compiling the project
 
@@ -66,6 +66,7 @@ cmake --build .
 ```
 
 2. Using Clang (currently not working)
+
 ```bash
 mkdir build && cd build
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain-macos.cmake -GNinja ..
@@ -90,19 +91,15 @@ Note: You can use the [STM32 ST-LINK utility](https://www.st.com/en/development-
 ## Other
 
 ### Checking compliance with some MISRA C:2012 rules using Cppcheck v1.85+
-1. Generate your "rule texts file" using [this Python script](https://github.com/ChisholmKyle/SublimeLinter-contrib-cppcheck-misra/blob/master/scripts/cppcheck-misra-parsetexts.py) and your PDF copy of *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* and place it in `ci/scripts/misra-c-2012-rule-texts.txt`.
+1. Generate your "rule texts file" using [this Python script](https://github.com/ChisholmKyle/SublimeLinter-contrib-cppcheck-misra/blob/master/scripts/cppcheck-misra-parsetexts.py) and your PDF copy of *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* and place it in: `ci/scripts/misra-c-2012-rule-texts.txt`.
 
-2. Use the provided Docker image and scripts in the `ci` directory:
+2. Use the provided script: `ci/scripts/test-cppcheck.sh`.
 
-```bash
-docker build -t adolfogc/stg-8nn-scaffold-ci ci
-```
+**Note 0:** No compliance with any MISRA guidelines is claimed here, *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* is only used as a reference for best practices to follow when developing embedded code using ISO C99.
 
-```bash
-docker run --rm -i -v ${PWD}:/src -t adolfogc/stg-8nn-scaffold-ci /scripts/test-cppcheck.sh
-```
+**Note 1:** [SonarCloud](https://www.sonarsource.com/products/codeanalyzers/sonarcfamilyforcpp.html) is also used in the CI builds to check for compliance with [MISRA C rules](https://rules.sonarsource.com/c/tag/misra).
 
-**Note:** No compliance with any MISRA guidelines is claimed here, *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* is only used as a reference for best practices to follow when developing embedded code using ISO C99. The QP™/C framework is MISRA C:2004 compliant, as described in [that project's compliance matrix](http://www.state-machine.com/doc/AN_QP-C_MISRA.pdf), but other libraries used in this project aren't.
+**Note 2:** The QP™/C framework is MISRA C:2004 compliant, as described in [that project's compliance matrix](http://www.state-machine.com/doc/AN_QP-C_MISRA.pdf).
 
 ## License
 ![AGPL-3](https://www.gnu.org/graphics/agplv3-with-text-162x68.png)

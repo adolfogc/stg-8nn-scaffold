@@ -23,13 +23,14 @@ set(BSP_LIBRARY bsp)
 set(BSP_DIR bsp)
 
 list(APPEND BSP_SOURCES
-  ${BSP_DIR}/bsp.c
-  ${BSP_DIR}/bsp_qpc.c
   ${BSP_DIR}/bsp.h
+  ${BSP_DIR}/bsp_qpc.c
+  ${BSP_DIR}/stg_850.h
+  ${BSP_DIR}/stg_850.c
 )
 
 add_library(${BSP_LIBRARY} STATIC ${BSP_SOURCES})
-target_link_libraries(${BSP_LIBRARY} ${LIBOPENCM3_LIBRARY})
+target_link_libraries(${BSP_LIBRARY} ${STM32CUBE_LIBRARY})
+target_include_directories(${BSP_LIBRARY} PRIVATE ${STM32CUBE_INCLUDE})
 target_include_directories(${BSP_LIBRARY} PRIVATE ${BSP_DIR})
 target_include_directories(${BSP_LIBRARY} PRIVATE ${QPC_INCLUDE})
-target_include_directories(${BSP_LIBRARY} PRIVATE ${LIBOPENCM3_INCLUDE})
