@@ -32,8 +32,7 @@ ec=$?
 
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/app/
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/bsp/
-cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99  --dump ${wrkdir}/override/dependencies/qpc/ports/arm-cm/qk/gnu/
-cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99  --dump ${wrkdir}/override/dependencies/qpc/ports/arm-cm/qk/armclang/
+#cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/dependencies/stm32cube
 
 if [ -e ${wrkdir}/ci/scripts/misra-c-2012-rule-texts.txt ]
 then
@@ -47,8 +46,7 @@ ec=${ec} && $?
 ec=${ec} && $?
 
 # MISRA C:2012 checks are not enforced for files in these directories:
-(eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/override/dependencies/qpc/ports/arm-cm/qk/gnu/*.dump")
-(eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/override/dependencies/qpc/ports/arm-cm/qk/armclang/*.dump")
+#(eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/dependencies/stm32cube/*.dump")
 
 cd ${wrkdir}
 rm -rf build
