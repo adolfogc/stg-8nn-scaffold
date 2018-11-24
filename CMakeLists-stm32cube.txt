@@ -116,6 +116,9 @@ list(APPEND STM32CUBE_SOURCES
 add_library(${STM32CUBE_LIBRARY} STATIC ${STM32CUBE_SOURCES})
 target_include_directories(${STM32CUBE_LIBRARY} PRIVATE ${STM32CUBE_INCLUDE})
 
+set(QPC_DIR dependencies/qpc)
+target_include_directories(${STM32CUBE_LIBRARY} PRIVATE ${QPC_DIR}/include)
+
 ##
 ## linker script
 ##

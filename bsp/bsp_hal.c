@@ -17,25 +17,6 @@
 * along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 */
 
-#ifndef BSP_H
-#define BSP_H
+#include <stm32f0xx_hal.h>
 
-#include <stdint.h>
-
-#define BSP_TICKS_PER_SEC 10000U /* 1 tick every 0.1 ms (100 us) */
-#define BSP_TICKS_PER_MS  (BSP_TICKS_PER_SEC / 10U)
-#define BSP_TICKS_PER_US  (BSP_TICKS_PER_MS / 10U)
-
-/* BSP prototypes */
-void BSP_init(void);
-void BSP_CAN_init(void);
-void BSP_CAN_mspInit(void);
-void BSP_CAN_mspDeInit(void);
-void BSP_GPIO_init(void);
-void BSP_ledOn(void);
-void BSP_ledOff(void);
-void BSP_terminate(int16_t result);
-
-#include "stg_850.h" /* Select your STG-8nn */
-
-#endif // BSP_H
+/* This module provides a different implementation to that provided in "stm32f0xx_hal.c" */

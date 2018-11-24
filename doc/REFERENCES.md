@@ -11,6 +11,7 @@
 - [*"Practical UML Statecharts in C/C++, 2nd Edition: Event-Driven Programming for Embedded Systems"*](https://www.state-machine.com/psicc2)
 - [*"Setting ARM Cortex-M Interrupt Priorities in QP 5.x"* application note](http://www.state-machine.com/doc/AN_ARM-Cortex-M_Interrupt-Priorities.pdf)
 - [*"Cutting Through the Confusion with ARM Cortex-M Interrupt Priorities"* blog post](https://embeddedgurus.com/state-space/2014/02/cutting-through-the-confusion-with-arm-cortex-m-interrupt-priorities)
+- [*The Embedded Angle: An Exception or a Bug?*](http://collaboration.cmc.ec.gc.ca/science/rpn/biblio/ddj/Website/articles/CUJ/2003/0308/cuj0308samek/index.htm)
 
 ### Bootloaders
 - [CVRA's CAN Bootloader](https://github.com/cvra/can-bootloader)

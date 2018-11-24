@@ -50,30 +50,30 @@
   */
 #define HAL_MODULE_ENABLED
 #define HAL_ADC_MODULE_ENABLED
-/*#define HAL_CRYP_MODULE_ENABLED   */
+/*#define HAL_CRYP_MODULE_ENABLED  */
 #define HAL_CAN_MODULE_ENABLED
 /*#define HAL_CEC_MODULE_ENABLED   */
-/*#define HAL_COMP_MODULE_ENABLED   */
+/*#define HAL_COMP_MODULE_ENABLED  */
 #define HAL_CRC_MODULE_ENABLED
-/*#define HAL_CRYP_MODULE_ENABLED   */
+/*#define HAL_CRYP_MODULE_ENABLED  */
 /*#define HAL_TSC_MODULE_ENABLED   */
 /*#define HAL_DAC_MODULE_ENABLED   */
 /*#define HAL_I2S_MODULE_ENABLED   */
 #define HAL_IWDG_MODULE_ENABLED
 /*#define HAL_LCD_MODULE_ENABLED   */
-/*#define HAL_LPTIM_MODULE_ENABLED   */
+/*#define HAL_LPTIM_MODULE_ENABLED */
 /*#define HAL_RNG_MODULE_ENABLED   */
 #define HAL_RTC_MODULE_ENABLED
 /*#define HAL_SPI_MODULE_ENABLED   */
 #define HAL_TIM_MODULE_ENABLED
 #define HAL_UART_MODULE_ENABLED
-/*#define HAL_USART_MODULE_ENABLED   */
+/*#define HAL_USART_MODULE_ENABLED */
 #define HAL_IRDA_MODULE_ENABLED
 /*#define HAL_SMARTCARD_MODULE_ENABLED   */
-/*#define HAL_SMBUS_MODULE_ENABLED   */
-/*#define HAL_WWDG_MODULE_ENABLED   */
+/*#define HAL_SMBUS_MODULE_ENABLED */
+/*#define HAL_WWDG_MODULE_ENABLED  */
 /*#define HAL_PCD_MODULE_ENABLED   */
-/*#define HAL_EXTI_MODULE_ENABLED   */
+/*#define HAL_EXTI_MODULE_ENABLED  */
 #define HAL_CORTEX_MODULE_ENABLED
 #define HAL_DMA_MODULE_ENABLED
 #define HAL_FLASH_MODULE_ENABLED
@@ -299,21 +299,21 @@
 #endif /* HAL_WWDG_MODULE_ENABLED */
 
 /* Exported macro ------------------------------------------------------------*/
-#ifdef  USE_FULL_ASSERT
+#ifndef NASSERT
 /**
-  * @brief  The assert_param macro is used for function's parameters check.
-  * @param  expr: If expr is false, it calls assert_failed function
-  *         which reports the name of the source file and the source
-  *         line number of the call that failed.
-  *         If expr is true, it returns no value.
-  * @retval None
-  */
-  #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+* @brief  The assert_param macro is used for function's parameters check.
+* @param  expr: If expr is false, it calls assert_failed function
+*         which reports the name of the source file and the source
+*         line number of the call that failed.
+*         If expr is true, it returns no value.
+* @retval None
+*/
+#define assert_param(expr) ((expr) ? (void)0U : Q_onAssert((char const *)__FILE__, __LINE__))
 /* Exported functions ------------------------------------------------------- */
-  void assert_failed(uint8_t* file, uint32_t line);
+  #include <qassert.h>
 #else
   #define assert_param(expr) ((void)0U)
-#endif /* USE_FULL_ASSERT */
+#endif /* NASSERT */
 
 #ifdef __cplusplus
 }

@@ -39,6 +39,8 @@
 #define LED_Pin GPIO_PIN_8
 #define LED_GPIO_Port GPIOA
 #define CAN_S_Pin GPIO_PIN_6
+#define CAN_RX_Pin GPIO_PIN_8
+#define CAN_TX_Pin GPIO_PIN_9
 #define CAN_S_GPIO_Port GPIOB
 #define OUT9_LS_Pin GPIO_PIN_7
 #define OUT9_LS_GPIO_Port GPIOB

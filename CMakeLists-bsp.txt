@@ -25,6 +25,8 @@ set(BSP_DIR bsp)
 list(APPEND BSP_SOURCES
   ${BSP_DIR}/bsp.h
   ${BSP_DIR}/bsp_qpc.c
+  ${BSP_DIR}/bsp_hal.c
+  ${BSP_DIR}/bsp_can.c
   ${BSP_DIR}/stg_850.h
   ${BSP_DIR}/stg_850.c
 )
