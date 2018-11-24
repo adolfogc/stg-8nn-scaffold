@@ -26,11 +26,9 @@ int main(void) {
 
   QF_init();
 
-  /* Initialize the Board Support Package
-   * Note: BSP_init() has to be called *after* initializing publish-subscribe and
+  /* -- Initialize the Board Support Package --
+   * BSP_init/0 has to be called *after* initializing publish-subscribe and
    * event pools, to make the system ready to accept SysTick interrupts.
-   * Unfortunately, the STM32Cube code that must be called from the BSP,
-   * configures and starts SysTick.
   */
   BSP_init();
 
