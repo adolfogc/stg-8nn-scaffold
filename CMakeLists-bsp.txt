@@ -24,6 +24,8 @@ set(BSP_DIR bsp)
 set(BSP_INCLUDE ${BSP_DIR}/include)
 
 set(BSP_SOURCES
+  ${BSP_DIR}/src/bsp.c
+  ${BSP_DIR}/src/bsp_qpc.c
   ${BSP_DIR}/src/adc.c
   ${BSP_DIR}/src/can.c
   ${BSP_DIR}/src/gpio.c
@@ -34,12 +36,12 @@ set(BSP_SOURCES
   ${BSP_DIR}/src/stm32f0xx_it.c
   ${BSP_DIR}/src/tim.c
   ${BSP_DIR}/src/usart.c
-  ${BSP_DIR}/src/bsp_qpc.c
   ${BSP_INCLUDE}/bsp.h
   ${BSP_INCLUDE}/stm32f0xx_hal_conf.h
   ${BSP_INCLUDE}/stm32f0xx_it.h
   ${BSP_INCLUDE}/bsp/error_handler.h
   ${BSP_INCLUDE}/bsp/irs_pri.h
+  ${BSP_INCLUDE}/bsp/bsp_qpc.h
   ${BSP_INCLUDE}/bsp/pinout.h
   ${BSP_INCLUDE}/bsp/adc.h
   ${BSP_INCLUDE}/bsp/can.h

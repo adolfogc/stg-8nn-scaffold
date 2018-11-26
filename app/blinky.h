@@ -17,21 +17,21 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef BLINKY_H
-#define BLINKY_H
+#ifndef _BLINKY_H
+#define _BLINKY_H
 
-#include <qpc.h>
+#include "qpc.h"
 
-/* define the event signals used in the application ------------------------*/
+/* Define the event signals used in the application */
 enum BlinkySignals {
-    TIMEOUT_SIG = Q_USER_SIG, /* offset the first signal by Q_USER_SIG */
-    MAX_SIG /* keep last (the number of signals) */
+    TIMEOUT_SIG = Q_USER_SIG, /* Offset the first signal by Q_USER_SIG */
+    /* ... */
+    MAX_SIG                   /* keep last (the number of signals) */
 };
 
-/* active object(s) used in this application -------------------------------*/
+/* Active object(s) used in this application */
 extern QActive * const AO_Blinky; /* opaque pointer to the Blinky AO */
-
 
 void Blinky_ctor(void);
 
-#endif // BLINKY_H
+#endif /* _BLINKY_H */

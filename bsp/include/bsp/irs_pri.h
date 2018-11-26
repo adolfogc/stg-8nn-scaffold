@@ -17,10 +17,10 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _IRS_PRI_H
-#define _IRS_PRI_H
+#ifndef _BSP_IRS_PRI_H
+#define _BSP_IRS_PRI_H
 
-#include "qpc.h"
+#include "bsp_qpc.h"
 
 /* The QF_AWARE_ISR_CMSIS_PRI constant from the QF port specifies the highest
  * ISR priority that is disabled by the QF framework. The value is suitable
@@ -44,4 +44,4 @@ enum KernelAwareISRs {
   MAX_KERNEL_AWARE_CMSIS_PRI /* keep always last */
 };
 
-#endif /* _IRS_PRI_H */
+#endif /* _BSP_IRS_PRI_H */

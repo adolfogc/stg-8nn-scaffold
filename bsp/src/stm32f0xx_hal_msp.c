@@ -1,5 +1,4 @@
 #include "stm32f0xx_hal.h"
-#include "bsp/error_handler.h"
 #include "bsp/irs_pri.h"
 
 /* Initializes the Global MSP. */
