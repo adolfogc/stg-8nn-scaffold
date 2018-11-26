@@ -1,6 +1,10 @@
 #include "bsp/can.h"
 #include "bsp/gpio.h"
+#include "bsp/pinout.h"
+#include "bsp/bsp_qpc.h"
 #include "bsp/irs_pri.h"
+
+Q_DEFINE_THIS_FILE
 
 CAN_HandleTypeDef hcan;
 
@@ -18,10 +22,7 @@ void MX_CAN_Init(void)
   hcan.Init.NART = DISABLE;
   hcan.Init.RFLM = DISABLE;
   hcan.Init.TXFP = DISABLE;
-  if (HAL_CAN_Init(&hcan) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
+  Q_ENSURE(HAL_CAN_Init(&hcan) == HAL_OK);
 }
 
 void HAL_CAN_MspInit(CAN_HandleTypeDef* canHandle)

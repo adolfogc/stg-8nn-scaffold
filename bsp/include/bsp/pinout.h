@@ -17,8 +17,8 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _PINOUT_H
-#define _PINOUT_H
+#ifndef _STG_850_PINOUT_H
+#define _STG_850_PINOUT_H
 
 #define OUT1_HS_Pin GPIO_PIN_13
 #define OUT1_HS_GPIO_Port GPIOC
@@ -45,4 +45,4 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define BOOT0_Pin GPIO_PIN_11
 #define BOOT0_GPIO_Port GPIOF
 
-#endif /* _PINOUT_H */
+#endif /* _STG_850_PINOUT_H */

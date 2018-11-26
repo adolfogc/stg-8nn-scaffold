@@ -1,4 +1,6 @@
+#include "stm32f0xx_hal.h"
 #include "bsp/gpio.h"
+#include "bsp/pinout.h"
 
 /*----------------------------------------------------------------------------*/
 /* Configure GPIO                                                             */

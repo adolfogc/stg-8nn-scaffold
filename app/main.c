@@ -18,14 +18,10 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "bsp.h"
-#include "qpc.h"
 #include "main.h"
 #include "blinky.h"
 
-/* -- Check for the minimum required QP version -- */
-#if (QP_VERSION < 630U) || (QP_VERSION != ((QP_RELEASE^4294967295U) % 0x3E8U))
-#error qpc version 6.3.0 or higher required
-#endif
+Q_DEFINE_THIS_FILE
 
 /* -- Main loop -- */
 int main(void)
@@ -80,28 +76,19 @@ static void SystemClock_Config(void)
   RCC_OscInitStruct.HSI14CalibrationValue = 16U;
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
+  Q_ENSURE(HAL_RCC_OscConfig(&RCC_OscInitStruct) == HAL_OK);
 
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_PCLK1;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSE;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
+  Q_ENSURE(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) == HAL_OK);
 
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_RTC;
   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
   PeriphClkInit.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
   PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_HSE_DIV32;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
+  Q_ENSURE(HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) == HAL_OK);
 
   /* Configure the Systick interrupt
    * Note 0: The function HAL_SYSTICK_Config/1 already substracts one from the reload value, so don't substract one.

@@ -17,8 +17,8 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "bsp.h"
-#include "qpc.h"
+#include "stm32f0xx_hal.h"
+#include "bsp/bsp_qpc.h"
 
 void QF_onStartup(void)
 {

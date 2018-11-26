@@ -41,6 +41,7 @@ set(BSP_SOURCES
   ${BSP_INCLUDE}/stm32f0xx_it.h
   ${BSP_INCLUDE}/bsp/error_handler.h
   ${BSP_INCLUDE}/bsp/irs_pri.h
+  ${BSP_INCLUDE}/bsp/bsp_qpc.h
   ${BSP_INCLUDE}/bsp/pinout.h
   ${BSP_INCLUDE}/bsp/adc.h
   ${BSP_INCLUDE}/bsp/can.h
