@@ -1,5 +1,9 @@
 image: Ubuntu1804
 
+branches:
+  only:
+  - master
+
 platform: x64
 configuration: Release
 stack: node 10
