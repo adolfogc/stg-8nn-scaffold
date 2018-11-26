@@ -5,6 +5,6 @@
 
 extern RTC_HandleTypeDef hrtc;
 
-void MX_RTC_Init(void);
+void BSP_RTC_Init(void);
 
 #endif /* _BSP_RTC_H */

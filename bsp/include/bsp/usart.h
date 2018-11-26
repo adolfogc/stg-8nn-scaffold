@@ -6,7 +6,7 @@
 extern UART_HandleTypeDef huart1;
 extern IRDA_HandleTypeDef hirda3;
 
-void MX_USART1_UART_Init(void);
-void MX_USART3_IRDA_Init(void);
+void BSP_USART1_UART_Init(void);
+void BSP_USART3_IRDA_Init(void);
 
 #endif /* _BSP_USART_H */

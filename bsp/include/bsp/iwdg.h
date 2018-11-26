@@ -5,6 +5,6 @@
 
 extern IWDG_HandleTypeDef hiwdg;
 
-void MX_IWDG_Init(void);
+void BSP_IWDG_Init(void);
 
 #endif /* _BSP_IWDG_H */

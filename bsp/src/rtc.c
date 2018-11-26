@@ -7,7 +7,7 @@ Q_DEFINE_THIS_FILE
 RTC_HandleTypeDef hrtc;
 
 /* RTC init function */
-void MX_RTC_Init(void)
+void BSP_RTC_Init(void)
 {
   RTC_TimeTypeDef sTime;
   RTC_DateTypeDef sDate;

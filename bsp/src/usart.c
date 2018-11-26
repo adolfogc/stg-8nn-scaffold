@@ -9,7 +9,7 @@ Q_DEFINE_THIS_FILE
 UART_HandleTypeDef huart1;
 IRDA_HandleTypeDef hirda3;
 
-void MX_USART1_UART_Init(void)
+void BSP_USART1_UART_Init(void)
 {
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 115200;
@@ -24,7 +24,7 @@ void MX_USART1_UART_Init(void)
   Q_ENSURE(HAL_UART_Init(&huart1) == HAL_OK);
 }
 
-void MX_USART3_IRDA_Init(void)
+void BSP_USART3_IRDA_Init(void)
 {
   hirda3.Instance = USART3;
   hirda3.Init.BaudRate = 115200;

@@ -6,7 +6,7 @@ Q_DEFINE_THIS_FILE
 
 IWDG_HandleTypeDef hiwdg;
 
-void MX_IWDG_Init(void)
+void BSP_IWDG_Init(void)
 {
   hiwdg.Instance = IWDG;
   hiwdg.Init.Prescaler = IWDG_PRESCALER_4;

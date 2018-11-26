@@ -7,7 +7,7 @@ Q_DEFINE_THIS_FILE
 
 I2C_HandleTypeDef hi2c2;
 
-void MX_I2C2_Init(void)
+void BSP_I2C2_Init(void)
 {
   hi2c2.Instance = I2C2;
   hi2c2.Init.Timing = 0x00303D5B;

@@ -5,6 +5,6 @@
 
 extern CAN_HandleTypeDef hcan;
 
-void MX_CAN_Init(void);
+void BSP_CAN_Init(void);
 
 #endif /* _BSP_CAN_H */

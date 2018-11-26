@@ -17,7 +17,7 @@
      PB4   ------> S_TIM3_CH1
      PB5   ------> S_TIM3_CH2
 */
-void MX_GPIO_Init(void)
+void BSP_GPIO_Init(void)
 {
 
   GPIO_InitTypeDef GPIO_InitStruct;

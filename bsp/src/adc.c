@@ -7,7 +7,7 @@ Q_DEFINE_THIS_FILE
 
 ADC_HandleTypeDef hadc;
 
-void MX_ADC_Init(void)
+void BSP_ADC_Init(void)
 {
   ADC_ChannelConfTypeDef sConfig;
 

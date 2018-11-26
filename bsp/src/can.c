@@ -8,7 +8,7 @@ Q_DEFINE_THIS_FILE
 
 CAN_HandleTypeDef hcan;
 
-void MX_CAN_Init(void)
+void BSP_CAN_Init(void)
 {
   hcan.Instance = CAN;
   hcan.Init.Prescaler = 4;

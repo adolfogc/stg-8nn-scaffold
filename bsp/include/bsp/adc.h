@@ -5,6 +5,6 @@
 
 extern ADC_HandleTypeDef hadc;
 
-void MX_ADC_Init(void);
+void BSP_ADC_Init(void);
 
 #endif /* _BSP_ADC_H */

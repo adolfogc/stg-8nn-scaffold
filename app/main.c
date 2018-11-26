@@ -49,18 +49,18 @@ static void Main_Init(void)
   /* Configure the system clock */
   SystemClock_Config();
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_ADC_Init();
-  MX_CAN_Init();
+  BSP_GPIO_Init();
+  BSP_ADC_Init();
+  BSP_CAN_Init();
   /* Note: Watchdog can be enabled by calling MX_IWDG_Init/0 here */  
-  MX_RTC_Init();
-  MX_TIM16_Init();
-  MX_TIM17_Init();
-  MX_USART1_UART_Init();
-  MX_USART3_IRDA_Init();
-  MX_I2C2_Init();
-  MX_TIM1_Init();
-  MX_TIM2_Init(); 
+  BSP_RTC_Init();
+  BSP_TIM16_Init();
+  BSP_TIM17_Init();
+  BSP_USART1_UART_Init();
+  BSP_USART3_IRDA_Init();
+  BSP_I2C2_Init();
+  BSP_TIM1_Init();
+  BSP_TIM2_Init(); 
 }
 
 static void SystemClock_Config(void)

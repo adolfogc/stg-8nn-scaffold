@@ -10,7 +10,7 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
-void MX_TIM1_Init(void)
+void BSP_TIM1_Init(void)
 {
   TIM_ClockConfigTypeDef sClockSourceConfig;
   TIM_MasterConfigTypeDef sMasterConfig;
@@ -35,7 +35,7 @@ void MX_TIM1_Init(void)
   Q_ENSURE(HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) == HAL_OK);
 }
 
-void MX_TIM2_Init(void)
+void BSP_TIM2_Init(void)
 {
   TIM_ClockConfigTypeDef sClockSourceConfig;
   TIM_MasterConfigTypeDef sMasterConfig;
@@ -67,7 +67,7 @@ void MX_TIM2_Init(void)
   Q_ENSURE(HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_2) == HAL_OK);
 }
 
-void MX_TIM16_Init(void)
+void BSP_TIM16_Init(void)
 {
   htim16.Instance = TIM16;
   htim16.Init.Prescaler = 0;
@@ -79,7 +79,7 @@ void MX_TIM16_Init(void)
   Q_ENSURE(HAL_TIM_Base_Init(&htim16) == HAL_OK);
 }
 
-void MX_TIM17_Init(void)
+void BSP_TIM17_Init(void)
 {
   TIM_OC_InitTypeDef sConfigOC;
   TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig;
