@@ -27,8 +27,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #error qpc version 6.3.0 or higher required
 #endif
 
-volatile uint16_t u16Timer = 0U;
-
 /* -- Private function prototypes -- */
 static void Main_Init(void);
 static void SystemClock_Config(void);
@@ -122,16 +120,14 @@ static void SystemClock_Config(void)
  /* -- Overrides --  */
 void HAL_SYSTICK_Callback(void)
 {
-	// Decrement u16Timer every 1 ms down to 0
-  if(u16Timer > 0U) {
-		u16Timer--;
-  }
+  /* Not implemented */
 }
 
 void _Error_Handler(char *file, int line)
 {
   while(1)
   {
+    /* Do nothing */
   }
 }
 

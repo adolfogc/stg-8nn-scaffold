@@ -39,6 +39,7 @@ enum KernelAwareISRs {
   BSP_SYSTICK_PRIO = QF_AWARE_ISR_CMSIS_PRI,
   BSP_CAN_PRIO,
   BSP_USART3_PRIO,
+  BSP_SVC_PRIO,
   /* ... */
   MAX_KERNEL_AWARE_CMSIS_PRI /* keep always last */
 };

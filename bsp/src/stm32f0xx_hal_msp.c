@@ -8,11 +8,9 @@ void HAL_MspInit(void)
   __HAL_RCC_SYSCFG_CLK_ENABLE();
   __HAL_RCC_PWR_CLK_ENABLE();
 
-  /* System interrupt init*/
+  /* -- System interrupt init -- */
   /* SVC_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(SVC_IRQn, 0, 0);
-  /* PendSV_IRQn interrupt configuration */
-  //HAL_NVIC_SetPriority(PendSV_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(SVC_IRQn, BSP_SVC_PRIO, 0);
   /* SysTick_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(BSP_SYSTICK_PRIO, 0, 0);
+  HAL_NVIC_SetPriority(SysTick_IRQn, BSP_SYSTICK_PRIO, 0);
 }
