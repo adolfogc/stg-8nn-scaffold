@@ -24,17 +24,8 @@ Source: https://github.com/adolfogc/stg-8nn-scaffold
 Copyright: 2018 Adolfo E. García
 License: AGPL-3
 
-Files: bsp/bsp_qpc.c
-Copyright: 2018 Quantum Leaps, LLC
-           2018 Adolfo E. García
-License: GPL-3
-
 Files: dependencies/qpc/*
 Copyright: 2005-2018 Quantum Leaps, LLC
-License: GPL-3
-
-Files: gcc_arm.ld
-Copyright: 2017 Quantum Leaps, LLC
 License: GPL-3
 
 Files: dependencies/libcanard/*
@@ -42,13 +33,17 @@ Copyright: 2015 UAVCAN
 License: MIT
 
 Files: dependencies/stm32cube/cmsis/*
-Copyright: 2009 - 2015 ARM LIMITED
+Copyright: 2009-2015 ARM LIMITED
 License: Custom Copyleft
 
-Files: dependencies/stm32cube/hal/*
+Files: dependencies/stm32cube/cmsis/device/src/system_stm32f0xx.c
 Copyright: 2016 STMicroelectronics
 License: Custom Copyleft
 
+Files: dependencies/stm32cube/hal/*
+Copyright: 2016-2018 STMicroelectronics
+License: Custom Copyleft
+
 Files: dependencies/stm32cube/gnu/*
-Copyright: 2011 - 2014 ARM LIMITED
+Copyright: 2016-2018 STMicroelectronics
 License: Custom Copyleft

@@ -27,15 +27,13 @@ elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
   set(QP_PORT_DIR ports/arm-cm/qk/armclang)
 endif()
 
-set(QPC_LIBRARY qpc)
-
-list(APPEND QPC_INCLUDE
+set(QPC_INCLUDE
   ${QPC_DIR}/include
   ${QPC_DIR}/src
   ${QPC_DIR}/${QP_PORT_DIR}
 )
 
-list(APPEND QPC_SOURCES
+set(QPC_SOURCES
   ${QPC_DIR}/src/qf/qep_hsm.c
   ${QPC_DIR}/src/qf/qep_msm.c
   ${QPC_DIR}/src/qf/qf_act.c
@@ -51,9 +49,3 @@ list(APPEND QPC_SOURCES
   ${QPC_DIR}/src/qk/qk.c
   ${QPC_DIR}/${QP_PORT_DIR}/qk_port.c
 )
-
-add_library(${QPC_LIBRARY} STATIC ${QPC_SOURCES})
-target_link_libraries(${QPC_LIBRARY} ${STM32CUBE_LIBRARY})
-target_include_directories(${QPC_LIBRARY} PRIVATE ${STM32CUBE_INCLUDE})
-target_include_directories(${QPC_LIBRARY} PRIVATE ${QPC_INCLUDE})
-target_include_directories(${QPC_LIBRARY} PRIVATE ${QPC_DIR}/${QP_PORT_DIR})

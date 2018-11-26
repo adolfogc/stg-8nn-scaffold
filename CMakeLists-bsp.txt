@@ -19,20 +19,34 @@
 ## bsp
 ##
 
-set(BSP_LIBRARY bsp)
 set(BSP_DIR bsp)
 
-list(APPEND BSP_SOURCES
-  ${BSP_DIR}/bsp.h
-  ${BSP_DIR}/bsp_qpc.c
-  ${BSP_DIR}/bsp_hal.c
-  ${BSP_DIR}/bsp_can.c
-  ${BSP_DIR}/stg_850.h
-  ${BSP_DIR}/stg_850.c
-)
+set(BSP_INCLUDE ${BSP_DIR}/include)
 
-add_library(${BSP_LIBRARY} STATIC ${BSP_SOURCES})
-target_link_libraries(${BSP_LIBRARY} ${STM32CUBE_LIBRARY})
-target_include_directories(${BSP_LIBRARY} PRIVATE ${STM32CUBE_INCLUDE})
-target_include_directories(${BSP_LIBRARY} PRIVATE ${BSP_DIR})
-target_include_directories(${BSP_LIBRARY} PRIVATE ${QPC_INCLUDE})
+set(BSP_SOURCES
+  ${BSP_DIR}/src/adc.c
+  ${BSP_DIR}/src/can.c
+  ${BSP_DIR}/src/gpio.c
+  ${BSP_DIR}/src/i2c.c
+  ${BSP_DIR}/src/iwdg.c
+  ${BSP_DIR}/src/rtc.c
+  ${BSP_DIR}/src/stm32f0xx_hal_msp.c
+  ${BSP_DIR}/src/stm32f0xx_it.c
+  ${BSP_DIR}/src/tim.c
+  ${BSP_DIR}/src/usart.c
+  ${BSP_DIR}/src/bsp_qpc.c
+  ${BSP_INCLUDE}/bsp.h
+  ${BSP_INCLUDE}/stm32f0xx_hal_conf.h
+  ${BSP_INCLUDE}/stm32f0xx_it.h
+  ${BSP_INCLUDE}/bsp/error_handler.h
+  ${BSP_INCLUDE}/bsp/irs_pri.h
+  ${BSP_INCLUDE}/bsp/pinout.h
+  ${BSP_INCLUDE}/bsp/adc.h
+  ${BSP_INCLUDE}/bsp/can.h
+  ${BSP_INCLUDE}/bsp/gpio.h
+  ${BSP_INCLUDE}/bsp/i2c.h
+  ${BSP_INCLUDE}/bsp/iwdg.h
+  ${BSP_INCLUDE}/bsp/rtc.h
+  ${BSP_INCLUDE}/bsp/tim.h
+  ${BSP_INCLUDE}/bsp/usart.h
+)

@@ -1,6 +1,7 @@
 # STG-8nn-Scaffold
 
-[![Build Status](https://travis-ci.org/adolfogc/stg-8nn-scaffold.svg?branch=master)](https://travis-ci.org/adolfogc/stg-8nn-scaffold)
+[![Travis Build Status](https://travis-ci.org/adolfogc/stg-8nn-scaffold.svg?branch=master)](https://travis-ci.org/adolfogc/stg-8nn-scaffold)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/g9tbt84ft6jedysu?svg=true)](https://ci.appveyor.com/project/adolfogc/stg-8nn-scaffold)
 [![SonarCloud Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
 [![SonarCloud Bug Count](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=bugs)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
 [![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=alert_status)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
@@ -28,7 +29,7 @@ You should be acquainted with the QP™ framework and its concepts in order to u
 ## Memory map
 | Start address | Description| Size |
 | -------------: |:-------------:|:--:|
-| 0x08000000 | Application  | -|
+| 0x08000000 | Vector  | -|
 
 ## Building instructions
 
@@ -36,6 +37,15 @@ You should be acquainted with the QP™ framework and its concepts in order to u
 - BARTH® STG-8nn (mini-PLC)
 - ST-Link v2 (In-Circuit Programmer)
 - [Irdroid USB IrDA Transceiver](https://irdroid.eu/product/irdroid-usb-irda-transceiver)
+
+### Getting the code
+
+```bash
+https://github.com/adolfogc/stg-8nn-scaffold.git
+cd stg-8nn-scaffold
+git submodule init
+git submodule update
+```
 
 ### Getting the toolchain and the flashing utility
 #### macOS
@@ -63,7 +73,7 @@ Refer to `ci/Dockerfile`.
 
 ```bash
 mkdir build && cd build
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -GNinja ..
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
 cmake --build .
 ```
 
@@ -71,9 +81,13 @@ cmake --build .
 
 ```bash
 mkdir build && cd build
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain-macos.cmake -GNinja ..
+cmake -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain-macos.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
 cmake --build .
 ```
+
+3. Compilation database
+
+The above commands use the `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` flag so that CMake generates a compilation database. You can use it to check how the source files will get compiled by inspecting the generated file `compile_commands.json`. Also, other tools like Cppcheck and Clang-Tidy use this file.
 
 ### Flashing the firmware
 ```bash
@@ -92,6 +106,9 @@ Note: You can use the [STM32 ST-LINK utility](https://www.st.com/en/development-
 
 ## Other
 
+### Code format
+The file `.clang-format` contains the options used to format this project's codebase using Clang-Tidy.
+
 ### Checking compliance with some MISRA C:2012 rules using Cppcheck v1.85+
 1. Generate your "rule texts file" using [this Python script](https://github.com/ChisholmKyle/SublimeLinter-contrib-cppcheck-misra/blob/master/scripts/cppcheck-misra-parsetexts.py) and your PDF copy of *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* and place it in: `ci/scripts/misra-c-2012-rule-texts.txt`.
 
@@ -102,6 +119,8 @@ Note: You can use the [STM32 ST-LINK utility](https://www.st.com/en/development-
 **Note 1:** [SonarCloud](https://www.sonarsource.com/products/codeanalyzers/sonarcfamilyforcpp.html) is also used in the CI builds to check for compliance with [MISRA C rules](https://rules.sonarsource.com/c/tag/misra).
 
 **Note 2:** The QP™/C framework is MISRA C:2004 compliant, as described in [that project's compliance matrix](http://www.state-machine.com/doc/AN_QP-C_MISRA.pdf).
+
+**Note 3:** STMCube's HAL and LL are MISRA C:2004 compliant, as stated in page 1 of the UM1785 User Manual ("Description of STM32F0 HAL and low-layer drivers").
 
 ## License
 ![AGPL-3](https://www.gnu.org/graphics/agplv3-with-text-162x68.png)

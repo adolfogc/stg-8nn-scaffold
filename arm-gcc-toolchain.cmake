@@ -33,7 +33,7 @@ get_filename_component(ARM_TOOLCHAIN_DIR ${BINUTILS_PATH} DIRECTORY)
 
 set(CMAKE_C_COMPILER arm-none-eabi-gcc)
 set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
-set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
+set(CMAKE_ASM_COMPILER arm-none-eabi-gcc -x assembler-with-cpp)
 
 # In order to pass CMake compilation test (compiler works):
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
