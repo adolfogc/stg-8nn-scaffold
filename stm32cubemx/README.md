@@ -1,0 +1,1 @@
+This directory contains the project files for the different STGs, which can be used to generate startup code using STM32CubeMX.

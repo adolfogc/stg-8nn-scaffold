@@ -19,24 +19,10 @@
 ## app
 ##
 
-set(APP_ELF firmware.elf)
-set(APP_BIN firmware.bin)
 set(APP_DIR app)
+set(APP_INCLUDE ${APP_DIR})
 
-list(APPEND APP_SOURCES
+set(APP_SOURCES
   ${APP_DIR}/main.c
   ${APP_DIR}/blinky.c
-  ${APP_DIR}/blinky.h
-)
-
-add_executable(${APP_ELF} ${APP_SOURCES})
-
-target_include_directories(${APP_ELF} PRIVATE ${APP_DIR})
-target_include_directories(${APP_ELF} PRIVATE ${BSP_DIR})
-target_include_directories(${APP_ELF} PRIVATE ${QPC_INCLUDE})
-target_link_libraries(${APP_ELF} ${QPC_LIBRARY} ${BSP_LIBRARY})
-
-add_custom_command(TARGET ${APP_ELF}
-  POST_BUILD
-  COMMAND ${CMAKE_OBJCOPY} -Obinary ${APP_ELF} ${APP_BIN}
 )

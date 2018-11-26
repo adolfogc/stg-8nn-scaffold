@@ -30,6 +30,7 @@
 - [osx-cross/homebrew-arm](https://github.com/osx-cross/homebrew-arm)
 - [texane/stlink](https://github.com/texane/stlink)
 - ["Installing dependencies on Travis"](https://docs.travis-ci.com/user/installing-dependencies)
+- [*"Creating and Enforcing a Code Formatting Standard with clang-format"*](https://embeddedartistry.com/blog/2017/10/23/creating-and-enforcing-a-coding-standard-with-clang-format)
 
 ### MISRA C
 - [*"The MISRA C Coding Standard and its Role in the Development and Analysis of Safety- and Security-Critical Embedded Software"*](https://arxiv.org/abs/1809.00821)

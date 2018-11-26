@@ -1,4 +1,5 @@
 /*
+* Copyright (C) 2005-2018 Quantum Leaps, LLC. All rights reserved.
 * Copyright (C) 2018 Adolfo E. García
 *
 * This file is part of STG-8nn-Scaffold.
@@ -17,6 +18,27 @@
 * along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 */
 
-#include <stm32f0xx_hal.h>
+#include "bsp.h"
+#include "qpc.h"
 
-/* This module provides a different implementation to that provided in "stm32f0xx_hal.c" */
+void QF_onStartup(void)
+{
+  /* Not implemented yet */
+}
+
+void QF_onCleanup(void)
+{
+  /* Not implemented yet */
+}
+
+void QK_onIdle(void)
+{
+  /* Not implemented yet */
+}
+
+void Q_onAssert(char const * module, int loc)
+{
+  /* Information (module and loc) not used yet */
+
+  NVIC_SystemReset(); /* This should be called last */
+}
