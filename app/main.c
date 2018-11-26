@@ -113,12 +113,6 @@ static void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, BSP_SYSTICK_PRIO, 0);
 }
 
- /* -- Overrides --  */
-void HAL_SYSTICK_Callback(void)
-{
-  /* Not implemented */
-}
-
 void _Error_Handler(char* file, int line)
 {
   while(1)
