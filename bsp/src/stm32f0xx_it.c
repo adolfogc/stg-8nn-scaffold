@@ -20,7 +20,9 @@ void HardFault_Handler(void)
 /* This function handles System service call via SWI instruction. */
 void SVC_Handler(void)
 {
+  QK_ISR_ENTRY();
   /* Not implemented */
+  QK_ISR_EXIT();
 }
 
 /* This function handles System tick timer. */
@@ -43,11 +45,15 @@ void SysTick_Handler(void)
 /* This function handles USART3 to USART8 global interrupts / USART3 wake-up interrupt through EXTI line 28. */
 void USART3_8_IRQHandler(void)
 {
+  QK_ISR_ENTRY();
   HAL_IRDA_IRQHandler(&hirda3);
+  QK_ISR_EXIT();
 }
 
 /* This function handles HDMI-CEC and CAN global interrupts / HDMI-CEC wake-up interrupt through EXTI line 27. */
 void CEC_CAN_IRQHandler(void)
 {
+  QK_ISR_ENTRY();
   HAL_CAN_IRQHandler(&hcan);
+  QK_ISR_EXIT();
 }

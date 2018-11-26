@@ -22,34 +22,31 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "main.h"
 #include "blinky.h"
 
-/* Check for the minimum required QP version */
+/* -- Check for the minimum required QP version -- */
 #if (QP_VERSION < 630U) || (QP_VERSION != ((QP_RELEASE^4294967295U) % 0x3E8U))
 #error qpc version 6.3.0 or higher required
 #endif
 
-/* -- Private function prototypes -- */
-static void Main_Init(void);
-static void SystemClock_Config(void);
-
 /* -- Main loop -- */
 int main(void)
 {
-  static QEvt const *blinky_queueSto[10]; /* event queue buffer for Blinky */
+  static QEvt const *blinky_queueSto[10]; /* Event queue buffer for Blinky */
   QF_init();
   Main_Init();
 
-  /* instantiate and start the Blinky active object */
+  /* Instantiate and start the Blinky active object */
   Blinky_ctor();
-  QACTIVE_START(AO_Blinky,  /* active object to start */
-    1U,                     /* priority of the active object */
-    blinky_queueSto,        /* event queue buffer */
-    Q_DIM(blinky_queueSto), /* the length of the buffer */
-    (void *)0, 0U,          /* private stack (not used) */
-    (QEvt *)0);             /* initialization event (not used) */
+  QACTIVE_START(AO_Blinky,  /* Active object to start */
+    1U,                     /* Priority of the active object */
+    blinky_queueSto,        /* Event queue buffer */
+    Q_DIM(blinky_queueSto), /* Length of the buffer */
+    (void *)0, 0U,          /* Private stack (not used) */
+    (QEvt *)0);             /* Initialization event (not used) */
 
-  return QF_run(); /* let the framework run the application */
+  return QF_run();
 }
 
+/* -- Private functions -- */
 static void Main_Init(void)
 {
   HAL_Init();
@@ -59,7 +56,7 @@ static void Main_Init(void)
   MX_GPIO_Init();
   MX_ADC_Init();
   MX_CAN_Init();
-  /* Watchdog is enabled by calling  MX_IWDG_Init/0 */  
+  /* Note: Watchdog can be enabled by calling MX_IWDG_Init/0 here */  
   MX_RTC_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();
@@ -72,7 +69,6 @@ static void Main_Init(void)
 
 static void SystemClock_Config(void)
 {
-
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   RCC_PeriphCLKInitTypeDef PeriphClkInit;
@@ -107,12 +103,12 @@ static void SystemClock_Config(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  /* -- Configure the Systick interrupt --
-   * The function HAL_SYSTICK_Config/1 already substracts one from the reload value, so don't substract one.
-   * The HAL drivers require that the systick interrupt occurrs every 1 ms.
+  /* Configure the Systick interrupt
+   * Note 0: The function HAL_SYSTICK_Config/1 already substracts one from the reload value, so don't substract one.
+   * Note 1: The HAL drivers require that the systick interrupt occurrs every 1 ms.
   */
-  const uint32_t reload = HAL_RCC_GetHCLKFreq() / 1000U;
-  HAL_SYSTICK_Config(reload);
+  const uint32_t u32Reload = HAL_RCC_GetHCLKFreq() / BSP_TICKS_PER_SEC;
+  HAL_SYSTICK_Config(u32Reload);
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
   HAL_NVIC_SetPriority(SysTick_IRQn, BSP_SYSTICK_PRIO, 0);
 }
@@ -123,7 +119,7 @@ void HAL_SYSTICK_Callback(void)
   /* Not implemented */
 }
 
-void _Error_Handler(char *file, int line)
+void _Error_Handler(char* file, int line)
 {
   while(1)
   {

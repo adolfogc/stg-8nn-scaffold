@@ -21,24 +21,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp.h"
 #include "blinky.h"
 
-/* TEMP */
-#define BSP_TICKS_PER_SEC 1000
-void BSP_ledOff(void);
-void BSP_ledOn(void);
-
-void BSP_ledOff(void)
-{
-    HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
-}
-
-void BSP_ledOn(void)
-{
-    HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-}
-
-/* TEMP*/
-
-/* Blinky class */
+/* -- Blinky Class -- */
 typedef struct {
 /* protected: */
     QActive super;
@@ -50,8 +33,9 @@ typedef struct {
 static QState Blinky_initial(Blinky * const me, QEvt const * const e);
 static QState Blinky_off(Blinky * const me, QEvt const * const e);
 static QState Blinky_on(Blinky * const me, QEvt const * const e);
+/* -- Blinky Class -- */
 
-/* instantiate the Blinky active object ------------------------------------*/
+/* Instantiate the Blinky active object */
 static Blinky l_blinky;
 QActive * const AO_Blinky = &l_blinky.super;
 
@@ -62,9 +46,7 @@ void Blinky_ctor(void) {
 }
 
 static QState Blinky_initial(Blinky * const me, QEvt const * const e) {
-    /* arm the private time event to expire in 1s
-     * and periodically every 1 seconds
-     */
+    /* Arm the private time event to expire in 1s and periodically every 1 seconds */
     QTimeEvt_armX(&me->timeEvt,
         1*BSP_TICKS_PER_SEC,
         1*BSP_TICKS_PER_SEC);
