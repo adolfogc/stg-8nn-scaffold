@@ -99,17 +99,3 @@ static void SystemClock_Config(void)
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
   HAL_NVIC_SetPriority(SysTick_IRQn, BSP_SYSTICK_PRIO, 0);
 }
-
-void _Error_Handler(char* file, int line)
-{
-  while(1)
-  {
-    /* Do nothing */
-  }
-}
-
-#ifdef  USE_FULL_ASSERT
-void assert_failed(uint8_t* file, uint32_t line)
-{ 
-}
-#endif /* USE_FULL_ASSERT */
