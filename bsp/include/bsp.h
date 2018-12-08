@@ -37,6 +37,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #define BSP_TICKS_PER_SEC 1000U
 
+void BSP_Init(void);
 void BSP_ledOff(void);
 void BSP_ledOn(void);
 
