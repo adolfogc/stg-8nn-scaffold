@@ -52,7 +52,7 @@ set(STG8NN_BIN firmware.bin)
 ## dependencies::stm32cube
 ##
 
-include(CMakeLists-stm32cube.txt)
+include(CMakeLists_stm32cube.txt)
 list(APPEND STG8NN_SOURCES ${STM32CUBE_SOURCES})
 list(APPEND STG8NN_INCLUDE ${STM32CUBE_INCLUDE})
 
@@ -60,7 +60,7 @@ list(APPEND STG8NN_INCLUDE ${STM32CUBE_INCLUDE})
 ## dependencies::qpc(qk)
 ##
 
-include(CMakeLists-qpc.txt)
+include(CMakeLists_qpc.txt)
 list(APPEND STG8NN_SOURCES ${QPC_SOURCES})
 list(APPEND STG8NN_INCLUDE ${QPC_INCLUDE})
 
@@ -68,14 +68,14 @@ list(APPEND STG8NN_INCLUDE ${QPC_INCLUDE})
 ## bsp
 ##
 
-include(CMakeLists-bsp.txt)
+include(CMakeLists_bsp.txt)
 list(APPEND STG8NN_SOURCES ${BSP_SOURCES})
 list(APPEND STG8NN_INCLUDE ${BSP_INCLUDE})
 
 ##
 ## app
 ##
-include(CMakeLists-app.txt)
+include(CMakeLists_app.txt)
 list(APPEND STG8NN_SOURCES ${APP_SOURCES})
 list(APPEND STG8NN_INCLUDE ${APP_INCLUDE})
 
