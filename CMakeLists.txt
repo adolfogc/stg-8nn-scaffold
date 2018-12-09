@@ -19,15 +19,31 @@ cmake_minimum_required(VERSION 3.5)
 
 project(STG-8nn-Scaffold C ASM)
 
-add_definitions(-D__ARM_FP=0) # no floating point unit (def. required by QP/C)
-add_definitions(-DSTM32F0)
-add_definitions(-DSTM32F091xC)
+set(GENERIC_C_FLAGS "-Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wshadow -Wno-unused-parameter -ffunction-sections -fdata-sections")
 
-if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-  set(MCU_FLAGS "-mcpu=cortex-m0 -mtune=cortex-m0 -march=armv6-m -mfloat-abi=soft")
-  set(CMAKE_ASM_FLAGS "${MCU_FLAGS} -Wall -fdata-sections -ffunction-sections")
-  set(CMAKE_C_FLAGS "${MCU_FLAGS} -mthumb -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -Wno-unused-parameter -ffunction-sections -fdata-sections -Og -MMD -MP -MF")
-  set(CMAKE_EXE_LINKER_FLAGS "${MCU_FLAGS} -mthumb -specs=nano.specs -lc -lm -lnosys -Tstg8nn.ld -Wl,--cref,--gc-sections,-Map=stg8nn.map")
+if ("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  #
+  # ARM specific definitions
+  #
+  add_definitions(-D__ARM_FP=0) # no floating point unit (def. required by QP/C)
+  add_definitions(-DSTM32F0)
+  add_definitions(-DSTM32F091xC)
+  #
+  # Flags for use with the GNU ARM Toolchain
+  #
+  if ("${CMAKE_C_COMPILER_ID}" MATCHES "GNU")
+    set(MCU_FLAGS "-mcpu=cortex-m0 -mtune=cortex-m0 -march=armv6-m -mfloat-abi=soft")
+    set(CMAKE_ASM_FLAGS "${MCU_FLAGS} -Wall -fdata-sections -ffunction-sections")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MCU_FLAGS} -mthumb ${GENERIC_C_FLAGS} -Wundef -Og -MMD -MP -MF")
+    set(CMAKE_EXE_LINKER_FLAGS "${MCU_FLAGS} -mthumb -specs=nano.specs -lc -lm -lnosys -Tstg8nn.ld -Wl,--cref,--gc-sections,-Map=stg8nn.map")
+  #
+  # Flags for use with Clang's ARM Toolchain
+  #
+  else ("${CMAKE_ASM_COMPILER_ID}" MATCHES "Clang")
+    set(MCU_FLAGS "--target=armv6m-unknown-none-eabi -march=armv6m -mthumb -mcpu=cortex-m0 -mfloat-abi=soft -mfpu=none")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MCU_FLAGS} -Wno-unused-command-line-argument -ffreestanding ${GENERIC_C_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "--static -specs=nosys.specs -Tstg8nn.ld -Wl,--cref,--gc-sections,-Map=stg8nn.map")
+  endif()
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)

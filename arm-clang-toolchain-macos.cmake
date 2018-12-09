@@ -15,13 +15,15 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
+# Using this toolchain for macOS: https://github.com/eblot/homebrew-armeabi
+
 cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 SET(CMAKE_CROSSCOMPILING 1)
 
-set(triple thumbv6m-none-eabi)
+set(triple armv6m-none-eabi)
 
 set(CMAKE_C_COMPILER /usr/local/opt/arm-none-eabi-llvm/bin/clang)
 set(CMAKE_C_COMPILER_TARGET ${triple})
@@ -31,12 +33,12 @@ set(CMAKE_CXX_COMPILER_TARGET ${triple})
 
 set(CMAKE_ASM_COMPILER /usr/local/opt/arm-none-eabi-llvm/bin/clang)
 
-set(CMAKE_C_FLAGS_INIT "${CMAKE_C_FLAGS_INIT} --target=${triple}")
+set(CMAKE_C_FLAGS_INIT "${CMAKE_C_FLAGS_INIT} --target=${triple} -fuse-ld=lld -L/usr/local/opt/armv6m-cortex-m0plus/armv6m-none-eabi/cortex-m0plus/lib")
 
 # In order to pass CMake compilation test (compiler works):
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-set(CMAKE_FIND_ROOT_PATH /usr/local/opt/arm-none-eabi-llvm)
+set(CMAKE_FIND_ROOT_PATH /usr/local/opt/armv6m-cortex-m0plus/armv6m-none-eabi/cortex-m0plus)
 include_directories(/usr/local/opt/armv6m-cortex-m0plus/armv6m-none-eabi/cortex-m0plus/include)
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
