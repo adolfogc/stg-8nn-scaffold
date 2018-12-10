@@ -20,4 +20,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef _MAIN_H
 #define _MAIN_H
 
+int main(void);
+
 #endif /* _MAIN_H */
