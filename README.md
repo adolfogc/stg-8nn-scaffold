@@ -77,7 +77,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMM
 cmake --build .
 ```
 
-2. Using Clang (currently not working)
+2. Using Clang
 
 ```bash
 mkdir build && cd build
@@ -85,7 +85,14 @@ cmake -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain-macos.cmake -DCMAKE_EXPORT_COMP
 cmake --build .
 ```
 
-3. Compilation database
+3. Building the test version
+```bash
+mkdir build_tester && cd build_tester
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
+cmake --build .
+```
+
+4. Compilation database
 
 The above commands use the `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` flag so that CMake generates a compilation database. You can use it to check how the source files will get compiled by inspecting the generated file `compile_commands.json`. Also, other tools like Cppcheck and Clang-Tidy use this file.
 

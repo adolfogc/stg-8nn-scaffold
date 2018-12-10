@@ -19,15 +19,31 @@ cmake_minimum_required(VERSION 3.5)
 
 project(STG-8nn-Scaffold C ASM)
 
-add_definitions(-D__ARM_FP=0) # no floating point unit (def. required by QP/C)
-add_definitions(-DSTM32F0)
-add_definitions(-DSTM32F091xC)
+set(GENERIC_C_FLAGS "-Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wshadow -Wno-unused-parameter -ffunction-sections -fdata-sections")
 
-if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-  set(MCU_FLAGS "-mcpu=cortex-m0 -mtune=cortex-m0 -march=armv6-m -mfloat-abi=soft")
-  set(CMAKE_ASM_FLAGS "${MCU_FLAGS} -Wall -fdata-sections -ffunction-sections")
-  set(CMAKE_C_FLAGS "${MCU_FLAGS} -mthumb -Wall -Wextra -Wredundant-decls -Wmissing-prototypes -Wimplicit-function-declaration -Wundef -Wshadow -Wno-unused-parameter -ffunction-sections -fdata-sections -Og -MMD -MP -MF")
-  set(CMAKE_EXE_LINKER_FLAGS "${MCU_FLAGS} -mthumb -specs=nano.specs -lc -lm -lnosys -Tstg8nn.ld -Wl,--cref,--gc-sections,-Map=stg8nn.map")
+if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  #
+  # ARM specific definitions
+  #
+  add_definitions(-D__ARM_FP=0) # no floating point unit (def. required by QP/C)
+  add_definitions(-DSTM32F0)
+  add_definitions(-DSTM32F091xC)
+  #
+  # Flags for use with the GNU ARM Toolchain
+  #
+  if("${CMAKE_C_COMPILER_ID}" MATCHES "GNU")
+    set(MCU_FLAGS "-mcpu=cortex-m0 -mtune=cortex-m0 -march=armv6-m -mfloat-abi=soft")
+    set(CMAKE_ASM_FLAGS "${MCU_FLAGS} -Wall -fdata-sections -ffunction-sections")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MCU_FLAGS} -mthumb ${GENERIC_C_FLAGS} -Wundef -Og -MMD -MP -MF")
+    set(CMAKE_EXE_LINKER_FLAGS "${MCU_FLAGS} -mthumb --static -specs=nosys.specs -Tstg8nn.ld -Wl,--cref,--gc-sections,-Map=stg8nn.map")
+  #
+  # Flags for use with Clang's ARM Toolchain
+  #
+  else("${CMAKE_ASM_COMPILER_ID}" MATCHES "Clang")
+    set(MCU_FLAGS "--target=armv6m-unknown-none-eabi -march=armv6m -mthumb -mcpu=cortex-m0 -mfloat-abi=soft -mfpu=none")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MCU_FLAGS} -Wno-unused-command-line-argument -ffreestanding ${GENERIC_C_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${MCU_FLAGS} --static -specs=nosys.specs -Tstg8nn.ld -Wl,--cref,--gc-sections,-Map=stg8nn.map")
+  endif()
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -45,22 +61,23 @@ set(BUILD_SHARED_LIBS OFF)
 ## Configure build
 ##
 
-set(STG8NN_ELF firmware.elf)
-set(STG8NN_BIN firmware.bin)
+set(OUTPUT_NAME firmware)
 
 ##
 ## dependencies::stm32cube
 ##
 
-include(CMakeLists-stm32cube.txt)
-list(APPEND STG8NN_SOURCES ${STM32CUBE_SOURCES})
-list(APPEND STG8NN_INCLUDE ${STM32CUBE_INCLUDE})
+if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  include(CMakeLists_stm32cube.txt)
+  list(APPEND STG8NN_SOURCES ${STM32CUBE_SOURCES})
+  list(APPEND STG8NN_INCLUDE ${STM32CUBE_INCLUDE})
+endif()
 
 ##
 ## dependencies::qpc(qk)
 ##
 
-include(CMakeLists-qpc.txt)
+include(CMakeLists_qpc.txt)
 list(APPEND STG8NN_SOURCES ${QPC_SOURCES})
 list(APPEND STG8NN_INCLUDE ${QPC_INCLUDE})
 
@@ -68,14 +85,19 @@ list(APPEND STG8NN_INCLUDE ${QPC_INCLUDE})
 ## bsp
 ##
 
-include(CMakeLists-bsp.txt)
+if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  include(CMakeLists_bsp.txt)
+else()
+  include(CMakeLists_bsp_tester.txt)
+endif()
 list(APPEND STG8NN_SOURCES ${BSP_SOURCES})
 list(APPEND STG8NN_INCLUDE ${BSP_INCLUDE})
 
 ##
 ## app
 ##
-include(CMakeLists-app.txt)
+
+include(CMakeLists_app.txt)
 list(APPEND STG8NN_SOURCES ${APP_SOURCES})
 list(APPEND STG8NN_INCLUDE ${APP_INCLUDE})
 
@@ -83,19 +105,30 @@ list(APPEND STG8NN_INCLUDE ${APP_INCLUDE})
 ## elf definition
 ##
 
-add_executable(${STG8NN_ELF} ${STG8NN_SOURCES})
-target_include_directories(${STG8NN_ELF} PRIVATE ${STG8NN_INCLUDE})
+add_executable(${OUTPUT_NAME}.elf ${STG8NN_SOURCES})
+target_include_directories(${OUTPUT_NAME}.elf PRIVATE ${STG8NN_INCLUDE})
 
 ##
 ## linker script and bin file
 ##
 
-add_custom_command(
-  TARGET ${STG8NN_ELF} PRE_LINK
-  COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/dependencies/stm32cube/gnu/STM32F091CCUx_FLASH.ld ${PROJECT_BINARY_DIR}/stg8nn.ld
-)
+if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  add_custom_command(
+    TARGET ${OUTPUT_NAME}.elf PRE_LINK
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/dependencies/stm32cube/gnu/STM32F091CCUx_FLASH.ld ${PROJECT_BINARY_DIR}/stg8nn.ld
+  )
 
-add_custom_command(TARGET ${STG8NN_ELF}
-  POST_BUILD
-  COMMAND ${CMAKE_OBJCOPY} -O binary -S ${STG8NN_ELF} ${STG8NN_BIN}
-)
+  add_custom_command(TARGET ${OUTPUT_NAME}.elf
+    POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O binary -S ${OUTPUT_NAME}.elf ${OUTPUT_NAME}.bin
+  )
+endif()
+
+##
+## tester libraries
+##
+if(NOT "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(Threads REQUIRED)
+  target_link_libraries(${OUTPUT_NAME}.elf Threads::Threads)
+endif()

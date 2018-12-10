@@ -17,28 +17,27 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _BSP_H
-#define _BSP_H
+#include <stdio.h>
+#include <stdlib.h>
+#include "qpc.h"
 
-#include "stm32f0xx_hal.h"
+void QF_onStartup(void)
+{
+  /* Not implemented */
+}
 
-#include "bsp/error_handler.h"
-#include "bsp/irs_pri.h"
-#include "bsp/bsp_qpc.h"
+void QF_onCleanup(void)
+{
+  /* Not implemented */   
+}
 
-#include "bsp/adc.h"
-#include "bsp/can.h"
-#include "bsp/i2c.h"
-#include "bsp/iwdg.h"
-#include "bsp/rtc.h"
-#include "bsp/tim.h"
-#include "bsp/usart.h"
-#include "bsp/gpio.h"
+void QF_onClockTick(void)
+{
+    QF_TICK_X(0U, (void *)0); /* QF clock tick processing for rate 0 */
+}
 
-#define BSP_TICKS_PER_SEC 1000U
-
-void BSP_Init(void);
-void BSP_ledOff(void);
-void BSP_ledOn(void);
-
-#endif /* _BSP_H */
+void Q_onAssert(char const * const module, int loc)
+{
+    fprintf(stderr, "Assertion failed in %s:%d", module, loc);
+    exit(-1);
+}

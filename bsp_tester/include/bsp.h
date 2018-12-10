@@ -17,28 +17,13 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _BSP_H
-#define _BSP_H
+#ifndef _BSP_TESTER_H
+#define _BSP_TESTER_H
 
-#include "stm32f0xx_hal.h"
-
-#include "bsp/error_handler.h"
-#include "bsp/irs_pri.h"
-#include "bsp/bsp_qpc.h"
-
-#include "bsp/adc.h"
-#include "bsp/can.h"
-#include "bsp/i2c.h"
-#include "bsp/iwdg.h"
-#include "bsp/rtc.h"
-#include "bsp/tim.h"
-#include "bsp/usart.h"
-#include "bsp/gpio.h"
-
-#define BSP_TICKS_PER_SEC 1000U
+#define BSP_TICKS_PER_SEC 100U
 
 void BSP_Init(void);
 void BSP_ledOff(void);
 void BSP_ledOn(void);
 
-#endif /* _BSP_H */
+#endif /* _BSP_TESTER_H */
