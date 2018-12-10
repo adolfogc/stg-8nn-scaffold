@@ -21,10 +21,30 @@
 
 set(QPC_DIR dependencies/qpc)
 
-if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+#
+# Note: for use with the current ARM Clang toolchain, we're testing CMAKE_ASM_COMPILER_ID instead of
+# CMAKE_C_COMPILER_ID (which is reported as Unknown).
+#
+if("${CMAKE_C_COMPILER_ID}" MATCHES "GNU" AND "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  message(STATUS "Building QP/C (qk) for ARM (GNU GCC)")
   set(QP_PORT_DIR ports/arm-cm/qk/gnu)
-elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
+  set(QPC_SOURCES
+    ${QPC_DIR}/${QP_PORT_DIR}/qk_port.c
+    ${QPC_DIR}/src/qk/qk.c
+  )
+elseif("${CMAKE_ASM_COMPILER_ID}" MATCHES "Clang" AND "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  message(STATUS "Building QP/C (qk) for ARM (Clang)")
   set(QP_PORT_DIR ports/arm-cm/qk/armclang)
+  set(QPC_SOURCES
+    ${QPC_DIR}/${QP_PORT_DIR}/qk_port.c
+    ${QPC_DIR}/src/qk/qk.c
+  )
+elseif("${CMAKE_C_COMPILER_ID}" MATCHES "Clang")
+  message(STATUS "Building QP/C (qutest) for X86_64")
+  set(QP_PORT_DIR ports/posix)
+  set(QPC_SOURCES
+    ${QPC_DIR}/${QP_PORT_DIR}/qf_port.c
+  )
 endif()
 
 set(QPC_INCLUDE
@@ -33,7 +53,7 @@ set(QPC_INCLUDE
   ${QPC_DIR}/${QP_PORT_DIR}
 )
 
-set(QPC_SOURCES
+list(APPEND QPC_SOURCES
   ${QPC_DIR}/src/qf/qep_hsm.c
   ${QPC_DIR}/src/qf/qep_msm.c
   ${QPC_DIR}/src/qf/qf_act.c
@@ -46,6 +66,4 @@ set(QPC_SOURCES
   ${QPC_DIR}/src/qf/qf_qeq.c
   ${QPC_DIR}/src/qf/qf_qmact.c
   ${QPC_DIR}/src/qf/qf_time.c
-  ${QPC_DIR}/src/qk/qk.c
-  ${QPC_DIR}/${QP_PORT_DIR}/qk_port.c
 )

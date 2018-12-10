@@ -53,5 +53,6 @@ dkms.conf
 
 .DS_Store
 build/
+build_*/
 *.dump
 ci/scripts/misra-c-2012-rule-texts.txt
