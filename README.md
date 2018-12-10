@@ -125,9 +125,9 @@ The file `.clang-format` contains the options used to format this project's code
 
 **Note 1:** [SonarCloud](https://www.sonarsource.com/products/codeanalyzers/sonarcfamilyforcpp.html) is also used in the CI builds to check for compliance with [MISRA C rules](https://rules.sonarsource.com/c/tag/misra).
 
-**Note 2:** The QP™/C framework is MISRA C:2004 compliant, as described in [that project's compliance matrix](http://www.state-machine.com/doc/AN_QP-C_MISRA.pdf).
+**Note 2:** The QP™/C framework is MISRA C:2004 compliant to the extend described in [that project's compliance matrix](http://www.state-machine.com/doc/AN_QP-C_MISRA.pdf).
 
-**Note 3:** STMCube's HAL and LL are MISRA C:2004 compliant, as stated in page 1 of the UM1785 User Manual ("Description of STM32F0 HAL and low-layer drivers").
+**Note 3:** STM32CubeF0's HAL and LL are MISRA C:2004 compliant, with some exceptions, as stated in [STM32CubeF0's webpage](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html).
 
 ## License
 ![AGPL-3](https://www.gnu.org/graphics/agplv3-with-text-162x68.png)
