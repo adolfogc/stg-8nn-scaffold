@@ -19,6 +19,12 @@
 ## dependencies::libcanard
 ##
 
+# Darwin (macOS) is not yet supported with CAN
+if("${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
+  message(WARNING "Darwin lacks a CAN driver for libcanard")
+  return()
+endif()
+
 set(CANARD_DIR dependencies/libcanard)
 set(CANARD_LIBRARY canard)
 set(CANARD_INCLUDE ${CANARD_DIR})
@@ -26,11 +32,26 @@ set(CANARD_SOURCES
   ${CANARD_DIR}/canard.c
   ${CANARD_DIR}/canard.h
   ${CANARD_DIR}/canard_internals.h
-  ${CANARD_DIR}/drivers/stm32/canard_stm32.c
-  ${CANARD_DIR}/drivers/stm32/canard_stm32.h
-  ${CANARD_DIR}/drivers/stm32/_internal_bxcan.h
 )
+
+if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  list(APPEND CANARD_SOURCES
+    ${CANARD_DIR}/drivers/stm32/canard_stm32.c
+    ${CANARD_DIR}/drivers/stm32/canard_stm32.h
+    ${CANARD_DIR}/drivers/stm32/_internal_bxcan.h
+  )
+elseif("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
+  list(APPEND CANARD_SOURCES
+    ${CANARD_DIR}/drivers/socketcan/socketcan.c
+    ${CANARD_DIR}/drivers/socketcan/socketcan.h
+  )
+endif()
 
 add_library(${CANARD_LIBRARY} STATIC ${CANARD_SOURCES})
 target_include_directories(${CANARD_LIBRARY} PRIVATE ${CANARD_INCLUDE})
-target_include_directories(${CANARD_LIBRARY} PRIVATE ${CANARD_DIR}/drivers/stm32)
+
+if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  target_include_directories(${CANARD_LIBRARY} PRIVATE ${CANARD_DIR}/drivers/stm32)
+elseif("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
+  target_include_directories(${CANARD_LIBRARY} PRIVATE ${CANARD_DIR}/drivers/socketcan)
+endif()

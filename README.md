@@ -67,6 +67,14 @@ brew install armv6m-cortex-m0plus
 #### Linux
 Refer to `ci/Dockerfile`.
 
+For the test build, in Ubuntu Linux, install GCC multilib:
+
+```bash
+sudo dpkg --add-architecture i386
+sudo apt update
+sudo apt-get install libc6-dev:i386 gcc-multilib
+```
+
 ### Compiling the project
 
 1. Using GCC
