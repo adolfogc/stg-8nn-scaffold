@@ -34,16 +34,16 @@ License: MIT
 
 Files: dependencies/stm32cube/cmsis/*
 Copyright: 2009-2015 ARM LIMITED
-License: Custom Copyleft
+License: BSD-new
 
 Files: dependencies/stm32cube/cmsis/device/src/system_stm32f0xx.c
 Copyright: 2016 STMicroelectronics
-License: Custom Copyleft
+License: BSD-new
 
 Files: dependencies/stm32cube/hal/*
 Copyright: 2016-2018 STMicroelectronics
-License: Custom Copyleft
+License: BSD-new
 
 Files: dependencies/stm32cube/gnu/*
 Copyright: 2016-2018 STMicroelectronics
-License: Custom Copyleft
+License: BSD-new
