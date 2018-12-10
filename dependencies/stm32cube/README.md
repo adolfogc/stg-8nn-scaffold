@@ -14,7 +14,6 @@ The STM32Cube's LL (Low Layer APIs) are not used in this project.
 - The file `cmsis/core/include/cmsis_gcc.h` was modified to silence a warning.
 
 ## Copying
-ARM's and ST's copylefts require that the project's documentation mentions the following text.
 
 ### ARM
 

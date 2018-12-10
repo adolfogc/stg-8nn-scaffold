@@ -39,8 +39,8 @@ elseif("${CMAKE_ASM_COMPILER_ID}" MATCHES "Clang" AND "${CMAKE_SYSTEM_PROCESSOR}
     ${QPC_DIR}/${QP_PORT_DIR}/qk_port.c
     ${QPC_DIR}/src/qk/qk.c
   )
-elseif("${CMAKE_C_COMPILER_ID}" MATCHES "Clang")
-  message(STATUS "Building QP/C (qutest) for X86_64")
+else()
+  message(STATUS "Building QP/C (qutest) for X86")
   set(QP_PORT_DIR ports/posix)
   set(QPC_SOURCES
     ${QPC_DIR}/${QP_PORT_DIR}/qf_port.c
