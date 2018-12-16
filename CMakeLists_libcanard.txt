@@ -25,13 +25,19 @@ if("${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
   return()
 endif()
 
+add_definitions(-DCANARD_ENABLE_CUSTOM_BUILD_CONFIG)
+
 set(CANARD_DIR dependencies/libcanard)
 set(CANARD_LIBRARY canard)
+
 set(CANARD_INCLUDE ${CANARD_DIR})
+list(APPEND CANARD_INCLUDE can)
+
 set(CANARD_SOURCES
   ${CANARD_DIR}/canard.c
   ${CANARD_DIR}/canard.h
   ${CANARD_DIR}/canard_internals.h
+  can/canard_build_config.h
 )
 
 if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
@@ -45,13 +51,4 @@ elseif("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
     ${CANARD_DIR}/drivers/socketcan/socketcan.c
     ${CANARD_DIR}/drivers/socketcan/socketcan.h
   )
-endif()
-
-add_library(${CANARD_LIBRARY} STATIC ${CANARD_SOURCES})
-target_include_directories(${CANARD_LIBRARY} PRIVATE ${CANARD_INCLUDE})
-
-if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
-  target_include_directories(${CANARD_LIBRARY} PRIVATE ${CANARD_DIR}/drivers/stm32)
-elseif("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
-  target_include_directories(${CANARD_LIBRARY} PRIVATE ${CANARD_DIR}/drivers/socketcan)
 endif()
