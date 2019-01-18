@@ -36,7 +36,7 @@ You should be acquainted with the QP™ framework and its concepts in order to u
 ### Hardware
 - BARTH® STG-8nn (mini-PLC)
 - ST-Link v2 (In-Circuit Programmer)
-- [Irdroid USB IrDA Transceiver](https://irdroid.eu/product/irdroid-usb-irda-transceiver)
+- [MikroElektronika IrDA-To-PC Board (MIKROE-441)](https://www.mikroe.com/irda-to-pc-board)
 
 ### Getting the code
 
