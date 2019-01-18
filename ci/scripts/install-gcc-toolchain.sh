@@ -18,8 +18,9 @@
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
 if [ ! -d ${HOME}/.cache/gcc-arm-none-eabi ]; then
-  curl -SOL https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2018q2/gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2 && \
-  tar xjf gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2 && \
+  curl -SOL https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2 && \
+  tar xjf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2 && \
   mkdir -p ${HOME}/.cache/gcc-arm-none-eabi && \
-  cp -r ./gcc-arm-none-eabi-7-2018-q2-update/* ${HOME}/.cache/gcc-arm-none-eabi
+  cp -r ./gcc-arm-none-eabi-8-2018-q4-major/* ${HOME}/.cache/gcc-arm-none-eabi
 fi
+
