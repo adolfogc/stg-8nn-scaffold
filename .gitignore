@@ -56,3 +56,11 @@ build/
 build_*/
 *.dump
 ci/scripts/misra-c-2012-rule-texts.txt
+stm32cubemx/.mxproject
+stm32cubemx/Drivers/
+stm32cubemx/Inc/
+stm32cubemx/Src/
+stm32cubemx/Makefile
+stm32cubemx/*.ld
+stm32cubemx/*.s
+
