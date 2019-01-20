@@ -44,7 +44,6 @@ set(BSP_SOURCES
   ${BSP_DIR}/common/src/stm32f0xx_hal_msp.c
   ${BSP_DIR}/common/src/stm32f0xx_it.c
   ${BSP_DIR}/common/src/bsp_clock.c
-  ${BSP_DIR}/common/src/bsp_mx.c
   ${BSP_DIR}/common/src/bsp_qpc.c
 )
 
