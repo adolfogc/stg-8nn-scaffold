@@ -36,7 +36,10 @@ fi
 eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/app/*.dump"
 ec=${ec} && $?
 
-eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/bsp/*.dump"
+eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/bsp_stg/*.dump"
+ec=${ec} && $?
+
+eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/bsp_tester/*.dump"
 ec=${ec} && $?
 
 # MISRA C:2012 checks are not enforced for files in these directories:
