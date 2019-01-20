@@ -48,6 +48,7 @@ set(BSP_SOURCES
   ${BSP_DIR}/common/src/stm32f0xx_it.c
   ${BSP_DIR}/common/src/tim.c
   ${BSP_DIR}/common/src/usart.c
+  ${BSP_DIR}/common/src/bsp.c
   ${BSP_DIR}/common/src/bsp_clock.c
   ${BSP_DIR}/common/src/bsp_qpc.c
 )
@@ -56,5 +57,4 @@ set(BSP_SOURCES
 list(APPEND BSP_SOURCES
   ${BSP_DIR}/${STG_MODEL}/src/adc.c
   ${BSP_DIR}/${STG_MODEL}/src/gpio.c
-  ${BSP_DIR}/${STG_MODEL}/src/bsp.c
 )
