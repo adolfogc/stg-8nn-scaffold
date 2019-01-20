@@ -1,1 +1,1 @@
-This directory contains the project files for the different STGs, which can be used to generate startup code using STM32CubeMX.
+This directory contains the project files for the different STGs, which can be used to generate startup code using [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html), an STM32Cube initialization code generator.
