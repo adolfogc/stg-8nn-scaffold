@@ -33,6 +33,8 @@ set(BSP_SOURCES
   ${BSP_DIR}/common/include/stm32_assert.h
   ${BSP_DIR}/common/include/stm32f0xx_hal_conf.h
   ${BSP_DIR}/common/include/stm32f0xx_it.h
+  ${BSP_DIR}/common/include/tim.h
+  ${BSP_DIR}/common/include/usart.h
   ${BSP_DIR}/common/include/bsp.h
   ${BSP_DIR}/common/include/bsp_clock.h
   ${BSP_DIR}/common/include/bsp_irs_pri.h
@@ -43,18 +45,16 @@ set(BSP_SOURCES
   ${BSP_DIR}/common/src/rtc.c
   ${BSP_DIR}/common/src/stm32f0xx_hal_msp.c
   ${BSP_DIR}/common/src/stm32f0xx_it.c
+  ${BSP_DIR}/common/src/tim.c
+  ${BSP_DIR}/common/src/usart.c
   ${BSP_DIR}/common/src/bsp_clock.c
   ${BSP_DIR}/common/src/bsp_qpc.c
 )
 
 # model specific
 list(APPEND BSP_SOURCES
-  ${BSP_DIR}/${STG_MODEL}/include/tim.h
-  ${BSP_DIR}/${STG_MODEL}/include/usart.h
   ${BSP_DIR}/${STG_MODEL}/include/bsp_pinout.h
   ${BSP_DIR}/${STG_MODEL}/src/adc.c
   ${BSP_DIR}/${STG_MODEL}/src/gpio.c
-  ${BSP_DIR}/${STG_MODEL}/src/tim.c
-  ${BSP_DIR}/${STG_MODEL}/src/usart.c
   ${BSP_DIR}/${STG_MODEL}/src/bsp.c
 )

@@ -47,4 +47,8 @@ void MX_TIM1_Init(void);
 void MX_TIM16_Init(void);
 void MX_TIM17_Init(void);
 
+#ifdef MODEL_STG850
+void MX_TIM2_Init(void);
+#endif
+
 #endif /* _MX_TIM_H */
