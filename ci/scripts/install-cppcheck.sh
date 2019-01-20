@@ -18,7 +18,7 @@
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
 if [ ! -d ${HOME}/.cache/cppcheck ]; then
-  curl -SOL https://github.com/danmar/cppcheck/archive/1.85.tar.gz && \
+  curl -SOL https://github.com/danmar/cppcheck/archive/1.86.tar.gz && \
   tar xzf 1.85.tar.gz && \
   (cd cppcheck-1.85 && \
   mkdir -p ${HOME}/.cache/cppcheck && \
