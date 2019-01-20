@@ -19,8 +19,8 @@
 
 if [ ! -d ${HOME}/.cache/cppcheck ]; then
   curl -SOL https://github.com/danmar/cppcheck/archive/1.86.tar.gz && \
-  tar xzf 1.85.tar.gz && \
-  (cd cppcheck-1.85 && \
+  tar xzf 1.86.tar.gz && \
+  (cd cppcheck-1.86 && \
   mkdir -p ${HOME}/.cache/cppcheck && \
   make CXX=`which clang++-7` PREFIX=${HOME}/.cache/cppcheck SRCDIR=build CFGDIR=cfg HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function" -j4 && \
   sudo make install PREFIX=${HOME}/.cache/cppcheck CFGDIR=${HOME}/.cache/cppcheck/cfg)
