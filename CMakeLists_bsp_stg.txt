@@ -21,7 +21,7 @@
 
 set(BSP_DIR bsp_stg)
 
-set(BSP_INCLUDE ${BSP_DIR}/common/include ${BSP_DIR}/${STG_MODEL}/include)
+set(BSP_INCLUDE ${BSP_DIR}/common/include)
 
 # common
 set(BSP_SOURCES
@@ -41,6 +41,7 @@ set(BSP_SOURCES
   ${BSP_DIR}/common/include/bsp_mx.h
   ${BSP_DIR}/common/include/bsp_pinout.h
   ${BSP_DIR}/common/include/bsp_qpc.h
+  ${BSP_DIR}/common/src/adc.c
   ${BSP_DIR}/common/src/gpio.c
   ${BSP_DIR}/common/src/i2c.c
   ${BSP_DIR}/common/src/iwdg.c
@@ -52,9 +53,4 @@ set(BSP_SOURCES
   ${BSP_DIR}/common/src/bsp.c
   ${BSP_DIR}/common/src/bsp_clock.c
   ${BSP_DIR}/common/src/bsp_qpc.c
-)
-
-# model specific
-list(APPEND BSP_SOURCES
-  ${BSP_DIR}/${STG_MODEL}/src/adc.c
 )
