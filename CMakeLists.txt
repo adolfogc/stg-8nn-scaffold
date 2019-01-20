@@ -66,6 +66,23 @@ set(CMAKE_C_STANDARD 99)
 set(BUILD_SHARED_LIBS OFF)
 
 ##
+## Select model option
+##
+SET(STG_MODEL "model" CACHE STRING "850")
+if("${STG_MODEL}" MATCHES "850")
+  message(STATUS "STG MODEL: ${STG_MODEL}")
+  add_definitions(-DMODEL_STG_850)
+elseif("${STG_MODEL}" MATCHES "856")
+  message(STATUS "STG MODEL: ${STG_MODEL}")
+  add_definitions(-DMODEL_STG_856)
+elseif("${STG_MODEL}" MATCHES "TESTER")
+  message(STATUS "STG MODEL: ${STG_MODEL}")
+  add_definitions(-DMODEL_TESTER)
+else()
+  message(FATAL_ERROR "STG MODEL: invalid option")
+endif()
+
+##
 ## Some diagnostic messages
 ##
 message(STATUS "System: ${CMAKE_SYSTEM_NAME}")
@@ -97,11 +114,7 @@ list(APPEND STG8NN_INCLUDE ${CANARD_INCLUDE})
 ##
 
 if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
-  ## choose STG board (850, 856)
-  set(STG_MODEL 856)
-
   include(CMakeLists_bsp_stg.txt)
-
   ## dependencies:stm32cube
   include(CMakeLists_stm32cube.txt)
   list(APPEND STG8NN_SOURCES ${STM32CUBE_SOURCES})
