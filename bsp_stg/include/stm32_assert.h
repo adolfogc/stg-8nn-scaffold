@@ -1,10 +1,9 @@
 /**
   ******************************************************************************
-  * File Name          : TIM.h
-  * Description        : This file provides code for the configuration
-  *                      of the TIM instances.
+  * @file    stm32_assert.h
+  * @brief   STM32 assert file.
   ******************************************************************************
-  ** This notice applies to any and all portions of this file
+   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
   * USER CODE END. Other portions of this file, whether 
   * inserted by the user or by software development tools
@@ -37,14 +36,11 @@
   ******************************************************************************
   */
 
-#ifndef _MX_TIM_H
-#define _MX_TIM_H
+#ifndef __STM32_ASSERT_H
+#define __STM32_ASSERT_H
 
-#include "stm32f0xx_ll_tim.h"
-#include "bsp_mx.h"
+#include "bsp_qpc.h"
 
-void MX_TIM1_Init(void);
-void MX_TIM16_Init(void);
-void MX_TIM17_Init(void);
+#define assert_param(expr) ((expr) ? (void)0U : Q_onAssert((char const *)__FILE__, (int)__LINE__))
 
-#endif /* _MX_TIM_H */
+#endif /* __STM32_ASSERT_H */

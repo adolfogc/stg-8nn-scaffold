@@ -1,9 +1,10 @@
 /**
   ******************************************************************************
-  * @file    stm32_assert.h
-  * @brief   STM32 assert file.
+  * File Name          : TIM.h
+  * Description        : This file provides code for the configuration
+  *                      of the TIM instances.
   ******************************************************************************
-   ** This notice applies to any and all portions of this file
+  ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
   * USER CODE END. Other portions of this file, whether 
   * inserted by the user or by software development tools
@@ -36,27 +37,18 @@
   ******************************************************************************
   */
 
-#ifndef __STM32_ASSERT_H
-#define __STM32_ASSERT_H
+#ifndef _MX_TIM_H
+#define _MX_TIM_H
 
-#ifdef  USE_FULL_ASSERT
-/**
-  * @brief  The assert_param macro is used for function's parameters check.
-  * @param  expr: If expr is false, it calls assert_failed function
-  *         which reports the name of the source file and the source
-  *         line number of the call that failed.
-  *         If expr is true, it returns no value.
-  * @retval None
-  */
-  #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
-/* Exported functions ------------------------------------------------------- */
-  void assert_failed(uint8_t* file, uint32_t line);
-#else
-  #define assert_param(expr) ((void)0U)
-#endif /* USE_FULL_ASSERT */
+#include "stm32f0xx_ll_tim.h"
+#include "bsp_mx.h"
 
-#ifdef __cplusplus
-}
+void MX_TIM1_Init(void);
+void MX_TIM16_Init(void);
+void MX_TIM17_Init(void);
+
+#ifdef MODEL_STG850
+void MX_TIM2_Init(void);
 #endif
 
-#endif /* __STM32_ASSERT_H */
+#endif /* _MX_TIM_H */

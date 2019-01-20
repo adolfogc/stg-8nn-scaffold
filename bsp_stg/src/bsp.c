@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2018 Adolfo E. García
+Copyright (C) 2019 Adolfo E. García
 
 This file is part of STG-8nn-Scaffold.
 
@@ -36,7 +36,14 @@ void BSP_init(void)
     MX_USART3_IRDA_Init();
     MX_I2C2_Init();
     MX_TIM1_Init();
+
+#ifdef MODEL_STG850
+    MX_TIM2_Init();
+#endif /* MODEL_STG850 */
+
+#ifdef MODEL_STG856
     MX_USART5_UART_Init();
+#endif /* MODEL_STG856 */
 }
 
 void BSP_ledOff(void)

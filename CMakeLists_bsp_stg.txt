@@ -21,41 +21,36 @@
 
 set(BSP_DIR bsp_stg)
 
-set(BSP_INCLUDE ${BSP_DIR}/common/include ${BSP_DIR}/${STG_MODEL}/include)
+set(BSP_INCLUDE ${BSP_DIR}/include)
 
 # common
 set(BSP_SOURCES
-  ${BSP_DIR}/common/include/adc.h
-  ${BSP_DIR}/common/include/gpio.h
-  ${BSP_DIR}/common/include/i2c.h
-  ${BSP_DIR}/common/include/iwdg.h
-  ${BSP_DIR}/common/include/rtc.h
-  ${BSP_DIR}/common/include/stm32_assert.h
-  ${BSP_DIR}/common/include/stm32f0xx_hal_conf.h
-  ${BSP_DIR}/common/include/stm32f0xx_it.h
-  ${BSP_DIR}/common/include/bsp.h
-  ${BSP_DIR}/common/include/bsp_clock.h
-  ${BSP_DIR}/common/include/bsp_irs_pri.h
-  ${BSP_DIR}/common/include/bsp_mx.h
-  ${BSP_DIR}/common/include/bsp_qpc.h
-  ${BSP_DIR}/common/src/i2c.c
-  ${BSP_DIR}/common/src/iwdg.c
-  ${BSP_DIR}/common/src/rtc.c
-  ${BSP_DIR}/common/src/stm32f0xx_hal_msp.c
-  ${BSP_DIR}/common/src/stm32f0xx_it.c
-  ${BSP_DIR}/common/src/bsp_clock.c
-  ${BSP_DIR}/common/src/bsp_mx.c
-  ${BSP_DIR}/common/src/bsp_qpc.c
-)
-
-# model specific
-list(APPEND BSP_SOURCES
-  ${BSP_DIR}/${STG_MODEL}/include/tim.h
-  ${BSP_DIR}/${STG_MODEL}/include/usart.h
-  ${BSP_DIR}/${STG_MODEL}/include/bsp_pinout.h
-  ${BSP_DIR}/${STG_MODEL}/src/adc.c
-  ${BSP_DIR}/${STG_MODEL}/src/gpio.c
-  ${BSP_DIR}/${STG_MODEL}/src/tim.c
-  ${BSP_DIR}/${STG_MODEL}/src/usart.c
-  ${BSP_DIR}/${STG_MODEL}/src/bsp.c
+  ${BSP_DIR}/include/adc.h
+  ${BSP_DIR}/include/gpio.h
+  ${BSP_DIR}/include/i2c.h
+  ${BSP_DIR}/include/iwdg.h
+  ${BSP_DIR}/include/rtc.h
+  ${BSP_DIR}/include/stm32_assert.h
+  ${BSP_DIR}/include/stm32f0xx_hal_conf.h
+  ${BSP_DIR}/include/stm32f0xx_it.h
+  ${BSP_DIR}/include/tim.h
+  ${BSP_DIR}/include/usart.h
+  ${BSP_DIR}/include/bsp.h
+  ${BSP_DIR}/include/bsp_clock.h
+  ${BSP_DIR}/include/bsp_irs_pri.h
+  ${BSP_DIR}/include/bsp_mx.h
+  ${BSP_DIR}/include/bsp_pinout.h
+  ${BSP_DIR}/include/bsp_qpc.h
+  ${BSP_DIR}/src/adc.c
+  ${BSP_DIR}/src/gpio.c
+  ${BSP_DIR}/src/i2c.c
+  ${BSP_DIR}/src/iwdg.c
+  ${BSP_DIR}/src/rtc.c
+  ${BSP_DIR}/src/stm32f0xx_hal_msp.c
+  ${BSP_DIR}/src/stm32f0xx_it.c
+  ${BSP_DIR}/src/tim.c
+  ${BSP_DIR}/src/usart.c
+  ${BSP_DIR}/src/bsp.c
+  ${BSP_DIR}/src/bsp_clock.c
+  ${BSP_DIR}/src/bsp_qpc.c
 )

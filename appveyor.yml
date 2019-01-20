@@ -23,5 +23,5 @@ build_script:
   - sh: |
         export PATH="${HOME}/opt/xPacks/@gnu-mcu-eclipse/arm-none-eabi-gcc/8.2.1-1.1.1/.content/bin:${PATH}"
         mkdir build && cd build
-        cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
+        cmake -DSTG_MODEL:STRING=856 -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
         cmake --build .

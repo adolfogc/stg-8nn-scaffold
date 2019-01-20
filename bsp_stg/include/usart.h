@@ -46,6 +46,9 @@
 
 void MX_USART1_UART_Init(void);
 void MX_USART3_IRDA_Init(void);
+
+#ifdef MODEL_STG856
 void MX_USART5_UART_Init(void);
+#endif
 
 #endif /* _MX_USART_H */

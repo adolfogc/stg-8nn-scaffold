@@ -22,7 +22,4 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "bsp_pinout.h"
 
-extern void _Error_Handler(char *, int);
-#define Error_Handler() _Error_Handler(__FILE__, __LINE__)
-
 #endif

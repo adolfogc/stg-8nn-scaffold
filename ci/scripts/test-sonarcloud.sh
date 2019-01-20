@@ -20,6 +20,6 @@
 wrkdir=${PWD}
 
 (mkdir -p build && cd build && \
-cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake ${wrkdir} && \
+cmake -DSTG_MODEL:STRING=856 -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake ${wrkdir} && \
 build-wrapper-linux-x86-64 --out-dir bw-output make && \
 cd .. && sonar-scanner)
