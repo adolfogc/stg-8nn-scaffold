@@ -26,7 +26,7 @@ int main(void)
 {
   static QEvt const *blinky_queueSto[10]; /* Event queue buffer for Blinky */
   QF_init();
-  BSP_Init();
+  BSP_init();
 
   /* Instantiate and start the Blinky active object */
   Blinky_ctor();

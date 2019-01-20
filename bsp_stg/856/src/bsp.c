@@ -20,7 +20,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp.h"
 #include "bsp_clock.h"
 
-void BSP_Init(void)
+void BSP_init(void)
 {
     HAL_Init();
     /* Configure the system clock */
