@@ -6,6 +6,7 @@ The files were rearranged in a different directory structure to the one provided
 - The `cmsis` directory contains the CMSIS-compliant interface to the STM32F091xC. The file `cmsis/device/src/system_stm32f0xx.c` was generated using STM32CubeMX.
 MCU
 - The `hal` directory contains part of the STM32Cube's HAL (Hardware Abstraction Layer).
+- The `ll` directory contains part of the STM32Cube's LL (Low-level drivers).
 - The `gnu` contains the startup code and linker script for use with the GNU GCC toolchain. Those files were generated using STM32CubeMX.
 
 The STM32Cube's LL (Low Layer APIs) are not used in this project.
