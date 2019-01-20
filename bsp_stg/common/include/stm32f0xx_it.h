@@ -38,6 +38,5 @@ void HardFault_Handler(void);
 void SVC_Handler(void);
 void SysTick_Handler(void);
 void USART3_8_IRQHandler(void);
-/* Not implemented: void CEC_CAN_IRQHandler(void);*/
 
 #endif /* __STM32F0xx_IT_H */
