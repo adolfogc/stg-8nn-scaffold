@@ -19,22 +19,24 @@
 ## select STM32 HAL's modules
 ##
 
-set(USE_HAL TRUE)
-set(USE_HAL_ADC TRUE)
-set(USE_HAL_CAN TRUE)
-set(USE_HAL_IWDG TRUE)
-set(USE_HAL_RTC TRUE)
-set(USE_HAL_TIM TRUE)
-set(USE_HAL_UART TRUE)
-set(USE_HAL_IRDA TRUE)
-set(USE_HAL_CORTEX TRUE)
-set(USE_HAL_DMA TRUE)
-set(USE_HAL_FLASH TRUE)
-set(USE_HAL_GPIO TRUE)
-set(USE_HAL_PWR TRUE)
-set(USE_HAL_RCC TRUE)
-set(USE_HAL_I2C TRUE)
-set(USE_HAL_CRC FALSE)
+if("${STG_MODEL}" MATCHES "850" OR "${STG_MODEL}" MATCHES "856")
+  set(USE_HAL TRUE)
+  set(USE_HAL_ADC FALSE)
+  set(USE_HAL_CAN TRUE)
+  set(USE_HAL_IWDG FALSE)
+  set(USE_HAL_RTC FALSE)
+  set(USE_HAL_TIM FALSE)
+  set(USE_HAL_UART TRUE)
+  set(USE_HAL_IRDA FALSE)
+  set(USE_HAL_CORTEX TRUE)
+  set(USE_HAL_DMA TRUE)
+  set(USE_HAL_FLASH TRUE)
+  set(USE_HAL_GPIO TRUE)
+  set(USE_HAL_PWR TRUE)
+  set(USE_HAL_RCC TRUE)
+  set(USE_HAL_I2C TRUE)
+  set(USE_HAL_CRC FALSE)
+endif()
 
 ##
 ## dependencies::stm32cube
@@ -46,6 +48,7 @@ set(STM32CUBE_INCLUDE
   ${STM32CUBE_DIR}/cmsis/core/include
   ${STM32CUBE_DIR}/cmsis/device/include
   ${STM32CUBE_DIR}/hal/include
+  ${STM32CUBE_DIR}/ll/include
 )
 
 ## CMSIS Core include
@@ -71,6 +74,38 @@ list(APPEND STM32CUBE_SOURCES
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   list(APPEND STM32CUBE_SOURCES ${STM32CUBE_DIR}/gnu/startup_stm32f091xc.s)
 endif()
+
+## LL
+add_definitions(-DUSE_FULL_LL_DRIVER) # enable LL initialization functions and associated resources
+
+list(APPEND STM32CUBE_SOURCES
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_adc.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_bus.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_cortex.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_crs.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_dma.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_exti.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_gpio.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_i2c.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_iwdg.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_pwr.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_rcc.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_rtc.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_system.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_tim.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_usart.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_utils.h
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_adc.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_dma.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_exti.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_gpio.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_i2c.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_rcc.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_rtc.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_tim.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_usart.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_utils.c
+)
 
 ## HAL
 if(USE_HAL)

@@ -77,16 +77,6 @@ message(STATUS "System: ${CMAKE_SYSTEM_NAME}")
 set(OUTPUT_NAME firmware)
 
 ##
-## dependencies::stm32cube
-##
-
-if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
-  include(CMakeLists_stm32cube.txt)
-  list(APPEND STG8NN_SOURCES ${STM32CUBE_SOURCES})
-  list(APPEND STG8NN_INCLUDE ${STM32CUBE_INCLUDE})
-endif()
-
-##
 ## dependencies::qpc(qk)
 ##
 
@@ -107,7 +97,15 @@ list(APPEND STG8NN_INCLUDE ${CANARD_INCLUDE})
 ##
 
 if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
-  include(CMakeLists_bsp.txt)
+  ## choose STG board (850, 856)
+  set(STG_MODEL 856)
+
+  include(CMakeLists_bsp_stg.txt)
+
+  ## dependencies:stm32cube
+  include(CMakeLists_stm32cube.txt)
+  list(APPEND STG8NN_SOURCES ${STM32CUBE_SOURCES})
+  list(APPEND STG8NN_INCLUDE ${STM32CUBE_INCLUDE})
 else()
   include(CMakeLists_bsp_tester.txt)
 endif()
