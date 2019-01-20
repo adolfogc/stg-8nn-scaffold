@@ -24,7 +24,8 @@ mkdir -p build && cd build
 cmake -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${wrkdir}
 
 cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/app/
-cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/bsp/
+cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/bsp_stg/
+cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/bsp_tester/
 #cppcheck --language=c --error-exitcode=1 --platform=unix32 --std=c99 --dump ${wrkdir}/dependencies/stm32cube
 
 if [ -e ${wrkdir}/ci/scripts/misra-c-2012-rule-texts.txt ]
@@ -35,7 +36,10 @@ fi
 eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/app/*.dump"
 ec=${ec} && $?
 
-eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/bsp/*.dump"
+eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/bsp_stg/*.dump"
+ec=${ec} && $?
+
+eval "misra.py ${MISRA_RULES_TEXT} ${wrkdir}/bsp_tester/*.dump"
 ec=${ec} && $?
 
 # MISRA C:2012 checks are not enforced for files in these directories:

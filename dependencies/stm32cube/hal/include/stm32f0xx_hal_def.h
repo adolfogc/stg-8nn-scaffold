@@ -42,6 +42,8 @@
  extern "C" {
 #endif
 
+#define USE_RTOS 0
+
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx.h"
 #if defined(USE_HAL_LEGACY)
