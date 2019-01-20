@@ -26,7 +26,6 @@ set(BSP_INCLUDE ${BSP_DIR}/common/include ${BSP_DIR}/${STG_MODEL}/include)
 # common
 set(BSP_SOURCES
   ${BSP_DIR}/common/include/adc.h
-  ${BSP_DIR}/common/include/can.h
   ${BSP_DIR}/common/include/gpio.h
   ${BSP_DIR}/common/include/i2c.h
   ${BSP_DIR}/common/include/iwdg.h
@@ -39,7 +38,6 @@ set(BSP_SOURCES
   ${BSP_DIR}/common/include/bsp_irs_pri.h
   ${BSP_DIR}/common/include/bsp_mx.h
   ${BSP_DIR}/common/include/bsp_qpc.h
-  ${BSP_DIR}/common/src/can.c
   ${BSP_DIR}/common/src/i2c.c
   ${BSP_DIR}/common/src/iwdg.c
   ${BSP_DIR}/common/src/rtc.c

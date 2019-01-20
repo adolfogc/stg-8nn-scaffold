@@ -28,7 +28,6 @@ void BSP_init(void)
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_ADC_Init();
-    MX_CAN_Init();
     /* Note: Watchdog can be enabled by calling MX_IWDG_Init/0 here */ 
     MX_RTC_Init();
     MX_TIM16_Init();

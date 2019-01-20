@@ -27,7 +27,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp_qpc.h"
 
 #include "adc.h"
-#include "can.h"
 #include "gpio.h"
 #include "i2c.h"
 #include "iwdg.h"

@@ -36,8 +36,6 @@
 #include "stm32f0xx_it.h"
 #include "bsp_qpc.h"
 
-extern CAN_HandleTypeDef hcan;
-
 /* -- Cortex-M0 Processor Interruption and Exception Handlers -- */ 
 
 /* NMI_Handler/0 and PendSV_Handler/0 are implemented in QP's kernel port */
@@ -64,8 +62,6 @@ void SysTick_Handler(void)
 {
   QK_ISR_ENTRY();
   QF_TICK_X(0U, (void *)0);
-  HAL_IncTick();
-  HAL_SYSTICK_IRQHandler();
   QK_ISR_EXIT();
 }
 
@@ -81,13 +77,5 @@ void SysTick_Handler(void)
 void USART3_8_IRQHandler(void)
 {
   QK_ISR_ENTRY();
-  QK_ISR_EXIT();
-}
-
-/* This function handles HDMI-CEC and CAN global interrupts / HDMI-CEC wake-up interrupt through EXTI line 27. */
-void CEC_CAN_IRQHandler(void)
-{
-  QK_ISR_ENTRY();
-  HAL_CAN_IRQHandler(&hcan);
   QK_ISR_EXIT();
 }
