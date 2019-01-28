@@ -40,9 +40,7 @@
 #ifndef _MX_GPIO_H
 #define _MX_GPIO_H
 
-#include "stm32f0xx_ll_system.h"
 #include "stm32f0xx_ll_gpio.h"
-#include "stm32f0xx_ll_exti.h"
 #include "stm32f0xx_ll_bus.h"
 #include "bsp_mx.h"
 

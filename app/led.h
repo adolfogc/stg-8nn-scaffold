@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2018 Adolfo E. García
+Copyright (C) 2019 Adolfo E. García
 
 This file is part of STG-8nn-Scaffold.
 
@@ -17,20 +17,17 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
-#include "bsp.h"
+#ifndef _LED_AO_H
+#define _LED_AO_H
 
-void BSP_Init(void)
-{
-  /* Not implemented */
-}
+#include "qpc.h"
 
-void BSP_ledOff(void)
-{
-    fputs("LED is OFF\n", stdout);
-}
+typedef struct LedTag {
+    QActive super;
 
-void BSP_ledOn(void)
-{
-    fputs("LED is ON\n", stdout);
-}
+    QTimeEvt timeEvent;
+} Led;
+
+void Led_ctor(Led* me);
+
+#endif /* _LED_AO_H */

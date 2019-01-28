@@ -25,19 +25,18 @@ if("${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
   return()
 endif()
 
+# The file canard_build_config.h must be provided by the BSP.
 add_definitions(-DCANARD_ENABLE_CUSTOM_BUILD_CONFIG)
 
 set(CANARD_DIR dependencies/libcanard)
 set(CANARD_LIBRARY canard)
 
 set(CANARD_INCLUDE ${CANARD_DIR})
-list(APPEND CANARD_INCLUDE can)
 
 set(CANARD_SOURCES
   ${CANARD_DIR}/canard.c
   ${CANARD_DIR}/canard.h
   ${CANARD_DIR}/canard_internals.h
-  can/canard_build_config.h
 )
 
 if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")

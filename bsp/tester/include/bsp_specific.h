@@ -17,13 +17,9 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _BSP_TESTER_H
-#define _BSP_TESTER_H
+#ifndef _BSP_SPECIFIC_H
+#define _BSP_SPECIFIC_H
 
 #define BSP_TICKS_PER_SEC 100U
 
-void BSP_Init(void);
-void BSP_ledOff(void);
-void BSP_ledOn(void);
-
-#endif /* _BSP_TESTER_H */
+#endif /* _BSP_SPECIFIC_H */

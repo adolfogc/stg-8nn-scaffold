@@ -46,7 +46,7 @@ if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
   endif()
 else()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic ${GENERIC_C_FLAGS}")
-    set(CMAKE_ASM_FLAGS "-Wall -fdata-sections -ffunction-sections")
+    set(CMAKE_ASM_FLAGS "-Wall -fdata-sections -ffunction-sections -fno-stack-protector")
     if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
       set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
       set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} -m32")
@@ -82,10 +82,19 @@ else()
   message(FATAL_ERROR "STG MODEL: invalid option")
 endif()
 
+execute_process(
+  COMMAND git log -1 --format=%h
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  OUTPUT_VARIABLE APP_VERSION_GIT_COMMIT_HASH
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+add_definitions("-DAPP_VERSION_GIT_COMMIT_HASH=0x${APP_VERSION_GIT_COMMIT_HASH}")
+
 ##
 ## Some diagnostic messages
 ##
 message(STATUS "System: ${CMAKE_SYSTEM_NAME}")
+message(STATUS "Git commit hash: 0x${APP_VERSION_GIT_COMMIT_HASH}")
 
 ##
 ## Configure build
@@ -112,18 +121,7 @@ list(APPEND STG8NN_INCLUDE ${CANARD_INCLUDE})
 ##
 ## bsp
 ##
-
-if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
-  include(CMakeLists_bsp_stg.txt)
-  ## dependencies:stm32cube
-  include(CMakeLists_stm32cube.txt)
-  list(APPEND STG8NN_SOURCES ${STM32CUBE_SOURCES})
-  list(APPEND STG8NN_INCLUDE ${STM32CUBE_INCLUDE})
-else()
-  include(CMakeLists_bsp_tester.txt)
-endif()
-list(APPEND STG8NN_SOURCES ${BSP_SOURCES})
-list(APPEND STG8NN_INCLUDE ${BSP_INCLUDE})
+include(CMakeLists_bsp.txt)
 
 ##
 ## app

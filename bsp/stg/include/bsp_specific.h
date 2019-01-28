@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2018 Adolfo E. García
+Copyright (C) 2019 Adolfo E. García
 
 This file is part of STG-8nn-Scaffold.
 
@@ -17,14 +17,12 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef CANARD_BUILD_CONFIG_H
-#define CANARD_BUILD_CONFIG_H
+#ifndef _BSP_SPECIFIC_H
+#define _BSP_SPECIFIC_H
 
-typedef int int_t;
+/* 1 tick every 0.1 ms (100 us) */
+#define BSP_TICKS_PER_SEC 10000U
+#define BSP_TICKS_PER_MS  (BSP_TICKS_PER_SEC / 1000U)
+#define BSP_TICKS_PER_100uS  (BSP_TICKS_PER_SEC / 10000U) 
 
-void Q_onAssert(char const * const file, int line);
-
-#define CANARD_ASSERT(test_) ((test_) \
-    ? (void)0 : Q_onAssert(__FILE__, (int_t)__LINE__))
-
-#endif /* CANARD_BUILD_CONFIG_H */
+#endif /* _BSP_SPECIFIC_H */

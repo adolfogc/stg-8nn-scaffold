@@ -13,6 +13,9 @@
 - [*"Cutting Through the Confusion with ARM Cortex-M Interrupt Priorities"* blog post](https://embeddedgurus.com/state-space/2014/02/cutting-through-the-confusion-with-arm-cortex-m-interrupt-priorities)
 - [*The Embedded Angle: An Exception or a Bug?*](http://collaboration.cmc.ec.gc.ca/science/rpn/biblio/ddj/Website/articles/CUJ/2003/0308/cuj0308samek/index.htm)
 
+### CAN / UAVCAN
+- [Zubax's *"Basic tutorial"*](https://kb.zubax.com/display/MAINKB/1.+Basic+tutorial)
+
 ### Bootloaders
 - [CVRA's CAN Bootloader](https://github.com/cvra/can-bootloader)
 - [STM32 Bootloader](https://github.com/akospasztor/stm32-bootloader)
@@ -31,6 +34,7 @@
 - [texane/stlink](https://github.com/texane/stlink)
 - ["Installing dependencies on Travis"](https://docs.travis-ci.com/user/installing-dependencies)
 - [*"Creating and Enforcing a Code Formatting Standard with clang-format"*](https://embeddedartistry.com/blog/2017/10/23/creating-and-enforcing-a-coding-standard-with-clang-format)
+- ["Bringing CAN interface up](https://elinux.org/Bringing_CAN_interface_up)
 
 ### MISRA C
 - [*"The MISRA C Coding Standard and its Role in the Development and Analysis of Safety- and Security-Critical Embedded Software"*](https://arxiv.org/abs/1809.00821)
