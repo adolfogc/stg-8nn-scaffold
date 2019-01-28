@@ -17,21 +17,30 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _BLINKY_H
-#define _BLINKY_H
+#include "bsp.h"
 
-#include "qpc.h"
+#include <stdio.h>
+#include <time.h> 
 
-/* Define the event signals used in the application */
-enum BlinkySignals {
-    TIMEOUT_SIG = Q_USER_SIG, /* Offset the first signal by Q_USER_SIG */
-    /* ... */
-    MAX_SIG                   /* keep last (the number of signals) */
-};
+static time_t g_startTime;
 
-/* Active object(s) used in this application */
-extern QActive * const AO_Blinky; /* opaque pointer to the Blinky AO */
+void BSP_init(void)
+{
+  g_startTime = time(NULL);
+}
 
-void Blinky_ctor(void);
+void BSP_Led_off(void)
+{
+    fputs("LED is OFF\n", stdout);
+}
 
-#endif /* _BLINKY_H */
+void BSP_Led_on(void)
+{
+    fputs("LED is ON\n", stdout);
+}
+
+uint32_t BSP_upTimeSeconds(void)
+{
+    const double upTime_ = difftime(time(NULL), g_startTime);
+    return (uint32_t) upTime_;
+}

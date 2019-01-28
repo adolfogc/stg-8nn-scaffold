@@ -18,13 +18,11 @@
 ##
 ## bsp
 ##
+list(APPEND BSP_INCLUDE ${BSP_DIR}/tester/include)
 
-set(BSP_DIR bsp_tester)
-
-set(BSP_INCLUDE ${BSP_DIR}/include)
-
-set(BSP_SOURCES
-  ${BSP_DIR}/src/bsp.c
-  ${BSP_DIR}/src/bsp_qpc.c
-  ${BSP_INCLUDE}/bsp.h
+list(APPEND BSP_SOURCES
+  ${BSP_DIR}/tester/include/bsp_specific.h
+  ${BSP_DIR}/tester/src/bsp.c
+  ${BSP_DIR}/tester/src/bsp_qpc.c
+  ${BSP_DIR}/tester/src/bsp_canard.c
 )

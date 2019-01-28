@@ -20,24 +20,21 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef _BSP_H
 #define _BSP_H
 
-#include "stm32f0xx_hal.h"
+#include <stdint.h>
 
-#include "bsp_irs_pri.h"
-#include "bsp_pinout.h"
-#include "bsp_qpc.h"
-
-#include "adc.h"
-#include "gpio.h"
-#include "i2c.h"
-#include "iwdg.h"
-#include "rtc.h"
-#include "tim.h"
-#include "usart.h"
-
-#define BSP_TICKS_PER_SEC 1000U
+#include "bsp_specific.h"
 
 void BSP_init(void);
-void BSP_ledOff(void);
-void BSP_ledOn(void);
+
+void BSP_Led_off(void);
+void BSP_Led_on(void);
+
+void BSP_Canard_init(void);
+void BSP_Canard_spin(void);
+void BSP_Canard_send(void);
+void BSP_Canard_receive(void);
+
+uint32_t BSP_upTimeSeconds(void);
+void BSP_readUniqueID(uint8_t* outUid);
 
 #endif /* _BSP_H */

@@ -51,6 +51,8 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+*.code-workspace
+.vscode/
 .DS_Store
 build/
 build_*/

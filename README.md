@@ -37,6 +37,7 @@ You should be acquainted with the QP™ framework and its concepts in order to u
 - BARTH® STG-8nn (mini-PLC)
 - ST-Link v2 (In-Circuit Programmer)
 - [MikroElektronika IrDA-To-PC Board (MIKROE-441)](https://www.mikroe.com/irda-to-pc-board)
+- [Kvaser Leaf Light Rugged HS](https://www.kvaser.com/product/kvaser-leaf-light-rugged-hs)
 
 ### Getting the code
 

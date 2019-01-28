@@ -17,9 +17,22 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _BSP_CLOCK_H
-#define _BSP_CLOCK_H
+#ifndef _BSP_CANARD_COMMON_H
+#define _BSP_CANARD_COMMON_H
 
-void _BSP_systemClockConfig(void);
+#include <stdint.h>
+#include "canard.h"
 
-#endif /* _BSP_CLOCK_H */ 
+/* -- Canard callbacks -- */
+bool BSP_Canard_shouldAcceptTransfer(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId);
+void BSP_Canard_onTransferReceived(CanardInstance* instance, CanardRxTransfer* transfer);
+
+/* -- Helper functions -- */
+void BSP_Canard_makeNodeStatusMessage(uint8_t* buffer);
+uint16_t BSP_Canard_makeNodeInfoMessage(uint8_t* buffer);
+void BSP_Canard_getNodeInfoHandle(CanardRxTransfer* transfer);
+
+/* -- Canard library instance -- */
+extern CanardInstance g_canard;
+
+#endif /* _BSP_CANARD_COMMON_H */

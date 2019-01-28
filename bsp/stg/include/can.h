@@ -1,8 +1,14 @@
 /**
   ******************************************************************************
-  * @file    stm32f0xx_it.c
-  * @brief   Interrupt Service Routines.
+  * File Name          : CAN.h
+  * Description        : This file provides code for the configuration
+  *                      of the CAN instances.
   ******************************************************************************
+  ** This notice applies to any and all portions of this file
+  * that are not between comment pairs USER CODE BEGIN and
+  * USER CODE END. Other portions of this file, whether 
+  * inserted by the user or by software development tools
+  * are owned by their respective copyright owners.
   *
   * COPYRIGHT(c) 2019 STMicroelectronics
   *
@@ -31,51 +37,9 @@
   ******************************************************************************
   */
 
-#include "stm32f0xx.h"
-#include "stm32f0xx_hal.h"
-#include "stm32f0xx_it.h"
-#include "bsp_qpc.h"
+#ifndef _MX_CAN_H
+#define _MX_CAN_H
 
-/* -- Cortex-M0 Processor Interruption and Exception Handlers -- */ 
+void MX_CAN_Init(void);
 
-/* NMI_Handler/0 and PendSV_Handler/0 are implemented in QP's kernel port */
-
-/* This function handles Hard fault interrupt. */
-void HardFault_Handler(void)
-{
-  while (1)
-  {
-    /* Do nothing */
-  }
-}
-
-/* This function handles System service call via SWI instruction. */
-void SVC_Handler(void)
-{
-  QK_ISR_ENTRY();
-  /* Not implemented */
-  QK_ISR_EXIT();
-}
-
-/* This function handles System tick timer. */
-void SysTick_Handler(void)
-{
-  QK_ISR_ENTRY();
-  QF_TICK_X(0U, (void *)0);
-  QK_ISR_EXIT();
-}
-
-
-/* 
- * STM32F0xx Peripheral Interrupt Handlers
- * Add here the Interrupt Handlers for the used peripherals.
- * For the available peripheral interrupt handler names,
- * please refer to the startup file (startup_stm32f0xx.s).
- */
-
-/* This function handles USART3 to USART8 global interrupts / USART3 wake-up interrupt through EXTI line 28. */
-void USART3_8_IRQHandler(void)
-{
-  QK_ISR_ENTRY();
-  QK_ISR_EXIT();
-}
+#endif /* _MX_CAN_H */

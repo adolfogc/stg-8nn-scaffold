@@ -19,23 +19,42 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "bsp.h"
 #include "main.h"
-#include "blinky.h"
+#include "led.h"
+#include "uavcan_node.h"
+
+/* -- Active objects -- */
+Led AO_led;
+UavcanNode AO_uavcanNode;
+
+/* -- Event queue buffers for the different active objects -- */
+static QEvent const * l_led_queueBuffer[10];
+static QEvent const * l_uavcanNode_queueBuffer[20];
 
 /* -- Main loop -- */
 int main(void)
 {
-  static QEvt const *blinky_queueSto[10]; /* Event queue buffer for Blinky */
-  QF_init();
-  BSP_init();
+  QF_init();         /* Initialize the QF framework and the underlying RT kernel. */
+  BSP_init();        /* Initialize the hardware. */
+  BSP_Led_on();
+  BSP_Canard_init(); /* Inititalize the canard library */
 
-  /* Instantiate and start the Blinky active object */
-  Blinky_ctor();
-  QACTIVE_START(AO_Blinky,  /* Active object to start */
-    1U,                     /* Priority of the active object */
-    blinky_queueSto,        /* Event queue buffer */
-    Q_DIM(blinky_queueSto), /* Length of the buffer */
-    (void *)0, 0U,          /* Private stack (not used) */
-    (QEvt *)0);             /* Initialization event (not used) */
+  /* Instantiate and start the UavcanNode active object */
+  UavcanNode_ctor(&AO_uavcanNode);
+  QACTIVE_START(&(AO_uavcanNode.super),
+    1U,
+    l_uavcanNode_queueBuffer,
+    Q_DIM(l_uavcanNode_queueBuffer),
+    (void*)0, 0U,
+    (QEvent*)0);
+
+  /* Instantiate and start the Led active object */
+  Led_ctor(&AO_led);
+  QACTIVE_START(&(AO_led.super),
+    2U,
+    l_led_queueBuffer,
+    Q_DIM(l_led_queueBuffer),
+    (void*)0, 0U,
+    (QEvent*)0);
 
   return QF_run();
 }

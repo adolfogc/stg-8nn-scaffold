@@ -17,16 +17,31 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "stm32f0xx_hal.h"
+
+#include "adc.h"
+#include "can.h"
+#include "gpio.h"
+#include "i2c.h"
+#include "iwdg.h"
+#include "rtc.h"
+#include "tim.h"
+#include "usart.h"
+
 #include "bsp.h"
 #include "bsp_clock.h"
+#include "bsp_pinout.h"
+
+void BSP_CAN_init(void);
 
 void BSP_init(void)
 {
     HAL_Init();
     /* Configure the system clock */
-    _BSP_systemClockConfig();
+    BSP_systemClockConfig();
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
+    MX_CAN_Init();
     MX_ADC_Init();
     /* Note: Watchdog can be enabled by calling MX_IWDG_Init/0 here */ 
     MX_RTC_Init();
@@ -46,12 +61,12 @@ void BSP_init(void)
 #endif /* MODEL_STG856 */
 }
 
-void BSP_ledOff(void)
+void BSP_Led_off(void)
 {
     LL_GPIO_ResetOutputPin(LED_GPIO_Port, LED_Pin);
 }
 
-void BSP_ledOn(void)
+void BSP_Led_on(void)
 {
     LL_GPIO_SetOutputPin(LED_GPIO_Port, LED_Pin);
 }
