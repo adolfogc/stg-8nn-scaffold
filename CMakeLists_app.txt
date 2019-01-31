@@ -24,9 +24,9 @@ set(APP_INCLUDE ${APP_DIR})
 
 set(APP_SOURCES
   ${APP_DIR}/main.h
-  ${APP_DIR}/led.h
-  ${APP_DIR}/uavcan_node.h
   ${APP_DIR}/main.c
+  ${APP_DIR}/led.h
   ${APP_DIR}/led.c
+  ${APP_DIR}/uavcan_node.h
   ${APP_DIR}/uavcan_node.c
 )

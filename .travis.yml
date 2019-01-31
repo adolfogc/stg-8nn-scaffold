@@ -39,7 +39,7 @@ addons:
 install:
   - ./ci/scripts/install-cppcheck.sh
   - ./ci/scripts/install-gcc-toolchain.sh
-  - git submodule update --init
+  - git submodule update --init --recursive
 
 script:
   - |

@@ -27,34 +27,40 @@ Led AO_led;
 UavcanNode AO_uavcanNode;
 
 /* -- Event queue buffers for the different active objects -- */
-static QEvent const * l_led_queueBuffer[10];
-static QEvent const * l_uavcanNode_queueBuffer[20];
+static QEvent const * g_led_queueBuffer[10];
+static QEvent const * g_uavcanNode_queueBuffer[20];
 
 /* -- Main loop -- */
 int main(void)
 {
-  QF_init();         /* Initialize the QF framework and the underlying RT kernel. */
-  BSP_init();        /* Initialize the hardware. */
-  BSP_Led_on();
-  BSP_Canard_init(); /* Inititalize the canard library */
+    QF_init();  /* Initialize the QF framework and the underlying RT kernel. */
+    BSP_init(); /* Initialize the hardware. */
 
-  /* Instantiate and start the UavcanNode active object */
-  UavcanNode_ctor(&AO_uavcanNode);
-  QACTIVE_START(&(AO_uavcanNode.super),
-    1U,
-    l_uavcanNode_queueBuffer,
-    Q_DIM(l_uavcanNode_queueBuffer),
-    (void*)0, 0U,
-    (QEvent*)0);
+    /* Inititalize the CAN hardware for use with Libcanard */
+    BSP_Led_on();
+    BSP_CAN_init();
+    BSP_Led_off();
 
-  /* Instantiate and start the Led active object */
-  Led_ctor(&AO_led);
-  QACTIVE_START(&(AO_led.super),
-    2U,
-    l_led_queueBuffer,
-    Q_DIM(l_led_queueBuffer),
-    (void*)0, 0U,
-    (QEvent*)0);
+    /* Initialize our Libcanard's instance */
+    APP_Canard_initInstance();
 
-  return QF_run();
+    /* Instantiate and start the UavcanNode active object */
+    UavcanNode_ctor(&AO_uavcanNode);
+    QACTIVE_START(&(AO_uavcanNode.super),
+      1U,
+      g_uavcanNode_queueBuffer,
+      Q_DIM(g_uavcanNode_queueBuffer),
+      (void*)0, 0U,
+      (QEvent*)0);
+
+    /* Instantiate and start the Led active object */
+    Led_ctor(&AO_led);
+    QACTIVE_START(&(AO_led.super),
+      2U,
+      g_led_queueBuffer,
+      Q_DIM(g_led_queueBuffer),
+      (void*)0, 0U,
+      (QEvent*)0);
+
+    return QF_run();
 }

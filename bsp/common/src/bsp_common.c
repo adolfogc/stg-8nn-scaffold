@@ -17,23 +17,14 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _BSP_H
-#define _BSP_H
+#include "uavcan/protocol/GetNodeInfo.h"
+#include "bsp.h"
 
-#include <stdint.h>
-#include "canard.h"
-#include "bsp_specific.h"
-
-void BSP_init(void);
-
-void BSP_Led_off(void);
-void BSP_Led_on(void);
-
-void BSP_CAN_init(void);
-void BSP_CAN_sendAll(CanardInstance* canardInstance);
-void BSP_CAN_receiveOnce(CanardInstance* canardInstance);
-
-uint32_t BSP_upTimeSeconds(void);
-void BSP_readUniqueID(uint8_t* outUid);
-
-#endif /* _BSP_H */
+/* TODO: replace with actual implementation */
+void BSP_readUniqueID(uint8_t* outUid)
+{
+    const char * const uid_ = "0123456789ABCDEF"; /* mock id */
+    for (uint8_t i = 0; i < UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH; ++i) {
+        outUid[i] = (uint8_t)uid_[i];
+    }
+}

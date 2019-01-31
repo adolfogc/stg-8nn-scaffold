@@ -49,7 +49,7 @@ list(APPEND BSP_SOURCES
   ${BSP_DIR}/stg/src/tim.c
   ${BSP_DIR}/stg/src/usart.c
   ${BSP_DIR}/stg/src/bsp.c
-  ${BSP_DIR}/stg/src/bsp_canard.c 
+  ${BSP_DIR}/stg/src/bsp_can.c 
   ${BSP_DIR}/stg/src/bsp_clock.c
   ${BSP_DIR}/stg/src/bsp_qpc.c
 )

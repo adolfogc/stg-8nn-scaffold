@@ -24,5 +24,5 @@ list(APPEND BSP_SOURCES
   ${BSP_DIR}/tester/include/bsp_specific.h
   ${BSP_DIR}/tester/src/bsp.c
   ${BSP_DIR}/tester/src/bsp_qpc.c
-  ${BSP_DIR}/tester/src/bsp_canard.c
+  ${BSP_DIR}/tester/src/bsp_can.c
 )

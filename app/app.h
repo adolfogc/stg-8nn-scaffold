@@ -17,22 +17,19 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _BSP_CANARD_COMMON_H
-#define _BSP_CANARD_COMMON_H
+#ifndef _APP_H
+#define _APP_H
 
-#include <stdint.h>
-#include "canard.h"
+#define APP_SW_VERSION_MAJOR 0
+#define APP_SW_VERSION_MINOR 1
 
-/* -- Canard callbacks -- */
-bool BSP_Canard_shouldAcceptTransfer(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId);
-void BSP_Canard_onTransferReceived(CanardInstance* instance, CanardRxTransfer* transfer);
+#define APP_HW_VERSION_MAJOR 0
+#define APP_HW_VERSION_MINOR 1
 
-/* -- Helper functions -- */
-void BSP_Canard_makeNodeStatusMessage(uint8_t* buffer);
-uint16_t BSP_Canard_makeNodeInfoMessage(uint8_t* buffer);
-void BSP_Canard_getNodeInfoHandle(CanardRxTransfer* transfer);
+#define APP_UAVCAN_NODE_NAME "local.adolfogc.stg8nn_scaffold"
 
-/* -- Canard library instance -- */
-extern CanardInstance g_canard;
+#ifndef APP_UAVCAN_DEFAULT_NODE_ID
+#define APP_UAVCAN_DEFAULT_NODE_ID 100
+#endif
 
-#endif /* _BSP_CANARD_COMMON_H */
+#endif
