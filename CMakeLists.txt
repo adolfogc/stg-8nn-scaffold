@@ -85,10 +85,10 @@ endif()
 execute_process(
   COMMAND git log -1 --format=%h
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  OUTPUT_VARIABLE APP_VERSION_GIT_COMMIT_HASH
+  OUTPUT_VARIABLE _GIT_COMMIT_HASH
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-add_definitions("-DAPP_VERSION_GIT_COMMIT_HASH=0x${APP_VERSION_GIT_COMMIT_HASH}")
+add_definitions("-DAPP_SW_GIT_COMMIT_HASH=0x${_GIT_COMMIT_HASH}")
 
 ##
 ## Some diagnostic messages
@@ -117,6 +117,13 @@ list(APPEND STG8NN_INCLUDE ${QPC_INCLUDE})
 include(CMakeLists_libcanard.txt)
 list(APPEND STG8NN_SOURCES ${CANARD_SOURCES})
 list(APPEND STG8NN_INCLUDE ${CANARD_INCLUDE})
+
+##
+## uavcan dsdl -> C files
+##
+include(CMakeLists_uavcan_dsdl.txt)
+list(APPEND STG8NN_SOURCES ${DSDL_C_SOURCES})
+list(APPEND STG8NN_INCLUDE ${DSDL_C_INCLUDE})
 
 ##
 ## bsp

@@ -6,3 +6,6 @@
 	path = dependencies/libcanard
 	url = https://github.com/adolfogc/libcanard.git
 	branch = master
+[submodule "dependencies/dsdl"]
+	path = dependencies/dsdl
+	url = https://github.com/UAVCAN/dsdl.git

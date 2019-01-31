@@ -13,7 +13,7 @@ cache:
 
 install:
   - git submodule init
-  - git submodule update
+  - git submodule update --init --recursive
   - sh: npm install --global xpm
   - sh: xpm install --global @gnu-mcu-eclipse/arm-none-eabi-gcc@8.2.1-1.1.1
   - sh: sudo apt-get update
