@@ -1,7 +1,6 @@
 #ifndef _UAVCAN_NODE_H
 #define _UAVCAN_NODE_H
 
-#include "canard.h"
 #include "qpc.h"
 
 /* Active Object */
@@ -16,8 +15,6 @@ typedef struct UavcanNodeTag {
 void UavcanNode_ctor(UavcanNode* me);
 
 /* Public functions */
-void APP_Canard_initInstance();
-CanardInstance* APP_Canard_getInstance();
-
+void APP_Canard_initInstance(void);
 
 #endif /* _UAVCAN_NODE_H */

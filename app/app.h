@@ -26,7 +26,8 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define APP_HW_VERSION_MAJOR 0
 #define APP_HW_VERSION_MINOR 1
 
-#define APP_UAVCAN_NODE_NAME "local.adolfogc.stg8nn_scaffold"
+#define APP_UAVCAN_NODE_NAME_DATA "local.adolfogc.stg8nn_scaffold"
+#define APP_UAVCAN_NODE_NAME_LEN 30
 
 #ifndef APP_UAVCAN_DEFAULT_NODE_ID
 #define APP_UAVCAN_DEFAULT_NODE_ID 100

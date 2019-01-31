@@ -36,37 +36,32 @@ void BSP_CAN_init(void)
     Q_ENSURE(canardSTM32Init(&timings, CanardSTM32IfaceModeNormal) == 0U);
 }
 
-void BSP_CAN_sendAll(CanardInstance* canardInstance)
+BSP_CAN_RxTxResult BSP_CAN_transmitOnce(const CanardCANFrame* frame)
 {
-    const CanardCANFrame* txFrame = canardPeekTxQueue(canardInstance);
-    while(txFrame != NULL)
-    {
-        const int16_t txRes = canardSTM32Transmit(txFrame);
-        if (txRes < 0) { /* Failure - drop the frame and report */
-            /* FIXME: handle the error properly */
-        } else if(txRes == 0) {
-            /* FIXME: handle full TX queue */
-        } else if(txRes == 1) {
-            canardPopTxQueue(canardInstance);
-        } else {
-            /* Do nothing */
+    const int16_t txRes = canardSTM32Transmit(frame);
+    BSP_CAN_RxTxResult result = BSP_CAN_RXTX_ERROR;
+    if (txRes > 0) {
+        result = BSP_CAN_RXTX_SUCCESS;
+    } else {
+        if (txRes == 0) {
+            result = BSP_CAN_RXTX_TIMEOUT;
         }
-        txFrame = canardPeekTxQueue(canardInstance);
     }
+    return result;
 }
 
-void BSP_CAN_receiveOnce(CanardInstance* canardInstance)
+BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame)
 {
-    CanardCANFrame rxFrame;
-    const uint32_t upTime = BSP_upTimeSeconds();
-    const int16_t rxRes = canardSTM32Receive(&rxFrame);
-    if (rxRes == 0) {
-        /* FIXME: handle empty buffer */
-    } else if(rxRes == 1) {
-        canardHandleRxFrame(canardInstance, &rxFrame, upTime);
+    const int16_t rxRes = canardSTM32Receive(frame);
+    BSP_CAN_RxTxResult result = BSP_CAN_RXTX_ERROR;
+    if (rxRes > 0) {
+        result = BSP_CAN_RXTX_SUCCESS;
     } else {
-        /* FIXME: handle error */
+        if (rxRes == 0) {
+            result = BSP_CAN_RXTX_TIMEOUT;
+        }
     }
+    return result;
 }
 
 

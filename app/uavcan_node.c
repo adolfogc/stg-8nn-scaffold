@@ -17,6 +17,8 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <string.h>
+#include "canard.h"
 #include "uavcan/protocol/GetNodeInfo.h"
 #include "uavcan/protocol/NodeStatus.h"
 #include "bsp.h"
@@ -35,7 +37,7 @@ enum UavcanNodeSignals {
 };
 
 /* -- Libcanard's memory pool -- */
-#define APP_CANARD_MEMORY_POOL_SIZE 1024
+#define APP_CANARD_MEMORY_POOL_SIZE 2048
 
 static uint8_t g_canardMemoryPool[APP_CANARD_MEMORY_POOL_SIZE];
 
@@ -48,7 +50,11 @@ QState UavcanNode_spinning(UavcanNode* me, QEvent const* e);
 QState UavcanNode_idle(UavcanNode* me, QEvent const* e);
 
 /* -- Prototypes for internal helper functions -- */
-static void spin();
+static void spin(void);
+static bool sendOnce(void);
+static void sendAll(void);
+static void receiveOnce(void);
+
 static uint32_t makeNodeStatusMessage(uint8_t* buffer);
 static uint32_t makeNodeInfoMessage(uint8_t* buffer);
 static void getNodeInfoHandle(CanardRxTransfer* transfer);
@@ -72,11 +78,6 @@ void APP_Canard_initInstance()
     canardSetLocalNodeID(&g_canardInstance, APP_UAVCAN_DEFAULT_NODE_ID);
 }
 
-CanardInstance* APP_Canard_getInstance()
-{
-    return &g_canardInstance;
-}
-
 /* -- Implementation of public AO functions -- */
 void UavcanNode_ctor(UavcanNode* me)
 {
@@ -98,8 +99,8 @@ QState UavcanNode_spinning(UavcanNode* me, QEvent const* e)
     switch(e->sig) {
         case Q_ENTRY_SIG:
             spin();
-            BSP_CAN_sendAll(APP_Canard_getInstance());
-            BSP_CAN_receiveOnce(APP_Canard_getInstance());
+            sendAll();
+            receiveOnce();
             status_ = Q_HANDLED();
             break;
         case SPIN_TIMEOUT_SIG:
@@ -132,7 +133,12 @@ QState UavcanNode_idle(UavcanNode* me, QEvent const* e)
 /* -- Implementation of Libcanard's callbacks -- */
 static bool shouldAcceptTransfer(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId)
 {
-    if ((transferType == CanardTransferTypeRequest) && (dataTypeId == UAVCAN_PROTOCOL_GETNODEINFO_ID)) {
+    (void)instance;
+    (void)sourceNodeId; /* not used yet */
+    if (transferType != CanardTransferTypeRequest) {
+        return false;
+    }
+    if (dataTypeId == UAVCAN_PROTOCOL_GETNODEINFO_ID) {
         *outDataTypeSignature = UAVCAN_PROTOCOL_GETNODEINFO_SIGNATURE;
         return true;
     }
@@ -141,7 +147,11 @@ static bool shouldAcceptTransfer(const CanardInstance* instance, uint64_t* outDa
 
 static void onTransferReceived(CanardInstance* instance, CanardRxTransfer* transfer)
 {
-    if ((transfer->transfer_type == CanardTransferTypeRequest) && (transfer->data_type_id == UAVCAN_PROTOCOL_GETNODEINFO_ID)) {
+    (void)instance; /* not used yet */
+    if(transfer->transfer_type != CanardTransferTypeRequest) {
+        return;
+    }
+    if(transfer->data_type_id == UAVCAN_PROTOCOL_GETNODEINFO_ID) {
         getNodeInfoHandle(transfer);
     }
 }
@@ -150,11 +160,12 @@ static void onTransferReceived(CanardInstance* instance, CanardRxTransfer* trans
 static void spin(void)
 {
     static uint8_t transferId = 0; /* The transferId variable MUST BE STATIC; refer to the libcanard documentation for the explanation. */
-    static uint8_t messageBuffer[UAVCAN_PROTOCOL_NODESTATUS_MAX_SIZE];
+    uint8_t messageBuffer[UAVCAN_PROTOCOL_NODESTATUS_MAX_SIZE];
+    memset(messageBuffer, 0, UAVCAN_PROTOCOL_NODESTATUS_MAX_SIZE);
 
     const uint32_t len = makeNodeStatusMessage(messageBuffer);
 
-    canardBroadcast(APP_Canard_getInstance(),
+    canardBroadcast(&g_canardInstance,
                     UAVCAN_PROTOCOL_NODESTATUS_SIGNATURE,
                     UAVCAN_PROTOCOL_NODESTATUS_ID,
                     &transferId,
@@ -163,19 +174,70 @@ static void spin(void)
                     (uint16_t)len);
 }
 
-static uint32_t makeNodeStatusMessage(uint8_t* buffer)
+static void sendAll(void)
+{
+    for(bool nextExists = true; nextExists; nextExists = sendOnce());
+}
+
+/* Returns true if another frame can be send */
+static bool sendOnce(void)
+{
+    const CanardCANFrame* txFrame = canardPeekTxQueue(&g_canardInstance);
+    bool nextExists = false;
+
+    if(txFrame != NULL) {
+        const BSP_CAN_RxTxResult result = BSP_CAN_transmitOnce(txFrame);
+        switch (result) {
+            case BSP_CAN_RXTX_TIMEOUT:
+                /* TODO: handle case */
+            break;
+            case BSP_CAN_RXTX_SUCCESS:
+                canardPopTxQueue(&g_canardInstance);
+            break;
+            case BSP_CAN_RXTX_ERROR:
+                /* TODO: handle case */
+            break;
+        }
+        nextExists = canardPeekTxQueue(&g_canardInstance) != NULL;
+    }
+
+    return nextExists;
+}
+
+static void receiveOnce(void)
+{
+    CanardCANFrame rxFrame;
+
+    const BSP_CAN_RxTxResult result = BSP_CAN_receiveOnce(&rxFrame);
+    switch (result) {
+        case BSP_CAN_RXTX_TIMEOUT:
+            /* TODO: handle case */
+        break;
+        case BSP_CAN_RXTX_SUCCESS:
+            canardHandleRxFrame(&g_canardInstance, &rxFrame, BSP_upTimeSeconds());
+        break;
+        case BSP_CAN_RXTX_ERROR:
+            /* TODO: handle case */
+        break;
+    }
+}
+
+static uint32_t makeNodeStatusMessage(uint8_t* messageBuffer)
 {
     uavcan_protocol_NodeStatus nodeStatus;
     nodeStatus.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK;
     nodeStatus.mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL;
     nodeStatus.uptime_sec = BSP_upTimeSeconds();
 
-    return uavcan_protocol_NodeStatus_encode(&nodeStatus, buffer);
+    return uavcan_protocol_NodeStatus_encode(&nodeStatus, messageBuffer);
 }
 
-static uint32_t makeNodeInfoMessage(uint8_t* buffer)
+static uint32_t makeNodeInfoMessage(uint8_t* messageBuffer)
 {
     uavcan_protocol_GetNodeInfoResponse nodeInfoResponse;
+
+    nodeInfoResponse.name.data = (uint8_t*) APP_UAVCAN_NODE_NAME_DATA;
+    nodeInfoResponse.name.len = APP_UAVCAN_NODE_NAME_LEN;
 
     nodeInfoResponse.status.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK;
     nodeInfoResponse.status.mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL;
@@ -189,15 +251,17 @@ static uint32_t makeNodeInfoMessage(uint8_t* buffer)
     nodeInfoResponse.hardware_version.major = APP_HW_VERSION_MAJOR;
     nodeInfoResponse.hardware_version.minor = APP_HW_VERSION_MINOR;
 
-    BSP_readUniqueID(&nodeInfoResponse.hardware_version.unique_id[0]);    /* Writes unique ID into the buffer */
+    BSP_readUniqueID(&(nodeInfoResponse.hardware_version.unique_id[0]));   /* Writes unique ID into the buffer */
     
-    return uavcan_protocol_GetNodeInfoResponse_encode(&nodeInfoResponse, buffer);
+    return uavcan_protocol_GetNodeInfoResponse_encode(&nodeInfoResponse, messageBuffer);
 }
 
 static void getNodeInfoHandle(CanardRxTransfer* transfer)
 {
-    uint8_t buffer[UAVCAN_PROTOCOL_GETNODEINFO_RESPONSE_NAME_MAX_LENGTH];
-    const uint32_t len = makeNodeInfoMessage(buffer);
+    uint8_t messageBuffer[UAVCAN_PROTOCOL_GETNODEINFO_RESPONSE_NAME_MAX_LENGTH];
+    memset(messageBuffer, 0, UAVCAN_PROTOCOL_GETNODEINFO_RESPONSE_NAME_MAX_LENGTH);
+
+    const uint32_t len = makeNodeInfoMessage(messageBuffer);
     int result = canardRequestOrRespond(&g_canardInstance,
                                         transfer->source_node_id,
                                         UAVCAN_PROTOCOL_GETNODEINFO_SIGNATURE,
@@ -205,7 +269,7 @@ static void getNodeInfoHandle(CanardRxTransfer* transfer)
                                         &transfer->transfer_id,
                                         transfer->priority,
                                         CanardResponse,
-                                        &buffer[0],
+                                        messageBuffer,
                                         (uint16_t)len);
     if (result < 0)
     {
