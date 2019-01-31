@@ -1,6 +1,16 @@
-## Tooling
+## Using Libcanard_dsdlc
 
-### Virtual CAN on Ubuntu Linux
+Run from the root directory the following command:
+
+```bash
+python3 dependencies/libcanard/dsdl_compiler/libcanard_dsdlc --outdir dsdl-gen dependencies/dsdl/uavcan
+```
+
+**Note:** this is handle automatically by CMake, refer to `CMakeLists_uavcan_dsdl.txt`.
+
+## Tooling (using Ubuntu Linux)
+
+### Setting up a virtual CAN interface
 
 ```bash
 sudo modprobe vcan
@@ -8,14 +18,14 @@ sudo ip link add dev vcan0 type vcan
 sudo ip link set up vcan0
 ```
 
-### KVaser Leaf on Ubuntu Linux
+### Setting up a KVaser Leaf interface
 ```bash
 sudo modprobe kvaser_usb
 sudo ip link set can0 type can bitrate 500000
 sudo ip link set up can0
 ```
 
-### CAN Utils on Ubuntu Linux
+### Installing and using CAN Utils
 
 #### Installation
 ```bash
@@ -33,7 +43,7 @@ The following command sends a message with identifier 0x1 and eight bytes of dat
 cansend vcan0 001#11223344556677AA
 ```
 
-### UAVCAN GUI Tool on Ubuntu Linux
+### Installing the UAVCAN GUI Tool
 ```bash
 sudo apt-get install -y python3-pip python3-setuptools python3-wheel
 sudo apt-get install -y python3-numpy python3-pyqt5 python3-pyqt5.qtsvg git-core

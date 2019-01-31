@@ -1,0 +1,191 @@
+# Copyright (C) 2018 Adolfo E. García
+#
+# This file is part of STG-8nn-Scaffold.
+#
+# STG-8nn-Scaffold is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# STG-8nn-Scaffold is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
+
+cmake_minimum_required(VERSION 3.5)
+
+##
+## DSDL SOURCE FILES
+##
+
+set(DSDL_SOURCE_FILES
+    dependencies/dsdl/uavcan/Timestamp.uavcan
+)
+
+list(APPEND DSDL_SOURCE_FILES
+    dependencies/dsdl/uavcan/protocol/1.GetNodeInfo.uavcan
+    dependencies/dsdl/uavcan/protocol/2.GetDataTypeInfo.uavcan
+    dependencies/dsdl/uavcan/protocol/4.GetTransportStats.uavcan
+    dependencies/dsdl/uavcan/protocol/4.GlobalTimeSync.uavcan
+    dependencies/dsdl/uavcan/protocol/5.Panic.uavcan
+    dependencies/dsdl/uavcan/protocol/5.RestartNode.uavcan
+    dependencies/dsdl/uavcan/protocol/6.AccessCommandShell.uavcan
+    dependencies/dsdl/uavcan/protocol/341.NodeStatus.uavcan
+    dependencies/dsdl/uavcan/protocol/CANIfaceStats.uavcan
+    dependencies/dsdl/uavcan/protocol/DataTypeKind.uavcan
+    dependencies/dsdl/uavcan/protocol/HardwareVersion.uavcan
+    dependencies/dsdl/uavcan/protocol/SoftwareVersion.uavcan
+)
+
+list(APPEND DSDL_SOURCE_FILES
+    dependencies/dsdl/uavcan/protocol/debug/16370.KeyValue.uavcan
+    dependencies/dsdl/uavcan/protocol/debug/16383.LogMessage.uavcan
+    dependencies/dsdl/uavcan/protocol/debug/LogLevel.uavcan
+)
+
+list(APPEND DSDL_SOURCE_FILES
+    dependencies/dsdl/uavcan/protocol/dynamic_node_id/1.Allocation.uavcan    
+)
+
+list(APPEND DSDL_SOURCE_FILES
+    dependencies/dsdl/uavcan/protocol/enumeration/15.Begin.uavcan
+    dependencies/dsdl/uavcan/protocol/enumeration/380.Indication.uavcan
+)
+
+list(APPEND DSDL_SOURCE_FILES
+    dependencies/dsdl/uavcan/protocol/file/40.BeginFirmwareUpdate.uavcan
+    dependencies/dsdl/uavcan/protocol/file/45.GetInfo.uavcan
+    dependencies/dsdl/uavcan/protocol/file/46.GetDirectoryEntryInfo.uavcan
+    dependencies/dsdl/uavcan/protocol/file/47.Delete.uavcan
+    dependencies/dsdl/uavcan/protocol/file/48.Read.uavcan
+    dependencies/dsdl/uavcan/protocol/file/49.Write.uavcan
+    dependencies/dsdl/uavcan/protocol/file/EntryType.uavcan
+    dependencies/dsdl/uavcan/protocol/file/Error.uavcan
+    dependencies/dsdl/uavcan/protocol/file/Path.uavcan
+)
+
+list(APPEND DSDL_SOURCE_FILES
+    dependencies/dsdl/uavcan/protocol/param/10.ExecuteOpcode.uavcan
+    dependencies/dsdl/uavcan/protocol/param/11.GetSet.uavcan
+    dependencies/dsdl/uavcan/protocol/param/Empty.uavcan
+    dependencies/dsdl/uavcan/protocol/param/NumericValue.uavcan
+    dependencies/dsdl/uavcan/protocol/param/Value.uavcan
+)
+
+# Note: this variable is the source directory passed to the DSDL compiler, so you should
+# use the full path.
+set(DSDL_SOURCE_DIRECTORIES ${PROJECT_SOURCE_DIR}/dependencies/dsdl/uavcan)
+
+##
+## DSDL GENERATED FILES
+##
+
+set(DSDL_OUT_DIR dsdl-gen)
+
+set(DSDL_GENERATED_FILES
+    ${DSDL_OUT_DIR}/uavcan/Timestamp.h
+    ${DSDL_OUT_DIR}/uavcan/uavcan_Timestamp.c
+)
+
+list(APPEND DSDL_GENERATED_FILES
+    ${DSDL_OUT_DIR}/uavcan/protocol/AccessCommandShell.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_AccessCommandShell.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/CANIfaceStats.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_CANIfaceStats.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/DataTypeKind.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_DataTypeKind.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/GetDataTypeInfo.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_GetDataTypeInfo.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/GetNodeInfo.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_GetNodeInfo.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/GetTransportStats.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_GetTransportStats.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/GlobalTimeSync.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_GlobalTimeSync.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/HardwareVersion.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_HardwareVersion.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/NodeStatus.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_NodeStatus.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/Panic.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_Panic.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/RestartNode.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_RestartNode.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/SoftwareVersion.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/protocol_SoftwareVersion.c
+)
+
+list(APPEND DSDL_GENERATED_FILES
+    ${DSDL_OUT_DIR}/uavcan/protocol/debug/KeyValue.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/debug/debug_KeyValue.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/debug/LogLevel.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/debug/debug_LogLevel.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/debug/LogMessage.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/debug/debug_LogMessage.c
+)
+
+list(APPEND DSDL_GENERATED_FILES
+    ${DSDL_OUT_DIR}/uavcan/protocol/dynamic_node_id/Allocation.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/dynamic_node_id/dynamic_node_id_Allocation.c
+)
+
+list(APPEND DSDL_GENERATED_FILES
+    ${DSDL_OUT_DIR}/uavcan/protocol/enumeration/Begin.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/enumeration/enumeration_Begin.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/enumeration/Indication.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/enumeration/enumeration_Indication.c
+)
+
+list(APPEND DSDL_GENERATED_FILES
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/BeginFirmwareUpdate.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/file_BeginFirmwareUpdate.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/Delete.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/file_Delete.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/EntryType.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/file_EntryType.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/Error.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/file_Error.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/GetDirectoryEntryInfo.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/file_GetDirectoryEntryInfo.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/GetInfo.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/file_GetInfo.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/Path.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/file_Path.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/Read.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/file_Read.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/Write.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/file/file_Write.c
+)
+
+list(APPEND DSDL_GENERATED_FILES
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/Empty.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/param_Empty.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/ExecuteOpcode.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/param_ExecuteOpcode.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/GetSet.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/param_GetSet.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/NumericValue.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/param_NumericValue.c
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/Value.h
+    ${DSDL_OUT_DIR}/uavcan/protocol/param/param_Value.c
+)
+
+##
+## CUSTOM COMMAND
+##
+
+add_custom_command(
+    OUTPUT ${DSDL_GENERATED_FILES}
+    COMMAND python3 ${PROJECT_SOURCE_DIR}/dependencies/libcanard/dsdl_compiler/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
+    MAIN_DEPENDENCY dependencies/libcanard/dsdl_compiler/libcanard_dsdlc
+    DEPENDS ${DSDL_SOURCE_FILES}
+)
+
+##
+## SET SOURCES AND HEADERS
+##
+
+set(DSDL_C_INCLUDE ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR})
+set(DSDL_C_SOURCES ${DSDL_GENERATED_FILES})

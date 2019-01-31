@@ -65,6 +65,12 @@ brew tap eblot/armeabi
 brew install armv6m-cortex-m0plus
 ```
 
+3. Installing Python 3 (required by Libcanard's DSDL compiler)
+
+```bash
+brew install python3
+```
+
 #### Linux
 Refer to `ci/Dockerfile`.
 

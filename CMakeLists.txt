@@ -119,6 +119,13 @@ list(APPEND STG8NN_SOURCES ${CANARD_SOURCES})
 list(APPEND STG8NN_INCLUDE ${CANARD_INCLUDE})
 
 ##
+## uavcan dsdl -> C files
+##
+include(CMakeLists_uavcan_dsdl.txt)
+list(APPEND STG8NN_SOURCES ${DSDL_C_SOURCES})
+list(APPEND STG8NN_INCLUDE ${DSDL_C_INCLUDE})
+
+##
 ## bsp
 ##
 include(CMakeLists_bsp.txt)
