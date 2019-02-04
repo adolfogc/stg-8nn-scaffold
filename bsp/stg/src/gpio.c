@@ -206,7 +206,6 @@ void MX_GPIO_Init(void)
     LL_GPIO_ResetOutputPin(DRIVER_EN_GPIO_Port, DRIVER_EN_Pin);
     LL_GPIO_ResetOutputPin(LED_GPIO_Port, LED_Pin);
     LL_GPIO_ResetOutputPin(OUT9_GPIO_Port, OUT9_Pin);
-    LL_GPIO_SetOutputPin(CAN_S_GPIO_Port, CAN_S_Pin);
 
     GPIO_InitStruct.Pin = OUT1_Pin;
     GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;

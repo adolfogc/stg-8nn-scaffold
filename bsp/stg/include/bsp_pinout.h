@@ -43,7 +43,9 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define LED_Pin LL_GPIO_PIN_8
 #define LED_GPIO_Port GPIOA
 #define CAN_S_Pin LL_GPIO_PIN_6
-#define CAN_S_GPIO_Port GPIOB
+#define CAN_RX_Pin LL_GPIO_PIN_8
+#define CAN_TX_Pin LL_GPIO_PIN_9
+#define CAN_GPIO_Port GPIOB
 #define Out9_LS_Pin LL_GPIO_PIN_7
 #define Out9_LS_GPIO_Port GPIOB
 #define BOOT0_Pin LL_GPIO_PIN_11
@@ -94,7 +96,9 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define IN7_Pin GPIO_PIN_5
 #define IN7_GPIO_Port GPIOB
 #define CAN_S_Pin GPIO_PIN_6
-#define CAN_S_GPIO_Port GPIOB
+#define CAN_RX_Pin LL_GPIO_PIN_8
+#define CAN_TX_Pin LL_GPIO_PIN_9
+#define CAN_GPIO_Port GPIOB
 #define OUT9_Pin GPIO_PIN_7
 #define OUT9_GPIO_Port GPIOB
 #define Boot0_Pin GPIO_PIN_11
