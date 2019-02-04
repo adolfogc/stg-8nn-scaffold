@@ -30,8 +30,17 @@ void BSP_Led_off(void);
 void BSP_Led_on(void);
 
 void BSP_CAN_init(void);
-void BSP_CAN_sendAll(CanardInstance* canardInstance);
-void BSP_CAN_receiveOnce(CanardInstance* canardInstance);
+
+enum BSP_CAN_RxTxResultTag {
+    BSP_CAN_RXTX_TIMEOUT,
+    BSP_CAN_RXTX_SUCCESS,
+    BSP_CAN_RXTX_ERROR
+};
+
+typedef enum BSP_CAN_RxTxResultTag BSP_CAN_RxTxResult;
+
+BSP_CAN_RxTxResult BSP_CAN_transmitOnce(const CanardCANFrame* frame);
+BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame);
 
 uint32_t BSP_upTimeSeconds(void);
 void BSP_readUniqueID(uint8_t* outUid);

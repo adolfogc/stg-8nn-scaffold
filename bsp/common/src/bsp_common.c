@@ -23,8 +23,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 /* TODO: replace with actual implementation */
 void BSP_readUniqueID(uint8_t* outUid)
 {
-    const char * const uid_ = "0123456789ABCDEF"; /* mock id */
     for (uint8_t i = 0; i < UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH; ++i) {
-        outUid[i] = (uint8_t)uid_[i];
+        outUid[i] = i;
     }
 }

@@ -40,38 +40,30 @@ void BSP_CAN_init(void)
     Q_ENSURE(socketcanInit(&g_socketcan, BSP_CAN_IFACE_NAME) == 0);
 }
 
-void BSP_CAN_sendAll(CanardInstance* canardInstance)
+BSP_CAN_RxTxResult BSP_CAN_transmitOnce(const CanardCANFrame* frame)
 {
-    const CanardCANFrame* txFrame = canardPeekTxQueue(canardInstance);
-    while(txFrame != NULL)
-    {
-        const int16_t txRes = socketcanTransmit(&g_socketcan, txFrame, 0U);
-        if (txRes < 0) {
-
-            /* FIXME: handle the error properly */
-        } else if(txRes > 0) {
-            canardPopTxQueue(canardInstance);
-        } else {
-            /* Do nothing */
+    const int16_t txRes = socketcanTransmit(&g_socketcan, frame, 0U);
+    BSP_CAN_RxTxResult result = BSP_CAN_RXTX_ERROR;
+    if (txRes > 0) {
+        result = BSP_CAN_RXTX_SUCCESS;
+    } else {
+        if (txRes == 0) {
+            result = BSP_CAN_RXTX_TIMEOUT;
         }
-        txFrame = canardPeekTxQueue(canardInstance);
     }
+    return result;
 }
 
-void BSP_CAN_receiveOnce(CanardInstance* canardInstance)
+BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame)
 {
-    CanardCANFrame rxFrame;
-    const uint32_t upTime = BSP_upTimeSeconds();
-    const int16_t rxRes = socketcanReceive(&g_socketcan, &rxFrame, 0U); /* FIXME: timeout */
-    if (rxRes < 0) {
-        /* Failure */
-        (void)fprintf(stderr, "Receive error %d, errno '%s'\n", rxRes, strerror(errno));
-    }
-    else if (rxRes > 0) {
-        /* Success */
-        canardHandleRxFrame(canardInstance, &rxFrame, upTime);
+    const int16_t rxRes = socketcanReceive(&g_socketcan, frame, 100U); /* 100 ms timeout */
+    BSP_CAN_RxTxResult result = BSP_CAN_RXTX_ERROR;
+    if (rxRes > 0) {
+        result = BSP_CAN_RXTX_SUCCESS;
     } else {
-        /* Timeout */
-        fputs("Timed out while receiving CAN frame.\n", stderr);
+        if (rxRes == 0) {
+            result = BSP_CAN_RXTX_TIMEOUT;
+        }
     }
+    return result;
 }
