@@ -29,7 +29,7 @@ void BSP_CAN_init(void)
     CanardSTM32CANTimings timings;
 
     /* Change CAN from silent to active mode. */
-    LL_GPIO_ResetOutputPin(CAN_S_GPIO_Port, CAN_S_Pin);
+    LL_GPIO_ResetOutputPin(CAN_GPIO_Port, CAN_S_Pin);
 
     /* Initialize the STM32 CAN driver */
     Q_ENSURE(canardSTM32ComputeCANTimings(HAL_RCC_GetPCLK1Freq(), 500000U, &timings) == 0U);

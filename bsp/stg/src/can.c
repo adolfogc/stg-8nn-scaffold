@@ -33,24 +33,22 @@ void MX_CAN_Init(void)
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
 
     /* Set CAN to silent mode */
-    LL_GPIO_SetOutputPin(CAN_S_GPIO_Port, CAN_S_Pin);
+    LL_GPIO_SetOutputPin(CAN_GPIO_Port, CAN_S_Pin);
 
     GPIO_InitStruct.Pin = CAN_S_Pin;
     GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
     GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-    LL_GPIO_Init(CAN_S_GPIO_Port, &GPIO_InitStruct);
+    LL_GPIO_Init(CAN_GPIO_Port, &GPIO_InitStruct);
 
-    /* PB8 ------> CAN_RX */
-    /* PB9 ------> CAN_TX */
-    GPIO_InitStruct.Pin = LL_GPIO_PIN_8 | LL_GPIO_PIN_9;
+    GPIO_InitStruct.Pin = CAN_RX_Pin|CAN_TX_Pin;
     GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
     GPIO_InitStruct.Alternate = LL_GPIO_AF_4;
-    LL_GPIO_Init(CAN_S_GPIO_Port, &GPIO_InitStruct);
+    LL_GPIO_Init(CAN_GPIO_Port, &GPIO_InitStruct);
 
     NVIC_SetPriority(CEC_CAN_IRQn, BSP_CAN_PRIO);
-    /* HAL_NVIC_EnableIRQ(CEC_CAN_IRQn); */
+    /* The IRQ can be enabled by calling: NVIC_EnableIRQ(CEC_CAN_IRQn) */
 }
