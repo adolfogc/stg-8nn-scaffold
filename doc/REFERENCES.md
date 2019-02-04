@@ -3,7 +3,8 @@
 - [STM32F091CC's web page](https://www.st.com/en/microcontrollers/stm32f091cc.html)
 - [STM32F0xxx's Cortex-M0 programming manual](https://www.st.com/content/ccc/resource/technical/document/programming_manual/fc/90/c7/17/a1/44/43/89/DM00051352.pdf/files/DM00051352.pdf/jcr:content/translations/en.DM00051352.pdf)
 - [STM32CubeF0's web page](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html)
-- [ST's UM1785 User Manual - Description of STM32F0 HAL and low-layer drivers](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/77/25/0f/5c/38/48/80/DM00122015.pdf/files/DM00122015.pdf/jcr:content/translations/en.DM00122015.pdf)
+- [ST's UM1785 User manual - Description of STM32F0 HAL and low-layer drivers](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/77/25/0f/5c/38/48/80/DM00122015.pdf/files/DM00122015.pdf/jcr:content/translations/en.DM00122015.pdf)
+- [ST's RM0091 Reference manual - STM32F0x1/STM32F0x2/STM32F0x8 advanced ARM®-based 32-bit MCUs](https://www.st.com/content/ccc/resource/technical/document/reference_manual/c2/f8/8a/f2/18/e6/43/96/DM00031936.pdf/files/DM00031936.pdf/jcr:content/translations/en.DM00031936.pdf)
 
 ### QP/C
 - [*"Getting Started with QP/C"* guide](https://state-machine.com/doc/AN_Getting_Started_with_QPC.pdf)
