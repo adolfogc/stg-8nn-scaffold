@@ -32,8 +32,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp_clock.h"
 #include "bsp_pinout.h"
 
-void BSP_CAN_init(void);
-
 void BSP_init(void)
 {
     HAL_Init();

@@ -58,6 +58,7 @@ BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame)
         result = BSP_CAN_RXTX_SUCCESS;
     } else {
         if (rxRes == 0) {
+            /* No frames to read */
             result = BSP_CAN_RXTX_TIMEOUT;
         }
     }

@@ -55,10 +55,10 @@ else()
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING
+    set(CMAKE_BUILD_TYPE "MinSizeRel" CACHE STRING
       "Choose the type of build, options are: None Debug Release RelWithDebInfo Debug DebugFull Profile MinSizeRel"
       FORCE)
-    add_definitions(-DNDEBUG) #qpc no debug flag
+    add_definitions(-DNDEBUG) #qpc,libcanard no debug flag
 endif()
 
 set(CMAKE_C_STANDARD 99)
