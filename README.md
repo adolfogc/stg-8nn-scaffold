@@ -45,7 +45,7 @@ You should be acquainted with the QP™ framework and its concepts in order to u
 https://github.com/adolfogc/stg-8nn-scaffold.git
 cd stg-8nn-scaffold
 git submodule init
-git submodule update
+git submodule update --init --recursive
 ```
 
 ### Getting the toolchain and the flashing utility
