@@ -324,13 +324,16 @@ static bool sendOnce(void)
         switch (result) {
             case BSP_CAN_RXTX_TIMEOUT:
                 /* TODO: handle case */
-            break;
+                break;
             case BSP_CAN_RXTX_SUCCESS:
                 canardPopTxQueue(&g_canardInstance);
-            break;
+                break;
             case BSP_CAN_RXTX_ERROR:
                 /* TODO: handle case */
-            break;
+                break;
+            default:
+                /* This path should be unreacheable */
+                break;
         }
         nextExists = canardPeekTxQueue(&g_canardInstance) != NULL;
     }
@@ -348,13 +351,16 @@ static void receiveOnce(void)
     switch (result) {
         case BSP_CAN_RXTX_TIMEOUT:
             /* TODO: handle case */
-        break;
+            break;
         case BSP_CAN_RXTX_SUCCESS:
             canardHandleRxFrame(&g_canardInstance, &rxFrame, BSP_upTimeSeconds());
-        break;
+            break;
         case BSP_CAN_RXTX_ERROR:
             /* TODO: handle case */
-        break;
+            break;
+        default:
+            /* This path should be unreacheable */
+            break;
     }
 }
 
@@ -411,11 +417,12 @@ static void getNodeInfoHandle(CanardRxTransfer* transfer)
                                         CanardResponse,
                                         messageBuffer,
                                         (uint16_t)len);
+    /* Abort if response resulted in error */
     if (result < 0) {
-        /* TODO: handle the error */
-    } else {
-        sendAll();
+        return;
     }
+
+    sendAll();
 }
 
 static void restartNodeHandle(CanardRxTransfer* transfer)
@@ -444,11 +451,12 @@ static void restartNodeHandle(CanardRxTransfer* transfer)
                                         CanardResponse,
                                         buffer,
                                         (uint16_t)len);
+    /* Abort if response resulted in error */
     if (result < 0) {
-        /* TODO: handle the error */
-    } else {
-        sendAll();
-        static const QEvt aboutToRestartEvt = {UAVCAN_ABOUTTORESTART_SIG, 0U, 0U};
-        QACTIVE_POST(&g_uavcanNode.super, &aboutToRestartEvt, (void*)0);
+        return;
     }
+
+    sendAll();
+    static const QEvt aboutToRestartEvt = {UAVCAN_ABOUTTORESTART_SIG, 0U, 0U};
+    QACTIVE_POST(&g_uavcanNode.super, &aboutToRestartEvt, (void*)0);
 }
