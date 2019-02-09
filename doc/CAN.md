@@ -21,7 +21,7 @@ sudo ip link set up vcan0
 ### Setting up a KVaser Leaf interface
 ```bash
 sudo modprobe kvaser_usb
-sudo ip link set can0 type can bitrate 500000
+sudo ip link set can0 type can bitrate 500000 sample-point 0.875 restart-ms 100
 sudo ip link set up can0
 ```
 

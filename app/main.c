@@ -42,7 +42,7 @@ int main(void)
     UavcanNode* uavcanNode = initUavcanNode();
 
     /* Start the UavcanNode active object */
-    QACTIVE_START((QActive*)&led->super,
+    QACTIVE_START((QActive*)&uavcanNode->super,
       1U,
       g_uavcanNode_queueBuffer,
       Q_DIM(g_uavcanNode_queueBuffer),
@@ -50,7 +50,7 @@ int main(void)
       (QEvt*)0);
 
     /* Start the Led active object */
-    QACTIVE_START((QActive*)&uavcanNode->super,
+    QACTIVE_START((QActive*)&led->super,
       2U,
       g_led_queueBuffer,
       Q_DIM(g_led_queueBuffer),
