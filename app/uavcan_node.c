@@ -420,12 +420,20 @@ static void getNodeInfoHandle(CanardRxTransfer* transfer)
 
 static void restartNodeHandle(CanardRxTransfer* transfer)
 {
-    uint8_t messageBuffer[UAVCAN_PROTOCOL_RESTARTNODE_RESPONSE_MAX_SIZE];
+    uint8_t buffer[UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAX_SIZE];
+
+    uavcan_protocol_RestartNodeRequest restartNodeRequest;
+    uavcan_protocol_RestartNodeRequest_decode(transfer, transfer->payload_len, &restartNodeRequest, (uint8_t**)0);
+
+    /* Abort if magic number is incorrect */
+    if(restartNodeRequest.magic_number != UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAGIC_NUMBER) {
+        return;
+    }
 
     uavcan_protocol_RestartNodeResponse restartNodeResponse;
     restartNodeResponse.ok = true;
 
-    const uint32_t len = uavcan_protocol_RestartNodeResponse_encode(&restartNodeResponse, messageBuffer);
+    const uint32_t len = uavcan_protocol_RestartNodeResponse_encode(&restartNodeResponse, buffer);
 
     int result = canardRequestOrRespond(&g_canardInstance,
                                         transfer->source_node_id,
@@ -434,7 +442,7 @@ static void restartNodeHandle(CanardRxTransfer* transfer)
                                         &transfer->transfer_id,
                                         transfer->priority,
                                         CanardResponse,
-                                        messageBuffer,
+                                        buffer,
                                         (uint16_t)len);
     if (result < 0) {
         /* TODO: handle the error */
