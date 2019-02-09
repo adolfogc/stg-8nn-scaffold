@@ -36,7 +36,7 @@ void QF_onCleanup(void)
 void QF_onClockTick(void)
 {
     int ch;
-    QF_TICK_X(0U, &l_clock_tick); /* QF clock tick processing for rate 0 */
+    QF_TICK_X(0U, (void*)0); /* QF clock tick processing for rate 0 */
     ch = QF_consoleGetKey();
     if (ch != 0) { /* any key pressed? */
         //TODO: BSP_onKeyboardInput(ch);

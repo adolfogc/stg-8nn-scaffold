@@ -97,7 +97,7 @@ static QState UavcanNode_init(UavcanNode* me, QEvt const * const e)
 
     /* Setup the broadcast timer */
     QTimeEvt_armX(&me->statusUpdateTimeEvent, BSP_TICKS_PER_SEC / 2U, BSP_TICKS_PER_SEC / 2U); /* every 500 ms */
-    QTimeEvt_armX(&me->receiveTimeEvent, BSP_TICKS_PER_SEC / 10U, BSP_TICKS_PER_SEC / 10U);      /* every 100 ms */
+    QTimeEvt_armX(&me->receiveTimeEvent, BSP_TICKS_PER_SEC / 4U, BSP_TICKS_PER_SEC / 4U);      /* every 100 ms */
 
     /* Initialize our Libcanard's instance */
     initCanardInstance();
@@ -187,6 +187,7 @@ static QState UavcanNode_aboutToRestart(UavcanNode* me, QEvt const * const e)
             break;
         case UAVCAN_RESTART_SIG:
             BSP_restart();
+            status = Q_HANDLED();
             break;
         default:
            status = Q_HANDLED(); /* ignore all the other signals */

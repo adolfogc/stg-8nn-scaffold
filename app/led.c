@@ -50,7 +50,7 @@ static void Led_ctor(Led* me)
 static QState Led_initial(Led * const me, QEvt const * const e)
 {
     /* Arm the private time event to expire in 1s and periodically every 1 seconds */
-    QTimeEvt_armX(&me->timeEvent, BSP_TICKS_PER_SEC * 1, BSP_TICKS_PER_SEC * 1);
+    QTimeEvt_armX(&me->timeEvent, BSP_TICKS_PER_SEC * 1U, BSP_TICKS_PER_SEC * 1U);
     return Q_TRAN(&Led_off);
 }
 
