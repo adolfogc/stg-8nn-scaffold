@@ -20,6 +20,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h> 
 
 static time_t g_startTime;
@@ -27,6 +28,12 @@ static time_t g_startTime;
 void BSP_init(void)
 {
   g_startTime = time(NULL);
+}
+
+void BSP_restart(void)
+{
+    fputs("RESTARTING...\n", stdout);
+    QF_stop();
 }
 
 void BSP_Led_off(void)

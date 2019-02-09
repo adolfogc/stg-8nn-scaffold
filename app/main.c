@@ -22,45 +22,40 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "led.h"
 #include "uavcan_node.h"
 
-/* -- Active objects -- */
-Led AO_led;
-UavcanNode AO_uavcanNode;
-
 /* -- Event queue buffers for the different active objects -- */
-static QEvent const * g_led_queueBuffer[10];
-static QEvent const * g_uavcanNode_queueBuffer[20];
+static QEvt const * g_led_queueBuffer[10];
+static QEvt const * g_uavcanNode_queueBuffer[20];
 
 /* -- Main loop -- */
 int main(void)
 {
-    QF_init();  /* Initialize the QF framework and the underlying RT kernel. */
     BSP_init(); /* Initialize the hardware. */
+    QF_init();  /* Initialize the QF framework and the underlying RT kernel. */
 
     /* Inititalize the CAN hardware for use with Libcanard */
     BSP_Led_on();
     BSP_CAN_init();
     BSP_Led_off();
 
-    /* Initialize our Libcanard's instance */
-    APP_Canard_initInstance();
+    /* -- Active objects -- */
+    Led* led = initLedAO();
+    UavcanNode* uavcanNode = initUavcanNode();
 
-    /* Instantiate and start the UavcanNode active object */
-    UavcanNode_ctor(&AO_uavcanNode);
-    QACTIVE_START(&(AO_uavcanNode.super),
+    /* Start the UavcanNode active object */
+    QACTIVE_START((QActive*)&led->super,
       1U,
       g_uavcanNode_queueBuffer,
       Q_DIM(g_uavcanNode_queueBuffer),
       (void*)0, 0U,
-      (QEvent*)0);
+      (QEvt*)0);
 
-    /* Instantiate and start the Led active object */
-    Led_ctor(&AO_led);
-    QACTIVE_START(&(AO_led.super),
+    /* Start the Led active object */
+    QACTIVE_START((QActive*)&uavcanNode->super,
       2U,
       g_led_queueBuffer,
       Q_DIM(g_led_queueBuffer),
       (void*)0, 0U,
-      (QEvent*)0);
+      (QEvt*)0);
 
     return QF_run();
 }

@@ -9,12 +9,11 @@ extern QActive * const AO_UavcanNode;
 typedef struct UavcanNodeTag {
     QActive super;
 
-    QTimeEvt spinTimeEvent;
+    QTimeEvt statusUpdateTimeEvent; /* used for periodic node status updates */
+    QTimeEvt receiveTimeEvent; /* used for "reception polling" */
+    QTimeEvt restartTimeEvent;
 } UavcanNode;
 
-void UavcanNode_ctor(UavcanNode* me);
-
-/* Public functions */
-void APP_Canard_initInstance(void);
+UavcanNode* initUavcanNode(void);
 
 #endif /* _UAVCAN_NODE_H */

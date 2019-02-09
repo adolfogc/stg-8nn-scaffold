@@ -20,29 +20,37 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp.h"
 #include "led.h"
 
+Led g_led;
+
 enum LedSignals {
     TIMEOUT_SIG = Q_USER_SIG,
     MAX_SIG
 };
 
 /* Prototypes */
-static QState Led_initial(Led * const me, QEvent const * const e);
-static QState Led_off(Led * const me, QEvent const * const e);
-static QState Led_on(Led * const me, QEvent const * const e);
+static void Led_ctor(Led* me);
+
+static QState Led_initial(Led * const me, QEvt const * const e);
+static QState Led_off(Led * const me, QEvt const * const e);
+static QState Led_on(Led * const me, QEvt const * const e);
 
 /* Implementations */
-void Led_ctor(Led* me)
+Led* initLedAO(void)
+{
+    Led_ctor(&g_led);
+    return &g_led;
+}
+
+static void Led_ctor(Led* me)
 {
     QActive_ctor(&me->super, Q_STATE_CAST(&Led_initial));
     QTimeEvt_ctorX(&(me->timeEvent), &(me->super), TIMEOUT_SIG, 0U);
 }
 
-static QState Led_initial(Led * const me, QEvent const * const e)
+static QState Led_initial(Led * const me, QEvt const * const e)
 {
     /* Arm the private time event to expire in 1s and periodically every 1 seconds */
-    QTimeEvt_armX(&me->timeEvent,
-        1*BSP_TICKS_PER_SEC,
-        1*BSP_TICKS_PER_SEC);
+    QTimeEvt_armX(&me->timeEvent, BSP_TICKS_PER_SEC * 1, BSP_TICKS_PER_SEC * 1);
     return Q_TRAN(&Led_off);
 }
 
@@ -63,7 +71,7 @@ static QState Led_off(Led * const me, QEvt const * const e) {
     return status_;
 }
 
-static QState Led_on(Led * const me, QEvent const * const e) {
+static QState Led_on(Led * const me, QEvt const * const e) {
     QState status_;
     switch (e->sig) {
         case Q_ENTRY_SIG:

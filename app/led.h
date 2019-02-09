@@ -28,6 +28,6 @@ typedef struct LedTag {
     QTimeEvt timeEvent;
 } Led;
 
-void Led_ctor(Led* me);
+Led* initLedAO(void);
 
 #endif /* _LED_AO_H */

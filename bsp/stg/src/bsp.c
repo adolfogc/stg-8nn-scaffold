@@ -59,6 +59,11 @@ void BSP_init(void)
 #endif /* MODEL_STG856 */
 }
 
+void BSP_restart(void)
+{
+    NVIC_SystemReset();
+}
+
 void BSP_Led_off(void)
 {
     LL_GPIO_ResetOutputPin(LED_GPIO_Port, LED_Pin);
