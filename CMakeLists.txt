@@ -107,43 +107,45 @@ set(OUTPUT_NAME firmware)
 ##
 
 include(CMakeLists_qpc.txt)
-list(APPEND STG8NN_SOURCES ${QPC_SOURCES})
-list(APPEND STG8NN_INCLUDE ${QPC_INCLUDE})
+list(APPEND SCAFFOLD_SOURCES ${QPC_SOURCES})
+list(APPEND SCAFFOLD_INCLUDE ${QPC_INCLUDE})
 
 ##
 ## dependencies::libcanard
 ##
 
 include(CMakeLists_libcanard.txt)
-list(APPEND STG8NN_SOURCES ${CANARD_SOURCES})
-list(APPEND STG8NN_INCLUDE ${CANARD_INCLUDE})
+list(APPEND SCAFFOLD_SOURCES ${CANARD_SOURCES})
+list(APPEND SCAFFOLD_INCLUDE ${CANARD_INCLUDE})
 
 ##
 ## uavcan dsdl -> C files
 ##
 include(CMakeLists_uavcan_dsdl.txt)
-list(APPEND STG8NN_SOURCES ${DSDL_C_SOURCES})
-list(APPEND STG8NN_INCLUDE ${DSDL_C_INCLUDE})
+list(APPEND SCAFFOLD_SOURCES ${DSDL_C_SOURCES})
+list(APPEND SCAFFOLD_INCLUDE ${DSDL_C_INCLUDE})
 
 ##
 ## bsp
 ##
 include(CMakeLists_bsp.txt)
+list(APPEND SCAFFOLD_SOURCES ${BSP_SOURCES})
+list(APPEND SCAFFOLD_INCLUDE ${BSP_INCLUDE})
 
 ##
 ## app
 ##
 
 include(CMakeLists_app.txt)
-list(APPEND STG8NN_SOURCES ${APP_SOURCES})
-list(APPEND STG8NN_INCLUDE ${APP_INCLUDE})
+list(APPEND SCAFFOLD_SOURCES ${APP_SOURCES})
+list(APPEND SCAFFOLD_INCLUDE ${APP_INCLUDE})
 
 ##
 ## elf definition
 ##
 
-add_executable(${OUTPUT_NAME}.elf ${STG8NN_SOURCES})
-target_include_directories(${OUTPUT_NAME}.elf PRIVATE ${STG8NN_INCLUDE})
+add_executable(${OUTPUT_NAME}.elf ${SCAFFOLD_SOURCES})
+target_include_directories(${OUTPUT_NAME}.elf PRIVATE ${SCAFFOLD_INCLUDE})
 
 ##
 ## linker script and bin file

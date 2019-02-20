@@ -24,17 +24,15 @@ set(BSP_SOURCES
   ${BSP_DIR}/common/include/bsp_qpc.h
   ${BSP_DIR}/common/include/canard_build_config.h
   ${BSP_DIR}/common/src/bsp_common.c
+
 )
 
 if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
   include(CMakeLists_bsp_stg.txt)
   ## dependencies:stm32cube
   include(CMakeLists_stm32cube.txt)
-  list(APPEND STG8NN_SOURCES ${STM32CUBE_SOURCES})
-  list(APPEND STG8NN_INCLUDE ${STM32CUBE_INCLUDE})
+  list(APPEND BSP_SOURCES ${STM32CUBE_SOURCES})
+  list(APPEND BSP_INCLUDE ${STM32CUBE_INCLUDE})
 else()
   include(CMakeLists_bsp_tester.txt)
 endif()
-
-list(APPEND STG8NN_SOURCES ${BSP_SOURCES})
-list(APPEND STG8NN_INCLUDE ${BSP_INCLUDE})

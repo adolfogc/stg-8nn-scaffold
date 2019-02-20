@@ -40,9 +40,16 @@ elseif("${CMAKE_ASM_COMPILER_ID}" MATCHES "Clang" AND "${CMAKE_SYSTEM_PROCESSOR}
     ${QPC_DIR}/src/qk/qk.c
   )
 else()
+
+  # FROM QP/C's DOC:
+  #   "The single-threaded QP/C ports (win32-qv and posix-qv) are recommended for
+  #    emulating software intended for deeply-embedded targets."
+
   message(STATUS "Building QP/C (qutest) for X86")
-  set(QP_PORT_DIR ports/posix)
+  set(QP_PORT_DIR ports/posix-qv)
   set(QPC_SOURCES
+    ${QPC_DIR}/${QP_PORT_DIR}/qep_port.h
+    ${QPC_DIR}/${QP_PORT_DIR}/qf_port.h
     ${QPC_DIR}/${QP_PORT_DIR}/qf_port.c
   )
 endif()
