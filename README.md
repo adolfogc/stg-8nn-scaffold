@@ -23,8 +23,9 @@ This base project aims to serve as a starting point for those programming in C t
 ## Main Software Components
 - [QP™/C](https://www.state-machine.com) using the QK kernel.
 - [ST's STM32Cube™](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html), specifically, STM32F0's LL drivers and HAL.
+- [Libcanard](https://github.com/UAVCAN/libcanard)
 
-You should be acquainted with the QP™ framework and its concepts in order to use this base project effectively.
+You should be acquainted with the QP™ framework, UAVCAN and their concepts in order to use this base project effectively.
 
 ## Memory map
 | Start address | Description| Size |
