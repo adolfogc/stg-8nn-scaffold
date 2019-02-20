@@ -16,7 +16,13 @@
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 
-set(BSP_DIR bsp)
+if(DEFINED SCAFFOLD_DIR)
+  set(BSP_DIR ${SCAFFOLD_DIR}/bsp)
+else()
+  set(BSP_DIR bsp)
+endif()
+
+
 set(BSP_INCLUDE ${BSP_DIR}/common/include)
 
 set(BSP_SOURCES
@@ -28,11 +34,19 @@ set(BSP_SOURCES
 )
 
 if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
-  include(CMakeLists_bsp_stg.txt)
-  ## dependencies:stm32cube
-  include(CMakeLists_stm32cube.txt)
+  if(DEFINED SCAFFOLD_DIR)
+    include(${SCAFFOLD_DIR}/CMakeLists_bsp_stg.txt)
+    include(${SCAFFOLD_DIR}/CMakeLists_stm32cube.txt)
+  else()
+    include(CMakeLists_bsp_stg.txt)
+    include(CMakeLists_stm32cube.txt)
+  endif()
   list(APPEND BSP_SOURCES ${STM32CUBE_SOURCES})
   list(APPEND BSP_INCLUDE ${STM32CUBE_INCLUDE})
 else()
-  include(CMakeLists_bsp_tester.txt)
+  if(DEFINED SCAFFOLD_DIR)
+    include(${SCAFFOLD_DIR}/CMakeLists_bsp_tester.txt)
+  else()
+    include(CMakeLists_bsp_tester.txt)
+  endif()
 endif()

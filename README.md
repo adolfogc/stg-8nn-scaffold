@@ -38,7 +38,7 @@ You should be acquainted with the QP™/C framework, UAVCAN and their concepts i
 ### Getting the code
 
 ```bash
-https://github.com/adolfogc/stg-8nn-scaffold.git
+git clone https://github.com/adolfogc/stg-8nn-scaffold.git
 cd stg-8nn-scaffold
 git submodule init
 git submodule update --init --recursive

@@ -19,7 +19,12 @@
 ## app
 ##
 
-set(APP_DIR app)
+if(DEFINED SCAFFOLD_DIR)
+  set(APP_DIR ${SCAFFOLD_DIR}/app)
+else()
+  set(APP_DIR app)
+endif()
+
 set(APP_INCLUDE ${APP_DIR})
 
 set(APP_SOURCES

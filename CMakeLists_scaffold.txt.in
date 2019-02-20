@@ -79,7 +79,12 @@ message(STATUS "Git commit hash: 0x${APP_VERSION_GIT_COMMIT_HASH}")
 ## dependencies::qpc(qk)
 ##
 
-include(CMakeLists_qpc.txt)
+if(DEFINED SCAFFOLD_DIR)
+  include(${SCAFFOLD_DIR}/CMakeLists_qpc.txt)
+else()
+  include(CMakeLists_qpc.txt)
+endif()
+
 list(APPEND SCAFFOLD_SOURCES ${QPC_SOURCES})
 list(APPEND SCAFFOLD_INCLUDE ${QPC_INCLUDE})
 
@@ -87,21 +92,39 @@ list(APPEND SCAFFOLD_INCLUDE ${QPC_INCLUDE})
 ## dependencies::libcanard
 ##
 
-include(CMakeLists_libcanard.txt)
+if(DEFINED SCAFFOLD_DIR)
+  include(${SCAFFOLD_DIR}/CMakeLists_libcanard.txt)
+else()
+  include(CMakeLists_libcanard.txt)
+endif()
+
 list(APPEND SCAFFOLD_SOURCES ${CANARD_SOURCES})
 list(APPEND SCAFFOLD_INCLUDE ${CANARD_INCLUDE})
 
 ##
 ## uavcan dsdl -> C files
 ##
-include(CMakeLists_uavcan_dsdl.txt)
+
+# This CMakeLists.txt file should be included after including Libcanard's
+if(DEFINED SCAFFOLD_DIR)
+  include(${SCAFFOLD_DIR}/CMakeLists_uavcan_dsdl.txt)
+else()
+  include(CMakeLists_uavcan_dsdl.txt)
+endif()
+
 list(APPEND SCAFFOLD_SOURCES ${DSDL_C_SOURCES})
 list(APPEND SCAFFOLD_INCLUDE ${DSDL_C_INCLUDE})
 
 ##
 ## bsp
 ##
-include(CMakeLists_bsp.txt)
+
+if(DEFINED SCAFFOLD_DIR)
+  include(${SCAFFOLD_DIR}/CMakeLists_bsp.txt)
+else()
+  include(CMakeLists_bsp.txt)
+endif()
+
 list(APPEND SCAFFOLD_SOURCES ${BSP_SOURCES})
 list(APPEND SCAFFOLD_INCLUDE ${BSP_INCLUDE})
 
@@ -109,6 +132,11 @@ list(APPEND SCAFFOLD_INCLUDE ${BSP_INCLUDE})
 ## app
 ##
 
-include(CMakeLists_app.txt)
+if(DEFINED SCAFFOLD_DIR)
+  include(${SCAFFOLD_DIR}/CMakeLists_app.txt)
+else()
+  include(CMakeLists_app.txt)
+endif()
+
 list(APPEND SCAFFOLD_SOURCES ${APP_SOURCES})
 list(APPEND SCAFFOLD_INCLUDE ${APP_INCLUDE})

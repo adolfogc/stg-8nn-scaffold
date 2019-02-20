@@ -28,7 +28,12 @@ endif()
 # The file canard_build_config.h must be provided by the BSP.
 add_definitions(-DCANARD_ENABLE_CUSTOM_BUILD_CONFIG)
 
-set(CANARD_DIR dependencies/libcanard)
+if(DEFINED SCAFFOLD_DIR)
+  set(CANARD_DIR ${SCAFFOLD_DIR}/dependencies/libcanard)
+else()
+  set(CANARD_DIR dependencies/libcanard)
+endif()
+
 set(CANARD_LIBRARY canard)
 
 set(CANARD_INCLUDE ${CANARD_DIR})

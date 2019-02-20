@@ -21,63 +21,69 @@ cmake_minimum_required(VERSION 3.5)
 ## DSDL SOURCE FILES
 ##
 
+if(DEFINED SCAFFOLD_DIR)
+  set(DSDL_DIR ${SCAFFOLD_DIR}/dependencies/dsdl)
+else()
+  set(DSDL_DIR dependencies/dsdl)
+endif()
+
 set(DSDL_SOURCE_FILES
-    dependencies/dsdl/uavcan/Timestamp.uavcan
+    ${DSDL_DIR}/uavcan/Timestamp.uavcan
 )
 
 list(APPEND DSDL_SOURCE_FILES
-    dependencies/dsdl/uavcan/protocol/1.GetNodeInfo.uavcan
-    dependencies/dsdl/uavcan/protocol/2.GetDataTypeInfo.uavcan
-    dependencies/dsdl/uavcan/protocol/4.GetTransportStats.uavcan
-    dependencies/dsdl/uavcan/protocol/4.GlobalTimeSync.uavcan
-    dependencies/dsdl/uavcan/protocol/5.Panic.uavcan
-    dependencies/dsdl/uavcan/protocol/5.RestartNode.uavcan
-    dependencies/dsdl/uavcan/protocol/6.AccessCommandShell.uavcan
-    dependencies/dsdl/uavcan/protocol/341.NodeStatus.uavcan
-    dependencies/dsdl/uavcan/protocol/CANIfaceStats.uavcan
-    dependencies/dsdl/uavcan/protocol/DataTypeKind.uavcan
-    dependencies/dsdl/uavcan/protocol/HardwareVersion.uavcan
-    dependencies/dsdl/uavcan/protocol/SoftwareVersion.uavcan
+    ${DSDL_DIR}/uavcan/protocol/1.GetNodeInfo.uavcan
+    ${DSDL_DIR}/uavcan/protocol/2.GetDataTypeInfo.uavcan
+    ${DSDL_DIR}/uavcan/protocol/4.GetTransportStats.uavcan
+    ${DSDL_DIR}/uavcan/protocol/4.GlobalTimeSync.uavcan
+    ${DSDL_DIR}/uavcan/protocol/5.Panic.uavcan
+    ${DSDL_DIR}/uavcan/protocol/5.RestartNode.uavcan
+    ${DSDL_DIR}/uavcan/protocol/6.AccessCommandShell.uavcan
+    ${DSDL_DIR}/uavcan/protocol/341.NodeStatus.uavcan
+    ${DSDL_DIR}/uavcan/protocol/CANIfaceStats.uavcan
+    ${DSDL_DIR}/uavcan/protocol/DataTypeKind.uavcan
+    ${DSDL_DIR}/uavcan/protocol/HardwareVersion.uavcan
+    ${DSDL_DIR}/uavcan/protocol/SoftwareVersion.uavcan
 )
 
 list(APPEND DSDL_SOURCE_FILES
-    dependencies/dsdl/uavcan/protocol/debug/16370.KeyValue.uavcan
-    dependencies/dsdl/uavcan/protocol/debug/16383.LogMessage.uavcan
-    dependencies/dsdl/uavcan/protocol/debug/LogLevel.uavcan
+    ${DSDL_DIR}/uavcan/protocol/debug/16370.KeyValue.uavcan
+    ${DSDL_DIR}/uavcan/protocol/debug/16383.LogMessage.uavcan
+    ${DSDL_DIR}/uavcan/protocol/debug/LogLevel.uavcan
 )
 
 list(APPEND DSDL_SOURCE_FILES
-    dependencies/dsdl/uavcan/protocol/dynamic_node_id/1.Allocation.uavcan    
+    ${DSDL_DIR}/uavcan/protocol/dynamic_node_id/1.Allocation.uavcan
 )
 
 list(APPEND DSDL_SOURCE_FILES
-    dependencies/dsdl/uavcan/protocol/enumeration/15.Begin.uavcan
-    dependencies/dsdl/uavcan/protocol/enumeration/380.Indication.uavcan
+    ${DSDL_DIR}/uavcan/protocol/enumeration/15.Begin.uavcan
+    ${DSDL_DIR}/uavcan/protocol/enumeration/380.Indication.uavcan
 )
 
 list(APPEND DSDL_SOURCE_FILES
-    dependencies/dsdl/uavcan/protocol/file/40.BeginFirmwareUpdate.uavcan
-    dependencies/dsdl/uavcan/protocol/file/45.GetInfo.uavcan
-    dependencies/dsdl/uavcan/protocol/file/46.GetDirectoryEntryInfo.uavcan
-    dependencies/dsdl/uavcan/protocol/file/47.Delete.uavcan
-    dependencies/dsdl/uavcan/protocol/file/48.Read.uavcan
-    dependencies/dsdl/uavcan/protocol/file/49.Write.uavcan
-    dependencies/dsdl/uavcan/protocol/file/EntryType.uavcan
-    dependencies/dsdl/uavcan/protocol/file/Error.uavcan
-    dependencies/dsdl/uavcan/protocol/file/Path.uavcan
+    ${DSDL_DIR}/uavcan/protocol/file/40.BeginFirmwareUpdate.uavcan
+    ${DSDL_DIR}/uavcan/protocol/file/45.GetInfo.uavcan
+    ${DSDL_DIR}/uavcan/protocol/file/46.GetDirectoryEntryInfo.uavcan
+    ${DSDL_DIR}/uavcan/protocol/file/47.Delete.uavcan
+    ${DSDL_DIR}/uavcan/protocol/file/48.Read.uavcan
+    ${DSDL_DIR}/uavcan/protocol/file/49.Write.uavcan
+    ${DSDL_DIR}/uavcan/protocol/file/EntryType.uavcan
+    ${DSDL_DIR}/uavcan/protocol/file/Error.uavcan
+    ${DSDL_DIR}/uavcan/protocol/file/Path.uavcan
 )
 
 list(APPEND DSDL_SOURCE_FILES
-    dependencies/dsdl/uavcan/protocol/param/10.ExecuteOpcode.uavcan
-    dependencies/dsdl/uavcan/protocol/param/11.GetSet.uavcan
-    dependencies/dsdl/uavcan/protocol/param/Empty.uavcan
-    dependencies/dsdl/uavcan/protocol/param/NumericValue.uavcan
-    dependencies/dsdl/uavcan/protocol/param/Value.uavcan
+    ${DSDL_DIR}/uavcan/protocol/param/10.ExecuteOpcode.uavcan
+    ${DSDL_DIR}/uavcan/protocol/param/11.GetSet.uavcan
+    ${DSDL_DIR}/uavcan/protocol/param/Empty.uavcan
+    ${DSDL_DIR}/uavcan/protocol/param/NumericValue.uavcan
+    ${DSDL_DIR}/uavcan/protocol/param/Value.uavcan
 )
 
 # Note: this variable is the source directory passed to the DSDL compiler, so you should
 # use the full path.
-set(DSDL_SOURCE_DIRECTORIES ${PROJECT_SOURCE_DIR}/dependencies/dsdl/uavcan)
+set(DSDL_SOURCE_DIRECTORIES ${PROJECT_SOURCE_DIR}/${DSDL_DIR}/uavcan)
 
 ##
 ## DSDL GENERATED FILES
@@ -178,8 +184,8 @@ list(APPEND DSDL_GENERATED_FILES
 
 add_custom_command(
     OUTPUT ${DSDL_GENERATED_FILES}
-    COMMAND python3 ${PROJECT_SOURCE_DIR}/dependencies/libcanard/dsdl_compiler/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
-    MAIN_DEPENDENCY dependencies/libcanard/dsdl_compiler/libcanard_dsdlc
+    COMMAND python3 ${PROJECT_SOURCE_DIR}/${CANARD_DIR}/dsdl_compiler/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
+    MAIN_DEPENDENCY ${CANARD_DIR}/dsdl_compiler/libcanard_dsdlc
     DEPENDS ${DSDL_SOURCE_FILES}
 )
 
