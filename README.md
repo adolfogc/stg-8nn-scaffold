@@ -12,24 +12,20 @@ A base project for programming the [BARTH® STG-8nn mini-PLCs](https://barth-ele
 It is a work-in-progress.
 
 ## Motivation
-This base project aims to serve as a starting point for those programming in C the BARTH® STG-8nn mini-PLCs, using macOS or Linux as their development platform. Potential users acquainted with Quantum Leaps LLC's QP™ should be able to fork and modify it as needed.
+This project serves as a scaffold to make firmware in C for the BARTH® STG-8nn mini-PLCs, using macOS or Linux as the development platform. For an example on how to use this project, refer to the one provided in the [stg-8nn-scaffold-example](https://github.com/adolfogc/stg-8nn-scaffold-example) repository.
 
 ## Design Goals
-- Use a modern embedded real-time framework, i.e., Quantum Leaps LLC's QP™/C.
+- Use a modern embedded real-time framework, i.e., Quantum Leaps's QP™/C.
 - Use Linux or macOS as the development platform.
+- Use the [UAVCAN](https://uavcan.org) protocol over CAN bus for communication.
 - *[future work]* Use a CAN bus bootloader for on-the-field firmware updates.
-
 
 ## Main Software Components
 - [QP™/C](https://www.state-machine.com) using the QK kernel.
 - [ST's STM32Cube™](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html), specifically, STM32F0's LL drivers and HAL.
+- [Libcanard](https://github.com/UAVCAN/libcanard)
 
-You should be acquainted with the QP™ framework and its concepts in order to use this base project effectively.
-
-## Memory map
-| Start address | Description| Size |
-| -------------: |:-------------:|:--:|
-| 0x08000000 | Vector  | -|
+You should be acquainted with the QP™/C framework, UAVCAN and their concepts in order to use this project effectively.
 
 ## Building instructions
 
@@ -42,7 +38,7 @@ You should be acquainted with the QP™ framework and its concepts in order to u
 ### Getting the code
 
 ```bash
-https://github.com/adolfogc/stg-8nn-scaffold.git
+git clone https://github.com/adolfogc/stg-8nn-scaffold.git
 cd stg-8nn-scaffold
 git submodule init
 git submodule update --init --recursive

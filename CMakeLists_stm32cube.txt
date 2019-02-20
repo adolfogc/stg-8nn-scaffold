@@ -42,7 +42,11 @@ endif()
 ## dependencies::stm32cube
 ##
 
-set(STM32CUBE_DIR dependencies/stm32cube)
+if(DEFINED SCAFFOLD_DIR)
+  set(STM32CUBE_DIR ${SCAFFOLD_DIR}/dependencies/stm32cube)
+else()
+  set(STM32CUBE_DIR dependencies/stm32cube)
+endif()
 
 set(STM32CUBE_INCLUDE
   ${STM32CUBE_DIR}/cmsis/core/include

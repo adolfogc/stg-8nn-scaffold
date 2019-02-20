@@ -19,7 +19,11 @@
 ## dependencies::qpc(qk)
 ##
 
-set(QPC_DIR dependencies/qpc)
+if(DEFINED SCAFFOLD_DIR)
+  set(QPC_DIR ${SCAFFOLD_DIR}/dependencies/qpc)
+else()
+  set(QPC_DIR dependencies/qpc)
+endif()
 
 #
 # Note: for use with the current ARM Clang toolchain, we're testing CMAKE_ASM_COMPILER_ID instead of
