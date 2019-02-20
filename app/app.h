@@ -17,20 +17,41 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _APP_H
-#define _APP_H
+#ifndef _SCAFFOLD_APP_H
+#define _SCAFFOLD_APP_H
 
+#include "bsp.h"
+#include "uavcan_node.h"
+
+#ifdef APP_ENABLE_CUSTOM_BUILD_CONFIG
+#include "app_config.h"
+#endif
+
+#ifndef APP_SW_VERSION_MAJOR
 #define APP_SW_VERSION_MAJOR 0
+#endif
+
+#ifndef APP_SW_VERSION_MINOR
 #define APP_SW_VERSION_MINOR 1
+#endif
 
+#ifndef APP_HW_VERSION_MAJOR
 #define APP_HW_VERSION_MAJOR 0
-#define APP_HW_VERSION_MINOR 1
+#endif
 
-#define APP_UAVCAN_NODE_NAME_DATA "local.adolfogc.stg8nn_scaffold"
-#define APP_UAVCAN_NODE_NAME_LEN 30
+#ifndef APP_HW_VERSION_MINOR
+#define APP_HW_VERSION_MINOR 1
+#endif
+
+#ifndef APP_UAVCAN_NODE_NAME_DATA
+#define APP_UAVCAN_NODE_NAME_DATA "local.stg8nn.scaffold"
+#define APP_UAVCAN_NODE_NAME_LEN 21
+#endif
 
 #ifndef APP_UAVCAN_DEFAULT_NODE_ID
-#define APP_UAVCAN_DEFAULT_NODE_ID 100
+#define APP_UAVCAN_DEFAULT_NODE_ID 115
 #endif
 
-#endif
+void App_init(void);
+
+#endif /* _SCAFFOLD_APP_H */

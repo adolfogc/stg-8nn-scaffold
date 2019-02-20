@@ -37,6 +37,8 @@ void QK_onIdle(void)
 
 void Q_onAssert(char const * module, int loc)
 {
-  /* Information (module and loc) are not used yet */
+  (void) module;
+  (void) loc;    /* Not used yet */
+
   NVIC_SystemReset(); /* This should be called last */
 }

@@ -20,6 +20,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef _BSP_SPECIFIC_H
 #define _BSP_SPECIFIC_H
 
-#define BSP_TICKS_PER_SEC 100U
+#define BSP_TICKS_PER_SEC 1000U
 
 #endif /* _BSP_SPECIFIC_H */

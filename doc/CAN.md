@@ -13,14 +13,22 @@ python3 dependencies/libcanard/dsdl_compiler/libcanard_dsdlc --outdir dsdl-gen d
 ### Setting up a virtual CAN interface
 
 ```bash
+sudo modprobe can
+sudo modprobe can_raw
 sudo modprobe vcan
+
 sudo ip link add dev vcan0 type vcan
 sudo ip link set up vcan0
+
 ```
 
 ### Setting up a KVaser Leaf interface
 ```bash
+sudo modprobe can
+sudo modprobe can_raw
+sudo modprobe can_dev
 sudo modprobe kvaser_usb
+
 sudo ip link set can0 type can bitrate 500000 sample-point 0.875 restart-ms 100
 sudo ip link set up can0
 ```
