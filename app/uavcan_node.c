@@ -66,15 +66,15 @@ static void restartNodeHandle(CanardRxTransfer* transfer);
 
 /* -- Prototypes for Libcanard's callback -- */
 static bool shouldAcceptTransferDefault(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId);
-static void onTransferReceivedDefault(CanardInstance* instance, CanardRxTransfer* transfer);
-
 bool shouldAcceptTransfer(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId) __attribute__((weak, alias("shouldAcceptTransferDefault")));
+
+static void onTransferReceivedDefault(CanardInstance* instance, CanardRxTransfer* transfer);
 void onTransferReceived(CanardInstance* instance, CanardRxTransfer* transfer) __attribute__((weak, alias("onTransferReceivedDefault")));
 
 static bool shouldAcceptTransferExtendDefault(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId);
-static void onTransferReceivedExtendDefault(CanardInstance* instance, CanardRxTransfer* transfer);
-
 bool shouldAcceptTransferExtend(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId) __attribute__((weak, alias("shouldAcceptTransferExtendDefault")));
+
+static void onTransferReceivedExtendDefault(CanardInstance* instance, CanardRxTransfer* transfer);
 void onTransferReceivedExtend(CanardInstance* instance, CanardRxTransfer* transfer) __attribute__((weak, alias("onTransferReceivedExtendDefault")));
 
 /* -- Implementation of public AO functions -- */
@@ -84,9 +84,9 @@ UavcanNode* initUavcanNode(void)
     return &g_uavcanNode;
 }
 
-inline UavcanNode* getUavcanNode(void)
+CanardInstance* getCanardInstance(void)
 {
-    return &g_uavcanNode;
+    return &g_canardInstance;
 }
 
 
