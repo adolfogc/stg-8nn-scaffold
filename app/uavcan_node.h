@@ -2,6 +2,7 @@
 #define _UAVCAN_NODE_H
 
 #include "qpc.h"
+#include "canard.h"
 
 /* Active Object */
 extern QActive * const AO_UavcanNode;
@@ -13,6 +14,7 @@ typedef struct UavcanNodeTag {
 } UavcanNode;
 
 UavcanNode* initUavcanNode(void);
-inline UavcanNode* getUavcanNode(void);
+
+CanardInstance* getCanardInstance(void);
 
 #endif /* _UAVCAN_NODE_H */
