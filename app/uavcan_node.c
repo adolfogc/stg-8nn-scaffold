@@ -84,6 +84,12 @@ UavcanNode* initUavcanNode(void)
     return &g_uavcanNode;
 }
 
+inline UavcanNode* getUavcanNode(void)
+{
+    return &g_uavcanNode;
+}
+
+
 void UavcanNode_ctor(UavcanNode* me)
 {
     QActive_ctor(&me->super, Q_STATE_CAST(&UavcanNode_init));

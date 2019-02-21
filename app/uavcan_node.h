@@ -13,5 +13,6 @@ typedef struct UavcanNodeTag {
 } UavcanNode;
 
 UavcanNode* initUavcanNode(void);
+inline UavcanNode* getUavcanNode(void);
 
 #endif /* _UAVCAN_NODE_H */
