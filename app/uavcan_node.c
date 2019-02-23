@@ -28,7 +28,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "uavcan_node.h"
 
 /* -- Active Object instance -- */
-UavcanNode g_uavcanNode;
+static UavcanNode l_uavcanNode;
 
 /* -- Active Object signals -- */
 enum UavcanNodeSignals {
@@ -40,10 +40,10 @@ enum UavcanNodeSignals {
 /* -- Libcanard's memory pool -- */
 #define APP_CANARD_MEMORY_POOL_SIZE 4096
 
-static uint8_t g_canardMemoryPool[APP_CANARD_MEMORY_POOL_SIZE];
+static uint8_t l_canardMemoryPool[APP_CANARD_MEMORY_POOL_SIZE];
 
 /* -- Libcanard's instance -- */
-CanardInstance g_canardInstance;
+static CanardInstance l_canardInstance;
 
 static QState UavcanNode_init(UavcanNode* me, QEvt const * const e);
 static QState UavcanNode_online(UavcanNode* me, QEvt const * const e);
@@ -55,9 +55,8 @@ void UavcanNode_ctor(UavcanNode* me);
 
 static void initCanardInstance(void);
 static void statusUpdate(void);
-static bool sendOnce(void);
 static void sendAll(void);
-static void receiveOnce(void);
+static void receiveAll(void);
 
 static uint32_t makeNodeStatusMessage(uint8_t* buffer);
 static uint32_t makeNodeInfoMessage(uint8_t* buffer);
@@ -78,15 +77,15 @@ static void onTransferReceivedExtendDefault(CanardInstance* instance, CanardRxTr
 void onTransferReceivedExtend(CanardInstance* instance, CanardRxTransfer* transfer) __attribute__((weak, alias("onTransferReceivedExtendDefault")));
 
 /* -- Implementation of public AO functions -- */
-UavcanNode* initUavcanNode(void)
+UavcanNode* UavcanNode_initAO(void)
 {
-    UavcanNode_ctor(&g_uavcanNode);
-    return &g_uavcanNode;
+    UavcanNode_ctor(&l_uavcanNode);
+    return &l_uavcanNode;
 }
 
 CanardInstance* getCanardInstance(void)
 {
-    return &g_canardInstance;
+    return &l_canardInstance;
 }
 
 
@@ -102,7 +101,9 @@ static QState UavcanNode_init(UavcanNode* me, QEvt const * const e)
     (void) e; /* unused parameter */
 
     /* Initialize our Libcanard's instance */
+    BSP_Led_on();
     initCanardInstance();
+    BSP_Led_off();
 
     /* We're online at this point */
     return Q_TRAN(&UavcanNode_online);
@@ -113,7 +114,7 @@ static QState UavcanNode_online(UavcanNode* me, QEvt const * const e)
     QState status;
     switch(e->sig) {
         case Q_INIT_SIG:
-            QTimeEvt_armX(&me->timeEvent, BSP_TICKS_PER_SEC / 10U, BSP_TICKS_PER_SEC / 10U); /* every 100 ms */
+            QTimeEvt_armX(&me->timeEvent, BSP_TICKS_PER_SEC / 1000U * 25U, BSP_TICKS_PER_SEC / 1000U * 25U); /* every 25 ms */
             me->spinCtrl = 0U;
             status = Q_TRAN(&UavcanNode_spin);
             break;
@@ -146,14 +147,14 @@ static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e)
             status = Q_HANDLED();
             break;
         case UAVCAN_TIMEOUT_SIG:
-          if(me->spinCtrl == 1U) { /* every 200 ms */
+          if(me->spinCtrl == 4U) { /* every 200 ms */
             me->spinCtrl = 0U;
             statusUpdate();
           } else {
-            me->spinCtrl += 1U;
+            me->spinCtrl++;
           }
           sendAll();
-          receiveOnce();
+          receiveAll();
           status = Q_HANDLED();
           break;
         default:
@@ -249,15 +250,15 @@ static void onTransferReceivedExtendDefault(CanardInstance* instance, CanardRxTr
 static void initCanardInstance(void)
 {
     canardInit(
-        &g_canardInstance,
-        g_canardMemoryPool,
+        &l_canardInstance,
+        l_canardMemoryPool,
         APP_CANARD_MEMORY_POOL_SIZE,
         onTransferReceived,
         shouldAcceptTransfer,
         NULL
     );
 
-    canardSetLocalNodeID(&g_canardInstance, APP_UAVCAN_DEFAULT_NODE_ID);
+    canardSetLocalNodeID(&l_canardInstance, APP_UAVCAN_DEFAULT_NODE_ID);
 }
 
 static void statusUpdate(void)
@@ -269,7 +270,7 @@ static void statusUpdate(void)
 
     const uint32_t len = makeNodeStatusMessage(messageBuffer);
 
-    canardBroadcast(&g_canardInstance,
+    canardBroadcast(&l_canardInstance,
                     UAVCAN_PROTOCOL_NODESTATUS_SIGNATURE,
                     UAVCAN_PROTOCOL_NODESTATUS_ID,
                     &transferId,
@@ -280,23 +281,14 @@ static void statusUpdate(void)
 
 static void sendAll(void)
 {
-    for(bool nextExists = true; nextExists; nextExists = sendOnce());
-}
-
-/* Returns true if another frame can be send */
-static bool sendOnce(void)
-{
-    const CanardCANFrame* txFrame = canardPeekTxQueue(&g_canardInstance);
-    bool nextExists = false;
-
-    if(txFrame != NULL) {
-        const BSP_CAN_RxTxResult result = BSP_CAN_transmitOnce(txFrame);
+    while(canardPeekTxQueue(&l_canardInstance) != NULL) {
+        const BSP_CAN_RxTxResult result = BSP_CAN_transmitOnce(canardPeekTxQueue(&l_canardInstance));
         switch (result) {
             case BSP_CAN_RXTX_TIMEOUT:
                 /* TODO: handle case */
                 break;
             case BSP_CAN_RXTX_SUCCESS:
-                canardPopTxQueue(&g_canardInstance);
+                canardPopTxQueue(&l_canardInstance);
                 break;
             case BSP_CAN_RXTX_ERROR:
                 /* TODO: handle case */
@@ -305,32 +297,30 @@ static bool sendOnce(void)
                 /* This path should be unreacheable */
                 break;
         }
-        nextExists = canardPeekTxQueue(&g_canardInstance) != NULL;
     }
-
-    return nextExists;
 }
 
-static void receiveOnce(void)
+static void receiveAll(void)
 {
     CanardCANFrame rxFrame;
-    memset(&rxFrame, 0, sizeof(rxFrame));
+    bool timedOut = false;
 
-    const BSP_CAN_RxTxResult result = BSP_CAN_receiveOnce(&rxFrame);
-
-    switch (result) {
-        case BSP_CAN_RXTX_TIMEOUT:
-            /* TODO: handle case */
-            break;
-        case BSP_CAN_RXTX_SUCCESS:
-            canardHandleRxFrame(&g_canardInstance, &rxFrame, BSP_upTimeSeconds());
-            break;
-        case BSP_CAN_RXTX_ERROR:
-            /* TODO: handle case */
-            break;
-        default:
-            /* This path should be unreacheable */
-            break;
+    while(!timedOut) {
+        switch (BSP_CAN_receiveOnce(&rxFrame)) {
+            case BSP_CAN_RXTX_TIMEOUT:
+                /* No more frames are available */
+                timedOut = true;
+                break;
+            case BSP_CAN_RXTX_SUCCESS:
+                canardHandleRxFrame(&l_canardInstance, &rxFrame, BSP_upTimeSeconds());
+                break;
+            case BSP_CAN_RXTX_ERROR:
+                /* TODO: handle case */
+                break;
+            default:
+                /* This path should be unreacheable */
+                break;
+        }
     }
 }
 
@@ -378,7 +368,7 @@ static void getNodeInfoHandle(CanardRxTransfer* transfer)
 
     const uint32_t len = makeNodeInfoMessage(messageBuffer);
 
-    int result = canardRequestOrRespond(&g_canardInstance,
+    int result = canardRequestOrRespond(&l_canardInstance,
                                         transfer->source_node_id,
                                         UAVCAN_PROTOCOL_GETNODEINFO_SIGNATURE,
                                         UAVCAN_PROTOCOL_GETNODEINFO_ID,
@@ -407,7 +397,7 @@ static void restartNodeHandle(CanardRxTransfer* transfer)
 
     const uint32_t len = uavcan_protocol_RestartNodeResponse_encode(&restartNodeResponse, buffer);
 
-    int result = canardRequestOrRespond(&g_canardInstance,
+    int result = canardRequestOrRespond(&l_canardInstance,
                                         transfer->source_node_id,
                                         UAVCAN_PROTOCOL_RESTARTNODE_SIGNATURE,
                                         UAVCAN_PROTOCOL_RESTARTNODE_ID,
@@ -418,6 +408,6 @@ static void restartNodeHandle(CanardRxTransfer* transfer)
                                         (uint16_t)len);
     if (result >= 0) {
         static const QEvt aboutToRestartEvt = {UAVCAN_RESTART_SIG, 0U, 0U};
-        QACTIVE_POST(&g_uavcanNode.super, &aboutToRestartEvt, (void*)0);
+        QACTIVE_POST(&l_uavcanNode.super, &aboutToRestartEvt, (void*)0);
     }
 }

@@ -40,7 +40,7 @@ static int App_mainDefault(void)
     static QEvt const * g_uavcanNode_queueBuffer[20];
     static UavcanNode * uavcanNode;
 
-    uavcanNode = initUavcanNode();
+    uavcanNode = UavcanNode_initAO();
     App_init();
 
     QACTIVE_START((QActive*)&uavcanNode->super,
