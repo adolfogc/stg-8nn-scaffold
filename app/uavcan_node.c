@@ -166,7 +166,10 @@ static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e)
 
 static QState UavcanNode_aboutToRestart(UavcanNode* me, QEvt const * const e)
 {
+    (void) me; /* not used yet */
+
     QState status;
+
     switch(e->sig) {
         case Q_ENTRY_SIG:
             status = Q_HANDLED();
