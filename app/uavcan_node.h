@@ -13,7 +13,7 @@ typedef struct UavcanNodeTag {
     uint32_t spinCtrl;
 } UavcanNode;
 
-UavcanNode* initUavcanNode(void);
+UavcanNode* UavcanNode_initAO(void);
 
 CanardInstance* getCanardInstance(void);
 
