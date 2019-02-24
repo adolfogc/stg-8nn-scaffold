@@ -9,3 +9,6 @@
 [submodule "dependencies/dsdl"]
 	path = dependencies/dsdl
 	url = https://github.com/UAVCAN/dsdl.git
+[submodule "dependencies/arm_cmsis5"]
+	path = dependencies/arm_cmsis5
+	url = https://github.com/ARM-software/CMSIS_5.git

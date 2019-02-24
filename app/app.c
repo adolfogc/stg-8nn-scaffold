@@ -21,6 +21,8 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 Q_DEFINE_THIS_FILE
 
+int main(void);
+
 static int App_mainDefault(void);
 int App_main(void) __attribute__((weak, alias("App_mainDefault")));
 
