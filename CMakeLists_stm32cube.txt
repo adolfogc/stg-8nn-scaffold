@@ -15,8 +15,31 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
+if(DEFINED SCAFFOLD_DIR)
+  set(STM32CUBE_DIR ${SCAFFOLD_DIR}/dependencies/stm32cube)
+else()
+  set(STM32CUBE_DIR dependencies/stm32cube)
+endif()
+
 ##
-## select STM32 HAL's modules
+## Add dependency: CMSIS device files (stm32cube's)
+##
+
+list(APPEND STM32CUBE_SOURCES
+  ${STM32CUBE_DIR}/cmsis/device/include/stm32f0xx.h
+  ${STM32CUBE_DIR}/cmsis/device/include/stm32f091xc.h
+  ${STM32CUBE_DIR}/cmsis/device/include/system_stm32f0xx.h
+  ${STM32CUBE_DIR}/cmsis/device/src/system_stm32f0xx.c
+)
+
+##
+## Add dependency: startup code (stm32cube's)
+##
+
+list(APPEND STM32CUBE_SOURCES ${STM32CUBE_DIR}/gnu/startup_stm32f091xc.s) # works with GCC and Clang
+
+##
+## Select the STM32 HAL modules to be used
 ##
 
 if("${STG_MODEL}" MATCHES "850" OR "${STG_MODEL}" MATCHES "856")
@@ -39,14 +62,8 @@ if("${STG_MODEL}" MATCHES "850" OR "${STG_MODEL}" MATCHES "856")
 endif()
 
 ##
-## dependencies::stm32cube
+## Add dependency: HAL and LL drivers (stm32cube's)
 ##
-
-if(DEFINED SCAFFOLD_DIR)
-  set(STM32CUBE_DIR ${SCAFFOLD_DIR}/dependencies/stm32cube)
-else()
-  set(STM32CUBE_DIR dependencies/stm32cube)
-endif()
 
 set(STM32CUBE_INCLUDE
   ${STM32CUBE_DIR}/cmsis/device/include
@@ -54,19 +71,10 @@ set(STM32CUBE_INCLUDE
   ${STM32CUBE_DIR}/ll/include
 )
 
-## CMSIS Device
-list(APPEND STM32CUBE_SOURCES
-  ${STM32CUBE_DIR}/cmsis/device/include/stm32f0xx.h
-  ${STM32CUBE_DIR}/cmsis/device/include/stm32f091xc.h
-  ${STM32CUBE_DIR}/cmsis/device/include/system_stm32f0xx.h
-  ${STM32CUBE_DIR}/cmsis/device/src/system_stm32f0xx.c
-)
+###
+### LL drivers
+###
 
-if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-  list(APPEND STM32CUBE_SOURCES ${STM32CUBE_DIR}/gnu/startup_stm32f091xc.s)
-endif()
-
-## LL
 add_definitions(-DUSE_FULL_LL_DRIVER) # enable LL initialization functions and associated resources
 
 list(APPEND STM32CUBE_SOURCES
@@ -98,7 +106,10 @@ list(APPEND STM32CUBE_SOURCES
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_utils.c
 )
 
-## HAL
+###
+### HAL
+###
+
 if(USE_HAL)
   add_definitions(-DHAL_MODULE_ENABLED)
   list(APPEND STM32CUBE_SOURCES

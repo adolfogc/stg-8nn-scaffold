@@ -32,6 +32,7 @@ set(CMAKE_CXX_COMPILER /usr/local/opt/arm-none-eabi-llvm/bin/clang++)
 set(CMAKE_CXX_COMPILER_TARGET ${triple})
 
 set(CMAKE_ASM_COMPILER /usr/local/opt/arm-none-eabi-llvm/bin/clang)
+set(CMAKE_ASM_COMPILER_TARGET ${triple})
 
 set(CMAKE_C_FLAGS_INIT "${CMAKE_C_FLAGS_INIT} --target=${triple} -fuse-ld=lld -L/usr/local/opt/armv6m-cortex-m0plus/armv6m-none-eabi/cortex-m0plus/lib")
 
