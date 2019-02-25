@@ -17,45 +17,42 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-project(STG-8nn-Scaffold C ASM)
+project(STG-8nn-Scaffold C ASM) # it's important to select both C and ASM here
 
 ##
-## Scaffold include file
+## Add dependency: STG-8nn Scaffold
 ##
-include(CMakeLists_scaffold.txt.in)
+include(CMakeLists_scaffold.txt)
 
 ##
 ## Configure build
 ##
-
 set(OUTPUT_NAME firmware)
 
 ##
-## elf definition
+## ELF file
 ##
-
 add_executable(${OUTPUT_NAME}.elf ${SCAFFOLD_SOURCES})
 target_include_directories(${OUTPUT_NAME}.elf PRIVATE ${SCAFFOLD_INCLUDE})
 
 ##
-## linker script and bin file
+## Platform specific commands
 ##
-
 if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
-  add_custom_command(
-    TARGET ${OUTPUT_NAME}.elf PRE_LINK
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/dependencies/stm32cube/gnu/STM32F091CCUx_FLASH.ld ${PROJECT_BINARY_DIR}/stg8nn.ld
-  )
+  ###
+  ### ARM
+  ###
 
+  ### BIN file
   add_custom_command(TARGET ${OUTPUT_NAME}.elf
     POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -O binary -S ${OUTPUT_NAME}.elf ${OUTPUT_NAME}.bin
   )
-endif()
+else()
+  ###
+  ### x86
+  ###
 
-##
-## tester libraries
-##
-if(NOT "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+  ### Link to PThreads library
   target_link_libraries(${OUTPUT_NAME}.elf pthread)
 endif()
