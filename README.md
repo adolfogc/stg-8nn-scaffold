@@ -127,7 +127,7 @@ Note: You can use the [STM32 ST-LINK utility](https://www.st.com/en/development-
 ### Code format
 The file `.clang-format` contains the options used to format this project's codebase using Clang-Tidy.
 
-### Checking compliance with some MISRA C:2012 rules using Cppcheck v1.85+
+### Checking conformance with some MISRA C:2012 rules using Cppcheck v1.87+
 1. Generate your "rule texts file" using [this Python script](https://github.com/ChisholmKyle/SublimeLinter-contrib-cppcheck-misra/blob/master/scripts/cppcheck-misra-parsetexts.py) and your PDF copy of *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* and place it in: `ci/scripts/misra-c-2012-rule-texts.txt`.
 
 2. Use the provided script: `ci/scripts/test-cppcheck.sh`.
