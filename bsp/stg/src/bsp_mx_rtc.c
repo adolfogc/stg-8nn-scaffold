@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * File Name          : I2C.h
+  * File Name          : RTC.c
   * Description        : This file provides code for the configuration
-  *                      of the I2C instances.
+  *                      of the RTC instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -37,12 +37,42 @@
   ******************************************************************************
   */
 
-#ifndef _MX_I2C_H
-#define _MX_I2C_H
+#include "bsp_mx_rtc.h"
+#include "stm32f0xx_ll_rcc.h"
 
-#include "stm32f0xx_ll_i2c.h"
-#include "bsp_mx.h"
+/* RTC init function */
+void BSP_MX_RTC_Init(void)
+{
+  LL_RTC_InitTypeDef RTC_InitStruct;
+  LL_RTC_TimeTypeDef RTC_TimeStruct;
+  LL_RTC_DateTypeDef RTC_DateStruct;
 
-void MX_I2C2_Init(void);
+  /* Peripheral clock enable */
+  LL_RCC_EnableRTC();
 
-#endif /* _MX_I2C_H */
+  /* Initialize RTC and set the Time and Date */
+  RTC_InitStruct.HourFormat = LL_RTC_HOURFORMAT_24HOUR;
+  RTC_InitStruct.AsynchPrescaler = 127;
+  RTC_InitStruct.SynchPrescaler = 255;
+  LL_RTC_Init(RTC, &RTC_InitStruct);
+
+  LL_RTC_SetAsynchPrescaler(RTC, 127);
+  LL_RTC_SetSynchPrescaler(RTC, 255);
+
+  /* Initialize RTC and set the Time and Date */
+  if(LL_RTC_BAK_GetRegister(RTC, LL_RTC_BKP_DR0) != 0x32F2) {
+    RTC_TimeStruct.Hours = 0;
+    RTC_TimeStruct.Minutes = 0;
+    RTC_TimeStruct.Seconds = 0;
+    LL_RTC_TIME_Init(RTC, LL_RTC_FORMAT_BCD, &RTC_TimeStruct);
+    RTC_DateStruct.WeekDay = LL_RTC_WEEKDAY_MONDAY;
+    RTC_DateStruct.Month = LL_RTC_MONTH_JANUARY;
+    RTC_DateStruct.Year = 0;
+    LL_RTC_DATE_Init(RTC, LL_RTC_FORMAT_BCD, &RTC_DateStruct);
+    LL_RTC_BAK_SetRegister(RTC,LL_RTC_BKP_DR0,0x32F2);
+  }
+  /* Initialize RTC and set the Time and Date */
+  if(LL_RTC_BAK_GetRegister(RTC, LL_RTC_BKP_DR0) != 0x32F2) {
+    LL_RTC_BAK_SetRegister(RTC,LL_RTC_BKP_DR0,0x32F2);
+  }
+}

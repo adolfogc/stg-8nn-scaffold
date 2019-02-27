@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * File Name          : gpio.h
-  * Description        : This file contains all the functions prototypes for 
-  *                      the gpio  
+  * File Name          : ADC.h
+  * Description        : This file provides code for the configuration
+  *                      of the ADC instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -37,13 +37,12 @@
   ******************************************************************************
   */
 
-#ifndef _MX_GPIO_H
-#define _MX_GPIO_H
+#ifndef _BSP_MX_ADC_H
+#define _BSP_MX_ADC_H
 
-#include "stm32f0xx_ll_gpio.h"
-#include "stm32f0xx_ll_bus.h"
+#include "stm32f0xx_ll_adc.h"
 #include "bsp_mx.h"
 
-void MX_GPIO_Init(void);
+void BSP_MX_ADC_Init(void);
 
-#endif /* _MX_GPIO_H */
+#endif /* _BSP_MX_ADC_H */

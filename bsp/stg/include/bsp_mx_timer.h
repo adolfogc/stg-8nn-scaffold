@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * File Name          : IWDG.c
+  * File Name          : TIM.h
   * Description        : This file provides code for the configuration
-  *                      of the IWDG instances.
+  *                      of the TIM instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -37,19 +37,18 @@
   ******************************************************************************
   */
 
-#include "iwdg.h"
+#ifndef _BSP_MX_TIM_H
+#define _BSP_MX_TIM_H
 
-/* IWDG init function */
-void MX_IWDG_Init(void)
-{
-  LL_IWDG_Enable(IWDG);
-  LL_IWDG_EnableWriteAccess(IWDG);
-  LL_IWDG_SetPrescaler(IWDG, LL_IWDG_PRESCALER_4);
-  LL_IWDG_SetWindow(IWDG, 4095);
-  LL_IWDG_SetReloadCounter(IWDG, 4095);
-  while (LL_IWDG_IsReady(IWDG) != 1)
-  {
-    /* busy waiting */
-  }
-  LL_IWDG_ReloadCounter(IWDG);
-}
+#include "stm32f0xx_ll_tim.h"
+#include "bsp_mx.h"
+
+void BSP_MX_TIM1_Init(void);
+void BSP_MX_TIM16_Init(void);
+void BSP_MX_TIM17_Init(void);
+
+#ifdef MODEL_STG850
+void BSP_MX_TIM2_Init(void);
+#endif
+
+#endif /* _BSP_MX_TIM_H */

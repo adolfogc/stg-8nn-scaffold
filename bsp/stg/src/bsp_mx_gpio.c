@@ -6,7 +6,7 @@
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -37,12 +37,12 @@
   ******************************************************************************
   */
 
-#include "gpio.h"
+#include "bsp_mx_gpio.h"
 
 #ifdef MODEL_STG850
-/* Configure GPIO pins as 
-  - Analog 
-  - Input 
+/* Configure GPIO pins as
+  - Analog
+  - Input
   - Output
   - EVENT_OUT
   - EXTI
@@ -50,7 +50,7 @@
   - PB4 ------> S_TIM3_CH1
   - PB5 ------> S_TIM3_CH2
 */
-void MX_GPIO_Init(void)
+void BSP_MX_GPIO_Init(void)
 {
     LL_GPIO_InitTypeDef GPIO_InitStruct;
 
@@ -177,15 +177,15 @@ void MX_GPIO_Init(void)
 #endif /* MODEL_STG850 */
 
 #ifdef MODEL_STG856
-/* Configure GPIO pins as 
-  - Analog 
-  - Input 
+/* Configure GPIO pins as
+  - Analog
+  - Input
   - Output
   - EVENT_OUT
   - EXTI
   - Free pins are configured automatically as Analog (this feature is enabled through the Code Generation settings)
 */
-void MX_GPIO_Init(void)
+void BSP_MX_GPIO_Init(void)
 {
     LL_GPIO_InitTypeDef GPIO_InitStruct;
     /* GPIO Ports Clock Enable */

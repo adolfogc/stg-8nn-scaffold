@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * File Name          : RTC.h
+  * File Name          : IWDG.c
   * Description        : This file provides code for the configuration
-  *                      of the RTC instances.
+  *                      of the IWDG instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -37,12 +37,19 @@
   ******************************************************************************
   */
 
-#ifndef _MX_RTC_H
-#define _MX_RTC_H
+#include "bsp_mx_iwdg.h"
 
-#include "stm32f0xx_ll_rtc.h"
-#include "bsp_mx.h"
-
-void MX_RTC_Init(void);
-
-#endif /* _MX_RTC_H */
+/* IWDG init function */
+void BSP_MX_IWDG_Init(void)
+{
+  LL_IWDG_Enable(IWDG);
+  LL_IWDG_EnableWriteAccess(IWDG);
+  LL_IWDG_SetPrescaler(IWDG, LL_IWDG_PRESCALER_4);
+  LL_IWDG_SetWindow(IWDG, 4095);
+  LL_IWDG_SetReloadCounter(IWDG, 4095);
+  while (LL_IWDG_IsReady(IWDG) != 1)
+  {
+    /* busy waiting */
+  }
+  LL_IWDG_ReloadCounter(IWDG);
+}

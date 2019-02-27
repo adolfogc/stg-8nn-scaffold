@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2018 Adolfo E. García
+Copyright (C) 2018-2019 Adolfo E. García
 
 This file is part of STG-8nn-Scaffold.
 

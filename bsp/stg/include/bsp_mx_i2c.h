@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * File Name          : IWDG.h
+  * File Name          : I2C.h
   * Description        : This file provides code for the configuration
-  *                      of the IWDG instances.
+  *                      of the I2C instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -36,13 +36,13 @@
   *
   ******************************************************************************
   */
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef _MX_IWDG_H
-#define _MX_IWDG_H
 
-#include "stm32f0xx_ll_iwdg.h"
+#ifndef _BSP_MX_I2C_H
+#define _BSP_MX_I2C_H
+
+#include "stm32f0xx_ll_i2c.h"
 #include "bsp_mx.h"
 
-void MX_IWDG_Init(void);
+void BSP_MX_I2C2_Init(void);
 
-#endif /* _MX_IWDG_H */
+#endif /* _BSP_MX_I2C_H */

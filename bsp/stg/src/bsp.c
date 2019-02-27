@@ -19,14 +19,14 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "stm32f0xx_hal.h"
 
-#include "adc.h"
-#include "can.h"
-#include "gpio.h"
-#include "i2c.h"
-#include "iwdg.h"
-#include "rtc.h"
-#include "tim.h"
-#include "usart.h"
+#include "bsp_mx_adc.h"
+#include "bsp_mx_can.h"
+#include "bsp_mx_gpio.h"
+#include "bsp_mx_i2c.h"
+#include "bsp_mx_iwdg.h"
+#include "bsp_mx_rtc.h"
+#include "bsp_mx_timer.h"
+#include "bsp_mx_usart.h"
 
 #include "bsp.h"
 #include "bsp_clock.h"
@@ -38,24 +38,24 @@ void BSP_init(void)
     /* Configure the system clock */
     BSP_systemClockConfig();
     /* Initialize all configured peripherals */
-    MX_GPIO_Init();
-    MX_CAN_Init();
-    MX_ADC_Init();
-    /* Note: Watchdog can be enabled by calling MX_IWDG_Init/0 here */ 
-    MX_RTC_Init();
-    MX_TIM16_Init();
-    MX_TIM17_Init();
-    MX_USART1_UART_Init();
-    MX_USART3_IRDA_Init();
-    MX_I2C2_Init();
-    MX_TIM1_Init();
+    BSP_MX_GPIO_Init();
+    BSP_MX_CAN_Init();
+    BSP_MX_ADC_Init();
+    /* Note: Watchdog can be enabled by calling MX_IWDG_Init/0 here */
+    BSP_MX_RTC_Init();
+    BSP_MX_TIM16_Init();
+    BSP_MX_TIM17_Init();
+    BSP_MX_USART1_UART_Init();
+    BSP_MX_USART3_IRDA_Init();
+    BSP_MX_I2C2_Init();
+    BSP_MX_TIM1_Init();
 
 #ifdef MODEL_STG850
-    MX_TIM2_Init();
+    BSP_MX_TIM2_Init();
 #endif /* MODEL_STG850 */
 
 #ifdef MODEL_STG856
-    MX_USART5_UART_Init();
+    BSP_MX_USART5_UART_Init();
 #endif /* MODEL_STG856 */
 }
 

@@ -1,8 +1,14 @@
 /**
   ******************************************************************************
-  * @file    stm32f0xx_it.c
-  * @brief   Interrupt Service Routines.
+  * File Name          : USART.h
+  * Description        : This file provides code for the configuration
+  *                      of the USART instances.
   ******************************************************************************
+  ** This notice applies to any and all portions of this file
+  * that are not between comment pairs USER CODE BEGIN and
+  * USER CODE END. Other portions of this file, whether
+  * inserted by the user or by software development tools
+  * are owned by their respective copyright owners.
   *
   * COPYRIGHT(c) 2019 STMicroelectronics
   *
@@ -31,59 +37,18 @@
   ******************************************************************************
   */
 
-#include "stm32f0xx.h"
-#include "stm32f0xx_hal.h"
-#include "stm32f0xx_it.h"
-#include "can.h"
-#include "bsp_clock.h"
-#include "bsp_qpc.h"
+#ifndef _BSP_MX_USART_H
+#define _BSP_MX_USART_H
 
-/* -- Cortex-M0 Processor Interruption and Exception Handlers -- */ 
+#include "stm32f0xx_ll_usart.h"
+#include "stm32f0xx_ll_rcc.h"
+#include "bsp_mx.h"
 
-/* NMI_Handler/0 and PendSV_Handler/0 are implemented in QP's kernel port */
+void BSP_MX_USART1_UART_Init(void);
+void BSP_MX_USART3_IRDA_Init(void);
 
-/* This function handles Hard fault interrupt. */
-void HardFault_Handler(void)
-{
-  while (1)
-  {
-    /* Do nothing */
-  }
-}
+#ifdef MODEL_STG856
+void BSP_MX_USART5_UART_Init(void);
+#endif
 
-/* This function handles System service call via SWI instruction. */
-void SVC_Handler(void)
-{
-  QK_ISR_ENTRY();
-  /* Not implemented */
-  QK_ISR_EXIT();
-}
-
-/* This function handles System tick timer. */
-void SysTick_Handler(void)
-{
-  QK_ISR_ENTRY();
-  QF_TICK_X(0U, (void *)0);
-  BSP_updateTickCounts();
-  QK_ISR_EXIT();
-}
-
-/* 
- * STM32F0xx Peripheral Interrupt Handlers
- * Add here the Interrupt Handlers for the used peripherals.
- * For the available peripheral interrupt handler names,
- * please refer to the startup file (startup_stm32f0xx.s).
- */
-
-/* This function handles USART3 to USART8 global interrupts / USART3 wake-up interrupt through EXTI line 28. */
-void USART3_8_IRQHandler(void)
-{
-  QK_ISR_ENTRY();
-  QK_ISR_EXIT();
-}
-
-void CEC_CAN_IRQHandler(void)
-{
-  QK_ISR_ENTRY();
-  QK_ISR_EXIT();
-}
+#endif /* _BSP_MX_USART_H */
