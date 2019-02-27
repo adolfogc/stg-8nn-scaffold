@@ -19,7 +19,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "stm32f0xx_ll_gpio.h"
 #include "stm32f0xx_ll_bus.h"
-#include "bsp_irs_pri.h"
+#include "bsp_isr_priorities.h"
 #include "bsp_pinout.h"
 #include "bsp_qpc.h"
 #include "can.h"

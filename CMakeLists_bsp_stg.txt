@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Adolfo E. García
+# Copyright (C) 2018-2019 Adolfo E. García
 #
 # This file is part of STG-8nn-Scaffold.
 #
@@ -15,12 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
-##
-## bsp
-##
 list(APPEND BSP_INCLUDE ${BSP_DIR}/stg/include)
 
-# common
 list(APPEND BSP_SOURCES
   ${BSP_DIR}/stg/include/adc.h
   ${BSP_DIR}/stg/include/can.h
@@ -30,11 +26,15 @@ list(APPEND BSP_SOURCES
   ${BSP_DIR}/stg/include/rtc.h
   ${BSP_DIR}/stg/include/stm32_assert.h
   ${BSP_DIR}/stg/include/stm32f0xx_hal_conf.h
-  ${BSP_DIR}/stg/include/stm32f0xx_it.h
   ${BSP_DIR}/stg/include/tim.h
   ${BSP_DIR}/stg/include/usart.h
   ${BSP_DIR}/stg/include/bsp_clock.h
-  ${BSP_DIR}/stg/include/bsp_irs_pri.h
+  ${BSP_DIR}/stg/include/bsp_isr_priorities.h
+  ${BSP_DIR}/stg/include/bsp_isr_cec_can.h
+  ${BSP_DIR}/stg/include/bsp_isr_hardfault.h
+  ${BSP_DIR}/stg/include/bsp_isr_svc.h
+  ${BSP_DIR}/stg/include/bsp_isr_systick.h
+  ${BSP_DIR}/stg/include/bsp_isr_usart3_8.h
   ${BSP_DIR}/stg/include/bsp_mx.h
   ${BSP_DIR}/stg/include/bsp_pinout.h
   ${BSP_DIR}/stg/include/bsp_specific.h
@@ -45,11 +45,15 @@ list(APPEND BSP_SOURCES
   ${BSP_DIR}/stg/src/iwdg.c
   ${BSP_DIR}/stg/src/rtc.c
   ${BSP_DIR}/stg/src/stm32f0xx_hal_msp.c
-  ${BSP_DIR}/stg/src/stm32f0xx_it.c
   ${BSP_DIR}/stg/src/tim.c
   ${BSP_DIR}/stg/src/usart.c
   ${BSP_DIR}/stg/src/bsp.c
   ${BSP_DIR}/stg/src/bsp_can.c
   ${BSP_DIR}/stg/src/bsp_clock.c
+  ${BSP_DIR}/stg/src/bsp_isr_cec_can.c
+  ${BSP_DIR}/stg/src/bsp_isr_hardfault.c
+  ${BSP_DIR}/stg/src/bsp_isr_svc.c
+  ${BSP_DIR}/stg/src/bsp_isr_systick.c
+  ${BSP_DIR}/stg/src/bsp_isr_usart3_8.c
   ${BSP_DIR}/stg/src/bsp_qpc.c
 )

@@ -27,7 +27,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "bsp.h"
 #include "bsp_clock.h"
-#include "bsp_irs_pri.h"
+#include "bsp_isr_priorities.h"
 #include "bsp_specific.h"
 #include "bsp_qpc.h"
 
@@ -40,7 +40,7 @@ void BSP_systemClockConfig(void)
 {
     g_nTicks = 0U;
     g_upTimeSeconds = 0U;
-    
+
     RCC_OscInitTypeDef RCC_OscInitStruct;
     RCC_ClkInitTypeDef RCC_ClkInitStruct;
     RCC_PeriphCLKInitTypeDef PeriphClkInit;
@@ -117,7 +117,7 @@ void BSP_systemClockConfig2(void)
 
     LL_FLASH_SetLatency(LL_FLASH_LATENCY_0);
     Q_ENSURE(LL_FLASH_GetLatency() == LL_FLASH_LATENCY_0);
-    
+
     LL_RCC_HSE_Enable();
     while(LL_RCC_HSE_IsReady() != 1)
     {
@@ -157,7 +157,7 @@ void BSP_systemClockConfig2(void)
     LL_RCC_HSI14_EnableADCControl();
     LL_RCC_SetUSARTClockSource(LL_RCC_USART1_CLKSOURCE_PCLK1);
     LL_RCC_SetUSARTClockSource(LL_RCC_USART3_CLKSOURCE_PCLK1);
-    
+
     /* SysTick_IRQn interrupt configuration */
     NVIC_SetPriority(SysTick_IRQn, BSP_SYSTICK_PRIO);
 }

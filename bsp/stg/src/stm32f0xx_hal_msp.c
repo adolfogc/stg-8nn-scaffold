@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
   * File Name          : stm32f0xx_hal_msp.c
-  * Description        : This file provides code for the MSP Initialization 
+  * Description        : This file provides code for the MSP Initialization
   *                      and de-Initialization codes.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -38,7 +38,7 @@
   */
 
 #include "stm32f0xx_hal.h"
-#include "bsp_irs_pri.h"
+#include "bsp_isr_priorities.h"
 
 void HAL_MspInit(void)
 {
