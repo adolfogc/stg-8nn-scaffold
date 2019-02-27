@@ -22,10 +22,10 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp_isr_priorities.h"
 #include "bsp_pinout.h"
 #include "bsp_qpc.h"
-#include "can.h"
+#include "bsp_mx_can.h"
 
 /* CAN init function */
-void MX_CAN_Init(void)
+void BSP_MX_CAN_Init(void)
 {
     LL_GPIO_InitTypeDef GPIO_InitStruct;
 

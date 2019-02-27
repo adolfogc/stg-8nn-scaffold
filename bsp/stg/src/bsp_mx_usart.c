@@ -6,7 +6,7 @@
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -37,22 +37,22 @@
   ******************************************************************************
   */
 
-#include "usart.h"
-#include "gpio.h"
+#include "bsp_mx_usart.h"
+#include "bsp_mx_gpio.h"
 
 #ifdef MODEL_STG850
 /* USART1 init function */
-void MX_USART1_UART_Init(void)
+void BSP_MX_USART1_UART_Init(void)
 {
   LL_USART_InitTypeDef USART_InitStruct;
   LL_GPIO_InitTypeDef GPIO_InitStruct;
 
   /* Peripheral clock enable */
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_USART1);
-  
-  /* USART1 GPIO Configuration  
+
+  /* USART1 GPIO Configuration
     PA9  ------> USART1_TX
-    PA10 ------> USART1_RX 
+    PA10 ------> USART1_RX
   */
   GPIO_InitStruct.Pin = LL_GPIO_PIN_9;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
@@ -85,17 +85,17 @@ void MX_USART1_UART_Init(void)
 }
 
 /* USART3 init function */
-void MX_USART3_IRDA_Init(void)
+void BSP_MX_USART3_IRDA_Init(void)
 {
   LL_USART_InitTypeDef USART_InitStruct;
   LL_GPIO_InitTypeDef GPIO_InitStruct;
 
   /* Peripheral clock enable */
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART3);
-  
-  /* USART3 GPIO Configuration  
+
+  /* USART3 GPIO Configuration
     PB10 ------> USART3_TX
-    PB11 ------> USART3_RX 
+    PB11 ------> USART3_RX
   */
   GPIO_InitStruct.Pin = LL_GPIO_PIN_10;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
@@ -135,17 +135,17 @@ void MX_USART3_IRDA_Init(void)
 
 #ifdef MODEL_STG856
 /* USART1 init function */
-void MX_USART1_UART_Init(void)
+void BSP_MX_USART1_UART_Init(void)
 {
   LL_USART_InitTypeDef USART_InitStruct;
   LL_GPIO_InitTypeDef GPIO_InitStruct;
 
   /* Peripheral clock enable */
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_USART1);
-  
-  /* USART1 GPIO Configuration  
+
+  /* USART1 GPIO Configuration
     PA9  ------> USART1_TX
-    PA10 ------> USART1_RX 
+    PA10 ------> USART1_RX
   */
   GPIO_InitStruct.Pin = LL_GPIO_PIN_9;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
@@ -179,17 +179,17 @@ void MX_USART1_UART_Init(void)
 }
 
 /* USART3 init function */
-void MX_USART3_IRDA_Init(void)
+void BSP_MX_USART3_IRDA_Init(void)
 {
   LL_USART_InitTypeDef USART_InitStruct;
   LL_GPIO_InitTypeDef GPIO_InitStruct;
 
   /* Peripheral clock enable */
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART3);
-  
-  /* USART3 GPIO Configuration  
+
+  /* USART3 GPIO Configuration
     PB10 ------> USART3_TX
-    PB11 ------> USART3_RX 
+    PB11 ------> USART3_RX
   */
   GPIO_InitStruct.Pin = LL_GPIO_PIN_10;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
@@ -222,17 +222,17 @@ void MX_USART3_IRDA_Init(void)
 }
 
 /* USART5 init function */
-void MX_USART5_UART_Init(void)
+void BSP_MX_USART5_UART_Init(void)
 {
   LL_USART_InitTypeDef USART_InitStruct;
   LL_GPIO_InitTypeDef GPIO_InitStruct;
 
   /* Peripheral clock enable */
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART5);
-  
-  /* USART5 GPIO Configuration  
+
+  /* USART5 GPIO Configuration
     PB3 ------> USART5_TX
-    PB4 ------> USART5_RX 
+    PB4 ------> USART5_RX
   */
   GPIO_InitStruct.Pin = LL_GPIO_PIN_3;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;

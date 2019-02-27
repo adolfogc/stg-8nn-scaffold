@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * File Name          : CAN.h
+  * File Name          : USART.h
   * Description        : This file provides code for the configuration
-  *                      of the CAN instances.
+  *                      of the USART instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -37,9 +37,18 @@
   ******************************************************************************
   */
 
-#ifndef _MX_CAN_H
-#define _MX_CAN_H
+#ifndef _BSP_MX_USART_H
+#define _BSP_MX_USART_H
 
-void MX_CAN_Init(void);
+#include "stm32f0xx_ll_usart.h"
+#include "stm32f0xx_ll_rcc.h"
+#include "bsp_mx.h"
 
-#endif /* _MX_CAN_H */
+void BSP_MX_USART1_UART_Init(void);
+void BSP_MX_USART3_IRDA_Init(void);
+
+#ifdef MODEL_STG856
+void BSP_MX_USART5_UART_Init(void);
+#endif
+
+#endif /* _BSP_MX_USART_H */

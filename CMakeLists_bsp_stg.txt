@@ -18,16 +18,6 @@
 list(APPEND BSP_INCLUDE ${BSP_DIR}/stg/include)
 
 list(APPEND BSP_SOURCES
-  ${BSP_DIR}/stg/include/adc.h
-  ${BSP_DIR}/stg/include/can.h
-  ${BSP_DIR}/stg/include/gpio.h
-  ${BSP_DIR}/stg/include/i2c.h
-  ${BSP_DIR}/stg/include/iwdg.h
-  ${BSP_DIR}/stg/include/rtc.h
-  ${BSP_DIR}/stg/include/stm32_assert.h
-  ${BSP_DIR}/stg/include/stm32f0xx_hal_conf.h
-  ${BSP_DIR}/stg/include/tim.h
-  ${BSP_DIR}/stg/include/usart.h
   ${BSP_DIR}/stg/include/bsp_clock.h
   ${BSP_DIR}/stg/include/bsp_isr_priorities.h
   ${BSP_DIR}/stg/include/bsp_isr_cec_can.h
@@ -36,17 +26,18 @@ list(APPEND BSP_SOURCES
   ${BSP_DIR}/stg/include/bsp_isr_systick.h
   ${BSP_DIR}/stg/include/bsp_isr_usart3_8.h
   ${BSP_DIR}/stg/include/bsp_mx.h
+  ${BSP_DIR}/stg/include/bsp_mx_adc.h
+  ${BSP_DIR}/stg/include/bsp_mx_can.h
+  ${BSP_DIR}/stg/include/bsp_mx_gpio.h
+  ${BSP_DIR}/stg/include/bsp_mx_i2c.h
+  ${BSP_DIR}/stg/include/bsp_mx_iwdg.h
+  ${BSP_DIR}/stg/include/bsp_mx_rtc.h
+  ${BSP_DIR}/stg/include/bsp_mx_timer.h
+  ${BSP_DIR}/stg/include/bsp_mx_usart.h
   ${BSP_DIR}/stg/include/bsp_pinout.h
   ${BSP_DIR}/stg/include/bsp_specific.h
-  ${BSP_DIR}/stg/src/adc.c
-  ${BSP_DIR}/stg/src/can.c
-  ${BSP_DIR}/stg/src/gpio.c
-  ${BSP_DIR}/stg/src/i2c.c
-  ${BSP_DIR}/stg/src/iwdg.c
-  ${BSP_DIR}/stg/src/rtc.c
-  ${BSP_DIR}/stg/src/stm32f0xx_hal_msp.c
-  ${BSP_DIR}/stg/src/tim.c
-  ${BSP_DIR}/stg/src/usart.c
+  ${BSP_DIR}/stg/include/stm32_assert.h
+  ${BSP_DIR}/stg/include/stm32f0xx_hal_conf.h
   ${BSP_DIR}/stg/src/bsp.c
   ${BSP_DIR}/stg/src/bsp_can.c
   ${BSP_DIR}/stg/src/bsp_clock.c
@@ -55,5 +46,14 @@ list(APPEND BSP_SOURCES
   ${BSP_DIR}/stg/src/bsp_isr_svc.c
   ${BSP_DIR}/stg/src/bsp_isr_systick.c
   ${BSP_DIR}/stg/src/bsp_isr_usart3_8.c
+  ${BSP_DIR}/stg/src/bsp_mx_adc.c
+  ${BSP_DIR}/stg/src/bsp_mx_can.c
+  ${BSP_DIR}/stg/src/bsp_mx_gpio.c
+  ${BSP_DIR}/stg/src/bsp_mx_i2c.c
+  ${BSP_DIR}/stg/src/bsp_mx_iwdg.c
+  ${BSP_DIR}/stg/src/bsp_mx_rtc.c
+  ${BSP_DIR}/stg/src/bsp_mx_timer.c
+  ${BSP_DIR}/stg/src/bsp_mx_usart.c
   ${BSP_DIR}/stg/src/bsp_qpc.c
+  ${BSP_DIR}/stg/src/stm32f0xx_hal_msp.c
 )

@@ -6,7 +6,7 @@
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -37,21 +37,21 @@
   ******************************************************************************
   */
 
-#include "tim.h"
-#include "gpio.h"
+#include "bsp_mx_timer.h"
+#include "bsp_mx_gpio.h"
 
 #ifdef MODEL_STG850
 /* TIM1 init function */
-void MX_TIM1_Init(void)
+void BSP_MX_TIM1_Init(void)
 {
   LL_TIM_InitTypeDef TIM_InitStruct;
   LL_GPIO_InitTypeDef GPIO_InitStruct;
 
   /* Peripheral clock enable */
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM1);
-  
-  /* TIM1 GPIO Configuration  
-    PA12 ------> TIM1_ETR 
+
+  /* TIM1 GPIO Configuration
+    PA12 ------> TIM1_ETR
   */
   GPIO_InitStruct.Pin = LL_GPIO_PIN_12;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
@@ -75,16 +75,16 @@ void MX_TIM1_Init(void)
 }
 
 /* TIM2 init function */
-void MX_TIM2_Init(void)
+void BSP_MX_TIM2_Init(void)
 {
   LL_TIM_InitTypeDef TIM_InitStruct;
   LL_GPIO_InitTypeDef GPIO_InitStruct;
 
   /* Peripheral clock enable */
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2);
-  
-  /* TIM2 GPIO Configuration  
-    PA15 ------> TIM2_CH1 
+
+  /* TIM2 GPIO Configuration
+    PA15 ------> TIM2_CH1
   */
   GPIO_InitStruct.Pin = LL_GPIO_PIN_15;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
@@ -115,7 +115,7 @@ void MX_TIM2_Init(void)
 }
 
 /* TIM16 init function */
-void MX_TIM16_Init(void)
+void BSP_MX_TIM16_Init(void)
 {
   LL_TIM_InitTypeDef TIM_InitStruct;
 
@@ -132,7 +132,7 @@ void MX_TIM16_Init(void)
 }
 
 /* TIM17 init function */
-void MX_TIM17_Init(void)
+void BSP_MX_TIM17_Init(void)
 {
   LL_TIM_InitTypeDef TIM_InitStruct;
   LL_TIM_OC_InitTypeDef TIM_OC_InitStruct;
@@ -171,8 +171,8 @@ void MX_TIM17_Init(void)
   TIM_BDTRInitStruct.AutomaticOutput = LL_TIM_AUTOMATICOUTPUT_DISABLE;
   LL_TIM_BDTR_Init(TIM17, &TIM_BDTRInitStruct);
 
-  /* TIM17 GPIO Configuration    
-    PB7 ------> TIM17_CH1N 
+  /* TIM17 GPIO Configuration
+    PB7 ------> TIM17_CH1N
   */
   GPIO_InitStruct.Pin = Out9_LS_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
@@ -186,16 +186,16 @@ void MX_TIM17_Init(void)
 
 #ifdef MODEL_STG856
 /* TIM1 init function */
-void MX_TIM1_Init(void)
+void BSP_MX_TIM1_Init(void)
 {
   LL_TIM_InitTypeDef TIM_InitStruct;
   LL_GPIO_InitTypeDef GPIO_InitStruct;
-  
+
   /* Peripheral clock enable */
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM1);
-  
-  /* TIM1 GPIO Configuration  
-    PA12 ------> TIM1_ETR 
+
+  /* TIM1 GPIO Configuration
+    PA12 ------> TIM1_ETR
   */
   GPIO_InitStruct.Pin = IN10_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
@@ -219,7 +219,7 @@ void MX_TIM1_Init(void)
 }
 
 /* TIM16 init function */
-void MX_TIM16_Init(void)
+void BSP_MX_TIM16_Init(void)
 {
   LL_TIM_InitTypeDef TIM_InitStruct;
 
@@ -235,7 +235,7 @@ void MX_TIM16_Init(void)
   LL_TIM_DisableARRPreload(TIM16);
 }
 /* TIM17 init function */
-void MX_TIM17_Init(void)
+void BSP_MX_TIM17_Init(void)
 {
   LL_TIM_InitTypeDef TIM_InitStruct;
 

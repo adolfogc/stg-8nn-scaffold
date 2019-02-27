@@ -6,7 +6,7 @@
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -37,12 +37,12 @@
   ******************************************************************************
   */
 
-#include "adc.h"
-#include "gpio.h"
+#include "bsp_mx_adc.h"
+#include "bsp_mx_gpio.h"
 
 #ifdef MODEL_STG850
 /* ADC init function */
-void MX_ADC_Init(void)
+void BSP_MX_ADC_Init(void)
 {
   LL_ADC_InitTypeDef ADC_InitStruct;
   LL_ADC_REG_InitTypeDef ADC_REG_InitStruct;
@@ -50,14 +50,14 @@ void MX_ADC_Init(void)
 
   /* Peripheral clock enable */
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_ADC1);
-  
-  /* ADC GPIO Configuration  
+
+  /* ADC GPIO Configuration
     PA0 ------> ADC_IN0
     PA1 ------> ADC_IN1
     PA2 ------> ADC_IN2
     PA3 ------> ADC_IN3
     PA5 ------> ADC_IN5
-    PA6 ------> ADC_IN6 
+    PA6 ------> ADC_IN6
   */
   GPIO_InitStruct.Pin = LL_GPIO_PIN_0;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
@@ -141,7 +141,7 @@ void MX_ADC_Init(void)
 
 #ifdef MODEL_STG856
 /* ADC init function */
-void MX_ADC_Init(void)
+void BSP_MX_ADC_Init(void)
 {
   LL_ADC_InitTypeDef ADC_InitStruct;
   LL_ADC_REG_InitTypeDef ADC_REG_InitStruct;

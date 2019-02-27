@@ -45,6 +45,8 @@ static int App_mainDefault(void)
     uavcanNode = UavcanNode_initAO();
     App_init();
 
+    BSP_Led_on();
+
     QACTIVE_START((QActive*)&uavcanNode->super,
       1U,
       g_uavcanNode_queueBuffer,
