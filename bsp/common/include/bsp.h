@@ -22,6 +22,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <stdint.h>
 #include "canard.h"
+#include "bsp_qpc.h"
 #include "bsp_specific.h"
 
 void BSP_init(void);
@@ -45,5 +46,7 @@ BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame);
 
 uint32_t BSP_upTimeSeconds(void);
 void BSP_readUniqueID(uint8_t* outUid);
+
+QTicker* BSP_Ticker0_initAO(void);
 
 #endif /* _BSP_H */

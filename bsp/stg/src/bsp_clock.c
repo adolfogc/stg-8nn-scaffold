@@ -28,19 +28,12 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp.h"
 #include "bsp_clock.h"
 #include "bsp_isr_priorities.h"
-#include "bsp_specific.h"
 #include "bsp_qpc.h"
 
 Q_DEFINE_THIS_FILE
 
-static uint32_t volatile g_nTicks;
-static uint32_t volatile g_upTimeSeconds;
-
 void BSP_systemClockConfig(void)
 {
-    g_nTicks = 0U;
-    g_upTimeSeconds = 0U;
-
     RCC_OscInitTypeDef RCC_OscInitStruct;
     RCC_ClkInitTypeDef RCC_ClkInitStruct;
     RCC_PeriphCLKInitTypeDef PeriphClkInit;
@@ -76,45 +69,11 @@ void BSP_systemClockConfig(void)
     HAL_NVIC_SetPriority(SysTick_IRQn, BSP_SYSTICK_PRIO, 0);
 }
 
-void BSP_updateTickCounts(void)
-{
-    ++g_nTicks;
-
-    if(g_nTicks % BSP_TICKS_PER_MS == 0U) {
-        HAL_IncTick();
-    }
-
-    if(g_nTicks % BSP_TICKS_PER_SEC == 0U) {
-        g_nTicks = 0U;
-        ++g_upTimeSeconds;
-    }
-}
-
-uint32_t BSP_upTimeSeconds(void)
-{
-    return g_upTimeSeconds;
-}
-
-/* IMPORTANT: Do not use this function. It is only provided for use in the initialization of Libcanard's STM32 driver. */
-void usleep(uint32_t usec);
-
-void usleep(uint32_t usec)
-{
-    const uint32_t startTicks = g_nTicks;
-    const uint32_t delayTicks = (usec / 100U) * BSP_TICKS_PER_100uS + 1; /* add 1 to guarantee minimum delay */
-    while(g_nTicks - startTicks < delayTicks) {
-        /* Busy waiting... */
-    }
-}
-
 /* Alternative implementation: work in progress */
 void BSP_systemClockConfig2(void);
 
 void BSP_systemClockConfig2(void)
 {
-    g_nTicks = 0U;
-    g_upTimeSeconds = 0U;
-
     LL_FLASH_SetLatency(LL_FLASH_LATENCY_0);
     Q_ENSURE(LL_FLASH_GetLatency() == LL_FLASH_LATENCY_0);
 

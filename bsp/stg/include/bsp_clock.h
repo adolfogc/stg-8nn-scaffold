@@ -21,6 +21,5 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define _BSP_CLOCK_H
 
 void BSP_systemClockConfig(void);
-void BSP_updateTickCounts(void);
 
-#endif /* _BSP_CLOCK_H */ 
+#endif /* _BSP_CLOCK_H */
