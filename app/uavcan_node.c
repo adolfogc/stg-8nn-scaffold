@@ -47,6 +47,7 @@ static CanardInstance l_canardInstance;
 
 static QState UavcanNode_init(UavcanNode* me, QEvt const * const e);
 static QState UavcanNode_online(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_offline(UavcanNode* me, QEvt const * const e);
 static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e);
 static QState UavcanNode_aboutToRestart(UavcanNode* me, QEvt const * const e);
 
@@ -100,10 +101,12 @@ static QState UavcanNode_init(UavcanNode* me, QEvt const * const e)
 {
     (void) e; /* unused parameter */
 
+    if(!BSP_CAN_init()) {
+      return Q_TRAN(&UavcanNode_offline);
+    }
+
     /* Initialize our Libcanard's instance */
-    BSP_Led_on();
     initCanardInstance();
-    BSP_Led_off();
 
     /* We're online at this point */
     return Q_TRAN(&UavcanNode_online);
@@ -133,6 +136,40 @@ static QState UavcanNode_online(UavcanNode* me, QEvt const * const e)
     }
     return status;
 }
+
+static QState UavcanNode_offline(UavcanNode* me, QEvt const * const e)
+{
+  QState status;
+
+  switch(e->sig) {
+      case Q_INIT_SIG:
+          QTimeEvt_armX(&me->timeEvent, BSP_TICKS_PER_SEC / 2U, BSP_TICKS_PER_SEC / 2U); /* every 500 ms */
+          status = Q_HANDLED();
+          break;
+      case Q_ENTRY_SIG:
+          status = Q_HANDLED();
+          break;
+      case Q_EXIT_SIG:
+          status = Q_HANDLED();
+          break;
+      case UAVCAN_TIMEOUT_SIG:
+          if(!BSP_CAN_init()) {
+              status = Q_HANDLED();
+          } else {
+              /* Initialize our Libcanard's instance */
+              initCanardInstance();
+              /* We're online at this point */
+              QTimeEvt_disarm(&me->timeEvent);
+              status = Q_TRAN(&UavcanNode_online);
+          }
+          break;
+      default:
+          status = Q_SUPER(&QHsm_top);
+          break;
+  }
+  return status;
+}
+
 
 static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e)
 {

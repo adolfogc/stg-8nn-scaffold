@@ -24,7 +24,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 Q_DEFINE_THIS_FILE
 
-void BSP_CAN_init(void)
+bool BSP_CAN_init(void)
 {
     CanardSTM32CANTimings timings;
 
@@ -33,7 +33,8 @@ void BSP_CAN_init(void)
 
     /* Initialize the STM32 CAN driver */
     Q_ENSURE(canardSTM32ComputeCANTimings(HAL_RCC_GetPCLK1Freq(), 500000U, &timings) == 0U);
-    Q_ENSURE(canardSTM32Init(&timings, CanardSTM32IfaceModeNormal) == 0U);
+
+    return canardSTM32Init(&timings, CanardSTM32IfaceModeNormal) == 0U;
 }
 
 BSP_CAN_RxTxResult BSP_CAN_transmitOnce(const CanardCANFrame* frame)
@@ -64,5 +65,3 @@ BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame)
     }
     return result;
 }
-
-

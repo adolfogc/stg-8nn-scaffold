@@ -52,6 +52,4 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define APP_UAVCAN_DEFAULT_NODE_ID 115
 #endif
 
-void App_init(void);
-
 #endif /* _SCAFFOLD_APP_H */

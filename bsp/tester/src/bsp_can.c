@@ -35,9 +35,9 @@ Q_DEFINE_THIS_FILE
 /* SocketCan driver instance */
 static SocketCANInstance g_socketcan;
 
-void BSP_CAN_init(void)
+bool BSP_CAN_init(void)
 {
-    Q_ENSURE(socketcanInit(&g_socketcan, BSP_CAN_IFACE_NAME) == 0);
+    return socketcanInit(&g_socketcan, BSP_CAN_IFACE_NAME) == 0;
 }
 
 BSP_CAN_RxTxResult BSP_CAN_transmitOnce(const CanardCANFrame* frame)

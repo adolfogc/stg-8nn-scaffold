@@ -21,6 +21,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define _BSP_H
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "canard.h"
 #include "bsp_qpc.h"
 #include "bsp_specific.h"
@@ -31,7 +32,7 @@ void BSP_restart(void);
 void BSP_Led_off(void);
 void BSP_Led_on(void);
 
-void BSP_CAN_init(void);
+bool BSP_CAN_init(void);
 
 enum BSP_CAN_RxTxResultTag {
     BSP_CAN_RXTX_TIMEOUT,
