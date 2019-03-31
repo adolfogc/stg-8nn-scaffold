@@ -184,7 +184,7 @@ static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e)
             status = Q_HANDLED();
             break;
         case UAVCAN_TIMEOUT_SIG:
-          if(me->spinCtrl == 4U) { /* every 200 ms */
+          if(me->spinCtrl == 8U) { /* every 200 ms */
             me->spinCtrl = 0U;
             statusUpdate();
           } else {
