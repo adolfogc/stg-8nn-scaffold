@@ -22,11 +22,11 @@ Upstream-Contact: Adolfo E. García <adolfo.garcia.cr@gmail.com>
 Source: https://github.com/adolfogc/stg-8nn-scaffold
 
 Copyright: 2018 Adolfo E. García
-License: AGPL-3
+License: AGPL-3.0-or-later
 
 Files: dependencies/qpc/*
 Copyright: 2005-2018 Quantum Leaps, LLC
-License: GPL-3
+License: GPL-3.0-or-later
 
 Files: dependencies/libcanard/*
 Copyright: 2015 UAVCAN
@@ -36,14 +36,18 @@ Files: dependencies/stm32cube/cmsis/*
 Copyright: 2009-2015 ARM LIMITED
 License: BSD-new
 
-Files: dependencies/stm32cube/cmsis/device/src/system_stm32f0xx.c
+Files: dependencies/stm32cube/cmsis/device/*
 Copyright: 2016 STMicroelectronics
-License: BSD-new
+License: BSD-3-Clause
 
 Files: dependencies/stm32cube/hal/*
 Copyright: 2016-2018 STMicroelectronics
-License: BSD-new
+License: BSD-3-Clause
+
+Files: dependencies/stm32cube/ll/*
+Copyright:
+License: BSD-3-Clause
 
 Files: dependencies/stm32cube/gnu/*
 Copyright: 2016-2018 STMicroelectronics
-License: BSD-new
+License: BSD-3-Clause
