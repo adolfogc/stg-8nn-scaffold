@@ -23,6 +23,16 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp.h"
 #include "uavcan_node.h"
 
+/* Stack size in bytes */
+#ifndef APP_STACK_SIZE
+#define APP_STACK_SIZE 0x1000
+#endif
+
+/* Heap size in bytes */
+#ifndef APP_HEAP_SIZE
+#define APP_HEAP_SIZE 0x200
+#endif
+
 #ifdef APP_ENABLE_CUSTOM_BUILD_CONFIG
 #include "app_config.h"
 #endif

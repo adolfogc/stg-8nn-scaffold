@@ -5,6 +5,7 @@
 - [STM32CubeF0's web page](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html)
 - [ST's UM1785 User manual - Description of STM32F0 HAL and low-layer drivers](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/77/25/0f/5c/38/48/80/DM00122015.pdf/files/DM00122015.pdf/jcr:content/translations/en.DM00122015.pdf)
 - [ST's RM0091 Reference manual - STM32F0x1/STM32F0x2/STM32F0x8 advanced ARM®-based 32-bit MCUs](https://www.st.com/content/ccc/resource/technical/document/reference_manual/c2/f8/8a/f2/18/e6/43/96/DM00031936.pdf/files/DM00031936.pdf/jcr:content/translations/en.DM00031936.pdf)
+- [ST's AN4061 Application note - EEPROM emulation in STM32F0xx microcontrollers](https://www.st.com/content/ccc/resource/technical/document/application_note/2e/d4/65/6b/87/dd/40/25/DM00049914.pdf/files/DM00049914.pdf/jcr:content/translations/en.DM00049914.pdf)
 
 ### QP/C
 - [*"Getting Started with QP/C"* guide](https://state-machine.com/doc/AN_Getting_Started_with_QPC.pdf)
@@ -28,6 +29,7 @@
 - [*"PC Memory - A tutorial on PC memory and hex arithmetic"*](https://savage.net.au/Ron/html/hex-ram-tutorial.html)
 - [*"Using ld"*](http://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html)
 - [*"ELF for the ARM® Architecture"*](http://infocenter.arm.com/help/topic/com.arm.doc.ihi0044e/IHI0044E_aaelf.pdf)
+- [*"Defining Variables at Absolute Addresses with gcc"*](https://mcuoneclipse.com/2012/11/01/defining-variables-at-absolute-addresses-with-gcc/)
 
 ### Tooling
 - [*"An Introduction to Modern CMake"* book](https://cliutils.gitlab.io/modern-cmake)

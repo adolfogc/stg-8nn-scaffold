@@ -1,5 +1,5 @@
 STG-8nn-Scaffold - https://github.com/adolfogc/stg-8nn-scaffold
-Copyright (C) 2018 Adolfo E. García
+Copyright (C) 2018-2019 Adolfo E. García
 
 STG-8nn-Scaffold is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -21,29 +21,41 @@ Upstream-Name: STG-8nn-Scaffold
 Upstream-Contact: Adolfo E. García <adolfo.garcia.cr@gmail.com>
 Source: https://github.com/adolfogc/stg-8nn-scaffold
 
-Copyright: 2018 Adolfo E. García
-License: AGPL-3
+Copyright: 2018-2019 Adolfo E. García
+License: AGPL-3.0-or-later
 
-Files: dependencies/qpc/*
-Copyright: 2005-2018 Quantum Leaps, LLC
-License: GPL-3
+Files: dependencies/arm_cmsis5/*
+Copyright: 2009-2019 Arm Limited
+License: Apache-2.0
+
+Files: dependencies/dsdl/*
+Copyright: 2014-2015 Pavel Kirienko
+License: MIT
 
 Files: dependencies/libcanard/*
 Copyright: 2015 UAVCAN
 License: MIT
 
-Files: dependencies/stm32cube/cmsis/*
-Copyright: 2009-2015 ARM LIMITED
-License: BSD-new
+Files: dependencies/qpc/*
+Copyright: 2005-2018 Quantum Leaps, LLC
+License: GPL-3.0-or-later
 
-Files: dependencies/stm32cube/cmsis/device/src/system_stm32f0xx.c
-Copyright: 2016 STMicroelectronics
-License: BSD-new
-
-Files: dependencies/stm32cube/hal/*
+Files: dependencies/stm32cube/*
 Copyright: 2016-2018 STMicroelectronics
-License: BSD-new
+License: BSD-3-Clause
 
-Files: dependencies/stm32cube/gnu/*
+Files: startup/startup_stm32f091xc_1.s
 Copyright: 2016-2018 STMicroelectronics
-License: BSD-new
+License: BSD-3-Clause
+
+Files: startup/startup_stm32f091xc_2.s
+Copyright: 2009-2019 Arm Limited
+License: Apache-2.0
+
+Files: startup/startup_stm32f091xc.c
+Copyright: 2009-2019 Arm Limited
+License: Apache-2.0
+
+Files: startup/STM32F091CCUx_1.ld
+Copyright: 2016-2018 STMicroelectronics
+License: BSD-3-Clause
