@@ -35,19 +35,23 @@ ENTRY(Reset_Handler)
 /* Highest address of the user mode stack */
 _estack = 0x20008000;    /* end of RAM */
 /* Generate a link error if heap and stack don't fit into RAM */
-_Min_Heap_Size = 0x200;  /* required amount of heap  */
+_Min_Heap_Size = 0x200;   /* required amount of heap  */
 _Min_Stack_Size = 0x1000; /* required amount of stack */
+_ISR_Vector_Size = 0x600;  /* 48 words */
 
 /* Specify the memory areas */
 MEMORY
 {
-RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 32K
-FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 256K
+  RAM  (xrw) : ORIGIN = 0x20000000, LENGTH = 32K
+  FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 256K
 }
 
 /* Define output sections */
 SECTIONS
 {
+  /* Used by the startup code to copy ISR vector data */
+  _si_isr_vector_copy = LOADADDR(.isr_vector);
+
   /* The startup code goes first into FLASH */
   .isr_vector :
   {
@@ -110,7 +114,7 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } >FLASH
 
-  /* used by the startup to initialize data */
+  /* Used by the startup code to initialize data */
   _sidata = LOADADDR(.data);
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
@@ -124,6 +128,17 @@ SECTIONS
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
   } >RAM AT> FLASH
+
+  /* The ISR vector copy goes into RAM */
+  .isr_vector_copy :
+  {
+    . = ALIGN(4);
+    _s_isr_vector_copy = .;
+    . = . + _ISR_Vector_Size;
+    . = ALIGN(4);
+    _e_isr_vector_copy = .;
+    KEEP(*(.isr_vector_copy))
+  } >RAM
 
   /* Uninitialized data section */
   . = ALIGN(4);
