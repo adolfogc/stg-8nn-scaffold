@@ -162,92 +162,34 @@ void Reset_Handler(void)
 
   SystemInit(); /* CMSIS System Initialization */
 
-/* Firstly it copies data from read only memory to RAM.
- * There are two schemes to copy. One can copy more than one sections.
- * Another can copy only one section. The former scheme needs more
- * instructions and read-only data to implement than the latter.
- * Macro __STARTUP_COPY_MULTIPLE is used to choose between two schemes.
- */
-
-#ifdef __STARTUP_COPY_MULTIPLE
-/* Multiple sections scheme.
- *
- * Between symbol address __copy_table_start__ and __copy_table_end__,
- * there are array of triplets, each of which specify:
- *   offset 0: LMA of start of a section to copy from
- *   offset 4: VMA of start of a section to copy to
- *   offset 8: size of the section to copy. Must be multiply of 4
- *
- * All addresses must be aligned to 4 bytes boundary.
- */
-  pTable = &__copy_table_start__;
-
-  for (; pTable < &__copy_table_end__; pTable = pTable + 3) {
-    pSrc  = (uint32_t*)*(pTable + 0);
-    pDest = (uint32_t*)*(pTable + 1);
-    for (; pDest < (uint32_t*)(*(pTable + 1) + *(pTable + 2)) ; ) {
-      *pDest++ = *pSrc++;
-    }
-  }
-#else
-/* Single section scheme.
- *
- * The ranges of copy from/to are specified by following symbols
- *   __etext: LMA of start of the section to copy from. Usually end of text
- *   __data_start__: VMA of start of the section to copy to
- *   __data_end__: VMA of end of the section to copy to
- *
- * All addresses must be aligned to 4 bytes boundary.
- */
+  /* Copy data from read only memory to RAM.
+   * The ranges of copy from/to are specified by following symbols:
+   *   __etext, LMA of start of the section to copy from. Usually end of text
+   *   __data_start__, VMA of start of the section to copy to
+   *   __data_end__, VMA of end of the section to copy to
+   *
+   * All addresses must be aligned to 4 bytes boundary.
+   */
   pSrc  = &__etext;
   pDest = &__data_start__;
 
   for ( ; pDest < &__data_end__ ; ) {
     *pDest++ = *pSrc++;
   }
-#endif /*__STARTUP_COPY_MULTIPLE */
 
-/* This part of work usually is done in C library startup code.
- * Otherwise, define this macro to enable it in this startup.
- *
- * There are two schemes too.
- * One can clear multiple BSS sections. Another can only clear one section.
- * The former is more size expensive than the latter.
- *
- * Define macro __STARTUP_CLEAR_BSS_MULTIPLE to choose the former.
- * Otherwise define macro __STARTUP_CLEAR_BSS to choose the later.
- */
-#ifdef __STARTUP_CLEAR_BSS_MULTIPLE
-/* Multiple sections scheme.
- *
- * Between symbol address __copy_table_start__ and __copy_table_end__,
- * there are array of tuples specifying:
- *   offset 0: Start of a BSS section
- *   offset 4: Size of this BSS section. Must be multiply of 4
- */
-  pTable = &__zero_table_start__;
-
-  for (; pTable < &__zero_table_end__; pTable = pTable + 2) {
-    pDest = (uint32_t*)*(pTable + 0);
-    for (; pDest < (uint32_t*)(*(pTable + 0) + *(pTable + 1)) ; ) {
-      *pDest++ = 0;
-    }
-  }
-#elif defined (__STARTUP_CLEAR_BSS)
-/* Single BSS section scheme.
- *
- * The BSS section is specified by following symbols
- *   __bss_start__: start of the BSS section.
- *   __bss_end__: end of the BSS section.
- *
- * Both addresses must be aligned to 4 bytes boundary.
- */
+  /* Clear the BSS section.
+   *
+   * The BSS section is specified by following symbols
+   *   __bss_start__: start of the BSS section.
+   *   __bss_end__: end of the BSS section.
+   *
+   * Both addresses must be aligned to 4 bytes boundary.
+   */
   pDest = &__bss_start__;
 
   for ( ; pDest < &__bss_end__ ; ) {
     *pDest++ = 0UL;
   }
-#endif /* __STARTUP_CLEAR_BSS_MULTIPLE || __STARTUP_CLEAR_BSS */
 
   _start(); /* Enter PreeMain (C library entry point) */
 }

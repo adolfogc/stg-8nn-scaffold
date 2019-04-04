@@ -78,40 +78,6 @@ SECTIONS
 	} > FLASH
 	__exidx_end = .;
 
-	/* To copy multiple ROM to RAM sections,
-	 * uncomment .copy.table section and,
-	 * define __STARTUP_COPY_MULTIPLE in startup_ARMCMx.S */
-	/*
-	.copy.table :
-	{
-		. = ALIGN(4);
-		__copy_table_start__ = .;
-		LONG (__etext)
-		LONG (__data_start__)
-		LONG (__data_end__ - __data_start__)
-		LONG (__etext2)
-		LONG (__data2_start__)
-		LONG (__data2_end__ - __data2_start__)
-		__copy_table_end__ = .;
-	} > FLASH
-	*/
-
-	/* To clear multiple BSS sections,
-	 * uncomment .zero.table section and,
-	 * define __STARTUP_CLEAR_BSS_MULTIPLE in startup_ARMCMx.S */
-	/*
-	.zero.table :
-	{
-		. = ALIGN(4);
-		__zero_table_start__ = .;
-		LONG (__bss_start__)
-		LONG (__bss_end__ - __bss_start__)
-		LONG (__bss2_start__)
-		LONG (__bss2_end__ - __bss2_start__)
-		__zero_table_end__ = .;
-	} > FLASH
-	*/
-
 	/* Location counter can end up 2byte aligned with narrow Thumb code but
 	   __etext is assumed by startup code to be the LMA of a section in RAM
 	   which must be 4byte aligned */
@@ -135,7 +101,6 @@ SECTIONS
 		KEEP(*(SORT(.init_array.*)))
 		KEEP(*(.init_array))
 		PROVIDE_HIDDEN (__init_array_end = .);
-
 
 		. = ALIGN(4);
 		/* finit data */
