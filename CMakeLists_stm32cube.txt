@@ -33,23 +33,6 @@ list(APPEND STM32CUBE_SOURCES
 )
 
 ##
-## Add dependency: startup code (stm32cube's)
-##
-
-list(APPEND STM32CUBE_SOURCES ${STM32CUBE_DIR}/gnu/startup_stm32f091xc.s) # works with GCC and Clang
-
-##
-## Add dependency: linker script (stm32cube's)
-##
-
-add_custom_command(
-  OUTPUT STM32F091CCUx_FLASH.ld
-  COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/${STM32CUBE_DIR}/gnu/STM32F091CCUx_FLASH.ld ${PROJECT_BINARY_DIR}/STM32F091CCUx_FLASH.ld
-  MAIN_DEPENDENCY ${STM32CUBE_DIR}/gnu/STM32F091CCUx_FLASH.ld
-)
-list(APPEND STM32CUBE_SOURCES STM32F091CCUx_FLASH.ld)
-
-##
 ## Select the STM32 HAL modules to be used
 ##
 
