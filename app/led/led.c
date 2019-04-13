@@ -23,10 +23,14 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 Q_DEFINE_THIS_FILE
 
-/* -- Active Object instance -- */
+/* -- Active object instance -- */
 
 static Led l_led;
 static QEvt const * l_led_evtBuffer[APP_LED_EVT_QUEUE_SIZE];
+
+/* -- Active object implementation -- */
+
+#include "led_ao.c"
 
 /* -- Public functions implementation -- */
 
@@ -62,7 +66,3 @@ void Led_postBlink()
     static const QEvt evt = {LED_BLINK_SIG, 0U, 0U};
     QACTIVE_POST(&l_led.super, &evt, (void*)0);
 }
-
-/* -- Active Object implementation -- */
-
-#include "led_ao.c"
