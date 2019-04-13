@@ -21,7 +21,12 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define _SCAFFOLD_APP_H
 
 #include "bsp.h"
+#include "led.h"
 #include "uavcan_node.h"
+
+#ifdef APP_ENABLE_CUSTOM_BUILD_CONFIG
+#include "app_config.h"
+#endif
 
 /* Stack size in bytes */
 #ifndef APP_STACK_SIZE
@@ -31,10 +36,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 /* Heap size in bytes */
 #ifndef APP_HEAP_SIZE
 #define APP_HEAP_SIZE 0x200
-#endif
-
-#ifdef APP_ENABLE_CUSTOM_BUILD_CONFIG
-#include "app_config.h"
 #endif
 
 #ifndef APP_SW_VERSION_MAJOR
@@ -60,6 +61,18 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #ifndef APP_UAVCAN_DEFAULT_NODE_ID
 #define APP_UAVCAN_DEFAULT_NODE_ID 115
+#endif
+
+#ifndef APP_UAVCAN_NODE_EVT_QUEUE_SIZE
+#define APP_UAVCAN_NODE_EVT_QUEUE_SIZE 20
+#endif
+
+#ifndef APP_LED_EVT_QUEUE_SIZE
+#define APP_LED_EVT_QUEUE_SIZE 10
+#endif
+
+#ifndef APP_CANARD_MEMORY_POOL_SIZE
+#define APP_CANARD_MEMORY_POOL_SIZE 4096
 #endif
 
 #endif /* _SCAFFOLD_APP_H */

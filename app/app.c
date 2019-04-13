@@ -19,8 +19,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "app.h"
 
-Q_DEFINE_THIS_FILE
-
 int main(void);
 
 static int App_mainDefault(void);
@@ -28,26 +26,26 @@ int App_main(void) __attribute__((weak, alias("App_mainDefault")));
 
 static int App_mainDefault(void)
 {
-    static QEvt const * g_uavcanNode_queueBuffer[20];
-    static UavcanNode * uavcanNode;
+    /* Initialize the AOs */
+    BSP_Ticker0_initAO(); /* This AO is a singleton managed by its module. */
+    UavcanNode_initAO();  /* This AO is a singleton managed by its module. */
+    Led_initAO();         /* This AO is a singleton managed by its module. */
 
-    uavcanNode = UavcanNode_initAO();
-
-    BSP_init(); /* Initialize the hardware. */
-    QF_init();  /* Initialize the QF framework and the underlying RT kernel. */
-
-    BSP_CAN_init(); /* Inititalize the CAN hardware for use with Libcanard */
+    /* Initialize the hardware. */
+    BSP_init();
+    /* Initialize the QF framework and the underlying RT kernel. */
+    QF_init();
+    /* Inititalize the CAN hardware for use with Libcanard */
+    BSP_CAN_init();
 
     BSP_Led_on();
 
-    QACTIVE_START((QActive*)&uavcanNode->super,
-      1U,
-      g_uavcanNode_queueBuffer,
-      Q_DIM(g_uavcanNode_queueBuffer),
-      (void*)0, 0U,
-      (QEvt*)0);
+    /* Start the AOs */
+    BSP_Ticker0_startAO(1U);
+    Led_startAO(2U);
+    UavcanNode_startAO(3U);
 
-      return QF_run();
+    return QF_run();
 }
 
 int main(void)

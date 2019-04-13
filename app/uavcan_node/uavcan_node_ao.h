@@ -17,39 +17,31 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _BSP_H
-#define _BSP_H
+#ifndef _UAVCAN_NODE_AO_H
+#define _UAVCAN_NODE_AO_H
 
 #include <stdint.h>
-#include <stdbool.h>
-#include "canard.h"
 #include "bsp_qpc.h"
-#include "bsp_specific.h"
 
-void BSP_init(void);
-void BSP_restart(void);
+typedef struct {
+    QActive super;
 
-void BSP_Led_off(void);
-void BSP_Led_on(void);
+    QTimeEvt timeEvent;
+    uint32_t spinCtrl;
+} UavcanNode;
 
-bool BSP_CAN_init(void);
-
-enum BSP_CAN_RxTxResultTag {
-    BSP_CAN_RXTX_TIMEOUT,
-    BSP_CAN_RXTX_SUCCESS,
-    BSP_CAN_RXTX_ERROR
+enum UavcanNodeSignals {
+    UAVCAN_TIMEOUT_SIG = Q_USER_SIG,
+    UAVCAN_SPIN_SIG,
+    UAVCAN_RESTART_SIG
 };
 
-typedef enum BSP_CAN_RxTxResultTag BSP_CAN_RxTxResult;
+void UavcanNode_ctor(UavcanNode* me);
 
-BSP_CAN_RxTxResult BSP_CAN_transmitOnce(const CanardCANFrame* frame);
-BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame);
+static QState UavcanNode_init(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_online(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_offline(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_aboutToRestart(UavcanNode* me, QEvt const * const e);
 
-uint32_t BSP_upTimeSeconds(void);
-void BSP_readUniqueID(uint8_t* outUid);
-
-void BSP_Ticker0_initAO(void);
-void BSP_Ticker0_startAO(uint8_t priority);
-QTicker* BSP_Ticker0_getAO(void);
-
-#endif /* _BSP_H */
+#endif /* _UAVCAN_NODE_AO_H */
