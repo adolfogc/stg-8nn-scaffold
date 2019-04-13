@@ -48,6 +48,8 @@ BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame);
 uint32_t BSP_upTimeSeconds(void);
 void BSP_readUniqueID(uint8_t* outUid);
 
-QTicker* BSP_Ticker0_initAO(void);
+void BSP_Ticker0_initAO(void);
+void BSP_Ticker0_startAO(uint8_t priority);
+QTicker* BSP_Ticker0_getAO(void);
 
 #endif /* _BSP_H */

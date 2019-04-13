@@ -50,7 +50,7 @@ void UavcanNode_initAO(void)
     UavcanNode_ctor(&l_uavcanNode);
 }
 
-void UavcanNode_startAO(uint32_t priority)
+void UavcanNode_startAO(uint8_t priority)
 {
   QACTIVE_START((QActive*)&l_uavcanNode.super,
     priority,

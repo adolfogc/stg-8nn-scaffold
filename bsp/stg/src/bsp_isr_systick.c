@@ -6,6 +6,8 @@
 #include "bsp_specific.h"
 #include "bsp_isr_systick.h"
 
+Q_DEFINE_THIS_FILE
+
 static uint32_t volatile l_nTicks = 0U;
 static uint32_t volatile l_upTimeSeconds = 0U;
 
@@ -35,12 +37,27 @@ void SysTick_Handler(void)
   QK_ISR_EXIT();
 }
 
-QTicker* BSP_Ticker0_initAO(void)
+void BSP_Ticker0_initAO(void)
 {
     QTicker_ctor((QTicker*)&l_ticker0, 0U);
     l_ticker0Ptr = &l_ticker0;
+}
+
+void BSP_Ticker0_startAO(uint8_t priority)
+{
+    QACTIVE_START((QActive*)&l_ticker0,
+      priority,
+      (void*)0,
+      0U,
+      (void*)0, 0U,
+      (QEvt*)0);
+}
+
+QTicker* BSP_Ticker0_getAO(void)
+{
     return (QTicker*)&l_ticker0;
 }
+
 
 uint32_t BSP_upTimeSeconds(void)
 {
