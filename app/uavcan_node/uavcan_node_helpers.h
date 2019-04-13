@@ -17,34 +17,11 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "app.h"
+#ifndef _UAVCAN_NODE_HELPERS_H
+#define _UAVCAN_NODE_HELPERS_H
 
-int main(void);
+static void initCanardInstance(void);
+static void sendAll(void);
+static void receiveAll(void);
 
-static int App_mainDefault(void);
-int App_main(void) __attribute__((weak, alias("App_mainDefault")));
-
-static int App_mainDefault(void)
-{
-    /* Initialize the AOs */
-    UavcanNode_initAO(); /* This AO is a singleton managed by its module */
-
-    /* Initialize the hardware. */
-    BSP_init();
-    /* Initialize the QF framework and the underlying RT kernel. */
-    QF_init();
-    /* Inititalize the CAN hardware for use with Libcanard */
-    BSP_CAN_init();
-
-    BSP_Led_on();
-
-    /* Start the AOs */
-    UavcanNode_startAO(2U);
-
-    return QF_run();
-}
-
-int main(void)
-{
-  return App_main();
-}
+#endif /* _UAVCAN_NODE_HELPERS_H */

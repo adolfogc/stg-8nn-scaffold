@@ -17,34 +17,31 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "app.h"
+#ifndef _UAVCAN_NODE_AO_H
+#define _UAVCAN_NODE_AO_H
 
-int main(void);
+#include <stdint.h>
+#include "bsp_qpc.h"
 
-static int App_mainDefault(void);
-int App_main(void) __attribute__((weak, alias("App_mainDefault")));
+typedef struct {
+    QActive super;
 
-static int App_mainDefault(void)
-{
-    /* Initialize the AOs */
-    UavcanNode_initAO(); /* This AO is a singleton managed by its module */
+    QTimeEvt timeEvent;
+    uint32_t spinCtrl;
+} UavcanNode;
 
-    /* Initialize the hardware. */
-    BSP_init();
-    /* Initialize the QF framework and the underlying RT kernel. */
-    QF_init();
-    /* Inititalize the CAN hardware for use with Libcanard */
-    BSP_CAN_init();
+enum UavcanNodeSignals {
+    UAVCAN_TIMEOUT_SIG = Q_USER_SIG,
+    UAVCAN_SPIN_SIG,
+    UAVCAN_RESTART_SIG
+};
 
-    BSP_Led_on();
+void UavcanNode_ctor(UavcanNode* me);
 
-    /* Start the AOs */
-    UavcanNode_startAO(2U);
+static QState UavcanNode_init(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_online(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_offline(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_aboutToRestart(UavcanNode* me, QEvt const * const e);
 
-    return QF_run();
-}
-
-int main(void)
-{
-  return App_main();
-}
+#endif /* _UAVCAN_NODE_AO_H */
