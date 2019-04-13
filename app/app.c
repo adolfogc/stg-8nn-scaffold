@@ -27,8 +27,9 @@ int App_main(void) __attribute__((weak, alias("App_mainDefault")));
 static int App_mainDefault(void)
 {
     /* Initialize the AOs */
-    UavcanNode_initAO();  /* This AO is a singleton managed by its module. */
     BSP_Ticker0_initAO(); /* This AO is a singleton managed by its module. */
+    UavcanNode_initAO();  /* This AO is a singleton managed by its module. */
+    Led_initAO();         /* This AO is a singleton managed by its module. */
 
     /* Initialize the hardware. */
     BSP_init();
@@ -41,7 +42,8 @@ static int App_mainDefault(void)
 
     /* Start the AOs */
     BSP_Ticker0_startAO(1U);
-    UavcanNode_startAO(2U);
+    Led_startAO(2U);
+    UavcanNode_startAO(3U);
 
     return QF_run();
 }

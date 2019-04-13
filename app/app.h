@@ -21,6 +21,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define _SCAFFOLD_APP_H
 
 #include "bsp.h"
+#include "led.h"
 #include "uavcan_node.h"
 
 #ifdef APP_ENABLE_CUSTOM_BUILD_CONFIG
@@ -64,6 +65,10 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #ifndef APP_UAVCAN_NODE_EVT_QUEUE_SIZE
 #define APP_UAVCAN_NODE_EVT_QUEUE_SIZE 20
+#endif
+
+#ifndef APP_LED_EVT_QUEUE_SIZE
+#define APP_LED_EVT_QUEUE_SIZE 10
 #endif
 
 #ifndef APP_CANARD_MEMORY_POOL_SIZE
