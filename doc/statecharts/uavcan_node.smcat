@@ -1,0 +1,17 @@
+initial,
+online {
+  spin => aboutToRestart : RESTART_SIG;
+  aboutToRestart => final : TIMEOUT_SIG / restart();
+},
+offline,
+final,
+^initOk?: initialize CAN hardware;
+
+initial => ^initOk?;
+^initOk? => spin : [ok];
+# Every 25 ms it sends pending messages and reads incoming messages.
+# Every 350 ms it sends a node status message as well.
+spin => spin : TIMEOUT_SIG / spin();
+^initOk? => offline : [failed];
+offline => spin : TIMEOUT_SIG [hw init ok];
+offline => offline : TIMEOUT_SIG [hw init failed];

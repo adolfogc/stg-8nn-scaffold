@@ -27,7 +27,7 @@ typedef struct {
     QActive super;
 
     QTimeEvt timeEvent;
-    uint32_t spinCtrl;
+    uint32_t timeEventCounter;
 } UavcanNode;
 
 enum UavcanNodeSignals {
@@ -38,7 +38,7 @@ enum UavcanNodeSignals {
 
 void UavcanNode_ctor(UavcanNode* me);
 
-static QState UavcanNode_init(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_initial(UavcanNode* me, QEvt const * const e);
 static QState UavcanNode_online(UavcanNode* me, QEvt const * const e);
 static QState UavcanNode_offline(UavcanNode* me, QEvt const * const e);
 static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e);

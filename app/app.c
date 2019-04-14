@@ -35,10 +35,6 @@ static int App_mainDefault(void)
     BSP_init();
     /* Initialize the QF framework and the underlying RT kernel. */
     QF_init();
-    /* Inititalize the CAN hardware for use with Libcanard */
-    BSP_CAN_init();
-
-    BSP_Led_on();
 
     /* Start the AOs */
     BSP_Ticker0_startAO(1U);

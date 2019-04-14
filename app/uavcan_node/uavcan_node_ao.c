@@ -19,12 +19,12 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 void UavcanNode_ctor(UavcanNode* me)
 {
-    QActive_ctor(&me->super, Q_STATE_CAST(&UavcanNode_init));
+    QActive_ctor(&me->super, Q_STATE_CAST(&UavcanNode_initial));
     QTimeEvt_ctorX(&me->timeEvent, &me->super, UAVCAN_TIMEOUT_SIG, 0U);
 }
 
 /* -- Implementation of internal AO functions -- */
-static QState UavcanNode_init(UavcanNode* me, QEvt const * const e)
+static QState UavcanNode_initial(UavcanNode* me, QEvt const * const e)
 {
     (void) e; /* unused parameter */
 
@@ -45,7 +45,7 @@ static QState UavcanNode_online(UavcanNode* me, QEvt const * const e)
     switch(e->sig) {
         case Q_INIT_SIG:
             QTimeEvt_armX(&me->timeEvent, BSP_TICKS_PER_SEC / 1000U * 25U, BSP_TICKS_PER_SEC / 1000U * 25U); /* every 25 ms */
-            me->spinCtrl = 0U;
+            me->timeEventCounter = 0U;
             status = Q_TRAN(&UavcanNode_spin);
             break;
         case Q_ENTRY_SIG:
@@ -111,11 +111,11 @@ static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e)
             status = Q_HANDLED();
             break;
         case UAVCAN_TIMEOUT_SIG:
-          if(me->spinCtrl == 8U) { /* every 200 ms */
-            me->spinCtrl = 0U;
+          if(me->timeEventCounter == 14U) { /* every 350 ms */
+            me->timeEventCounter = 0U;
             statusUpdate();
           } else {
-            me->spinCtrl++;
+            me->timeEventCounter++;
           }
           sendAll();
           receiveAll();
