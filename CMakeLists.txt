@@ -25,13 +25,9 @@ project(STG-8nn-Scaffold C ASM) # it's important to select both C and ASM here
 include(CMakeLists_scaffold.txt)
 
 ##
-## Configure build
-##
-set(OUTPUT_NAME firmware)
-
-##
 ## ELF file
 ##
+set(OUTPUT_NAME firmware)
 add_executable(${OUTPUT_NAME}.elf ${SCAFFOLD_SOURCES})
 target_include_directories(${OUTPUT_NAME}.elf PRIVATE ${SCAFFOLD_INCLUDE})
 
@@ -46,7 +42,7 @@ if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
   ### BIN file
   add_custom_command(TARGET ${OUTPUT_NAME}.elf
     POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary -S ${OUTPUT_NAME}.elf ${OUTPUT_NAME}.bin
+    COMMAND ${CMAKE_OBJCOPY} -O binary -S ${OUTPUT_NAME}.elf ${OUTPUT_NAME}.bin && (du -h ${OUTPUT_NAME}.bin | cut -f1)
   )
 else()
   ###
