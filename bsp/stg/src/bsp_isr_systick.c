@@ -8,6 +8,8 @@
 
 Q_DEFINE_THIS_FILE
 
+#define MAX_UINT32_VALUE 0xFFFFFFFFU
+
 static uint32_t volatile l_nTicks = 0U;
 static uint32_t volatile l_upTimeSeconds = 0U;
 
@@ -25,7 +27,9 @@ void SysTick_Handler(void)
   }
   if(l_nTicks % BSP_TICKS_PER_SEC == 0U) {
       l_nTicks = 0U;
-      ++l_upTimeSeconds;
+      if(l_upTimeSeconds != MAX_UINT32_VALUE) {
+        ++l_upTimeSeconds;
+      }
   }
 
   if(l_ticker0Ptr != NULL) {
