@@ -41,7 +41,7 @@ Copyright: 2005-2018 Quantum Leaps, LLC
 License: GPL-3.0-or-later
 
 Files: dependencies/stm32cube/*
-Copyright: 2016-2018 STMicroelectronics
+Copyright: 2016-2019 STMicroelectronics
 License: BSD-3-Clause
 
 Files: startup/startup_stm32f091xc_1.s

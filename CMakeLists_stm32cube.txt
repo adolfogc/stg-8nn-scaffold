@@ -53,6 +53,7 @@ if("${STG_MODEL}" MATCHES "850" OR "${STG_MODEL}" MATCHES "856")
   set(USE_HAL_RCC TRUE)
   set(USE_HAL_I2C FALSE)
   set(USE_HAL_CRC FALSE)
+  set(USE_HAL_WWDG FALSE)
 endif()
 
 ##
@@ -74,7 +75,9 @@ add_definitions(-DUSE_FULL_LL_DRIVER) # enable LL initialization functions and a
 list(APPEND STM32CUBE_SOURCES
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_adc.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_bus.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_comp.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_cortex.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_crc.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_crs.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_dma.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_exti.h
@@ -88,11 +91,16 @@ list(APPEND STM32CUBE_SOURCES
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_tim.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_usart.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_utils.h
+  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_wwdg.h
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_adc.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_comp.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_crc.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_crs.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_dma.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_exti.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_gpio.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_i2c.c
+  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_pwr.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_rcc.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_rtc.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_tim.c
@@ -106,6 +114,7 @@ list(APPEND STM32CUBE_SOURCES
 
 if(USE_HAL)
   add_definitions(-DHAL_MODULE_ENABLED)
+  add_definitions(-DUSE_RTOS=0)
   list(APPEND STM32CUBE_SOURCES
     ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_def.h
     ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal.h
@@ -235,6 +244,13 @@ if(USE_HAL)
       ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_i2c.h
       ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_i2c_ex.c
       ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_i2c.c
+    )
+  endif()
+  if(USE_HAL_WWDG)
+    add_definitions(-DHAL_WWDG_MODULE_ENABLED)
+    list(APPEND STM32CUBE_SOURCES
+      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_wwdg.h
+      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_wwdg.c
     )
   endif()
 endif()
