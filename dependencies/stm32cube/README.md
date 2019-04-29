@@ -1,5 +1,5 @@
 ## Source
-Files in this directory were taken from the *"STM32Cube MCU Package for STM32F0 series (HAL, Low-Layer APIs and CMSIS (CORE, DSP, RTOS), USB, File system, RTOS, Touch Sensing - coming with examples running on ST boards: STM32 Nucleo, Discovery kits and Evaluation boards)"*, part number ** STM32CubeF0**, version **1.9.0**, available [here](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html).
+Files in this directory were taken from the *"STM32Cube MCU Package for STM32F0 series (HAL, Low-Layer APIs and CMSIS (CORE, DSP, RTOS), USB, File system, RTOS, Touch Sensing - coming with examples running on ST boards: STM32 Nucleo, Discovery kits and Evaluation boards)"*, part number ** STM32CubeF0**, version **1.10.0**, available [here](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html).
 
 ## Directory structure
 The files were rearranged in a different directory structure to the one provided in ST's package:
@@ -7,12 +7,6 @@ The files were rearranged in a different directory structure to the one provided
 MCU
 - The `hal` directory contains part of the STM32Cube's HAL (Hardware Abstraction Layer).
 - The `ll` directory contains part of the STM32Cube's LL (Low-level drivers).
-- The `gnu` contains the startup code and linker script for use with the GNU GCC toolchain. Those files were generated using STM32CubeMX.
-
-The STM32Cube's LL (Low Layer APIs) are not used in this project.
-
-## Changes
-- The file `cmsis/core/include/cmsis_gcc.h` was modified to silence a warning.
 
 ## Copying
 
@@ -30,7 +24,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 ### ST
 
-Copyright (c) 2016-2018 STMicroelectronics
+Copyright (c) 2016-2019 STMicroelectronics
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
