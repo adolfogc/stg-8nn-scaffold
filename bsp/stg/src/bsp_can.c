@@ -19,8 +19,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "stm32f0xx_hal.h"
 #include "drivers/stm32/canard_stm32.h"
-#include "bsp.h"
-#include "bsp_qpc.h"
+#include "app.h"
 
 Q_DEFINE_THIS_FILE
 
@@ -32,7 +31,7 @@ bool BSP_CAN_init(void)
     LL_GPIO_ResetOutputPin(CAN_GPIO_Port, CAN_S_Pin);
 
     /* Initialize the STM32 CAN driver */
-    Q_ENSURE(canardSTM32ComputeCANTimings(HAL_RCC_GetPCLK1Freq(), 500000U, &timings) == 0U);
+    Q_ENSURE(canardSTM32ComputeCANTimings(HAL_RCC_GetPCLK1Freq(), APP_CAN_BITRATE, &timings) == 0U);
 
     return canardSTM32Init(&timings, CanardSTM32IfaceModeNormal) == 0U;
 }
