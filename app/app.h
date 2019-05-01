@@ -54,6 +54,20 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define APP_HW_VERSION_MINOR 1
 #endif
 
+/*
+  Possible bit rates:
+
+  1000 kbit/s = 1000000U
+   500 kbit/s =  500000U
+   250 kbit/s =  250000U
+   125 kbit/s =  125000U
+
+  See: https://uavcan.org/Specification/8._Hardware_design_recommendations
+*/
+#ifndef APP_CAN_BITRATE
+#define APP_CAN_BITRATE 500000U
+#endif
+
 #ifndef APP_UAVCAN_NODE_NAME_DATA
 #define APP_UAVCAN_NODE_NAME_DATA "local.stg8nn.scaffold"
 #define APP_UAVCAN_NODE_NAME_LEN 21
