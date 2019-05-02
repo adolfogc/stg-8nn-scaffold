@@ -17,13 +17,4 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "uavcan/protocol/GetNodeInfo.h"
 #include "bsp.h"
-
-/* TODO: replace with actual implementation */
-void BSP_readUniqueID(uint8_t* outUid)
-{
-    for (uint8_t i = 0; i < UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH; ++i) {
-        outUid[i] = i;
-    }
-}

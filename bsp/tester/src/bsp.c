@@ -17,11 +17,12 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "bsp.h"
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h> 
+#include <time.h>
+
+#include "bsp.h"
+#include "uavcan/protocol/HardwareVersion.h"
 
 static time_t g_startTime;
 
@@ -50,4 +51,22 @@ uint32_t BSP_upTimeSeconds(void)
 {
     const double upTime_ = difftime(time(NULL), g_startTime);
     return (uint32_t) upTime_;
+}
+
+uint32_t BSP_getPseudoRandom(void)
+{
+  static bool uninitialized = true;
+  if(uninitialized) {
+    srand(time(NULL));
+    uninitialized = false;
+  }
+
+  return (uint32_t)rand();
+}
+
+void BSP_readUniqueID(uint8_t* outUid)
+{
+    for (uint8_t i = 0; i < UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH; ++i) {
+        outUid[i] = i;
+    }
 }
