@@ -39,18 +39,13 @@ static void restartNodeHandle(CanardRxTransfer* transfer)
 {
     uint8_t buffer[UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAX_SIZE];
 
-    uavcan_protocol_RestartNodeRequest restartNodeRequest;
-    uavcan_protocol_RestartNodeRequest_decode(transfer, transfer->payload_len, &restartNodeRequest, (uint8_t**)0);
+    uavcan_protocol_RestartNodeRequest request;
+    uavcan_protocol_RestartNodeRequest_decode(transfer, transfer->payload_len, &request, (uint8_t**)0U);
 
-    /* Abort if magic number is incorrect */
-    if(restartNodeRequest.magic_number != UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAGIC_NUMBER) {
-        return;
-    }
+    uavcan_protocol_RestartNodeResponse response;
+    response.ok = request.magic_number == UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAGIC_NUMBER;
 
-    uavcan_protocol_RestartNodeResponse restartNodeResponse;
-    restartNodeResponse.ok = true;
-
-    const uint32_t len = uavcan_protocol_RestartNodeResponse_encode(&restartNodeResponse, buffer);
+    const uint32_t len = uavcan_protocol_RestartNodeResponse_encode(&response, buffer);
 
     int result = canardRequestOrRespond(&l_canardInstance,
                                         transfer->source_node_id,
@@ -61,9 +56,10 @@ static void restartNodeHandle(CanardRxTransfer* transfer)
                                         CanardResponse,
                                         buffer,
                                         (uint16_t)len);
-    if (result >= 0) {
+
+    if (result >= 0 && response.ok) {
         static const QEvt aboutToRestartEvt = {UAVCAN_RESTART_SIG, 0U, 0U};
-        QACTIVE_POST(&l_uavcanNode.super, &aboutToRestartEvt, (void*)0);
+        QACTIVE_POST(&l_uavcanNode.super, &aboutToRestartEvt, (void*)0U);
     }
 }
 
