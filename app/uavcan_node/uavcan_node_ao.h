@@ -27,7 +27,9 @@ typedef struct {
     QActive super;
 
     QTimeEvt timeEvent;
-    uint32_t timeEventCounter;
+    /* Timer event used for publishing the status message. */
+    uint32_t publishStatusTimeout;
+    uint32_t publishStatusTimeoutCounter;
 } UavcanNode;
 
 enum UavcanNodeSignals {
