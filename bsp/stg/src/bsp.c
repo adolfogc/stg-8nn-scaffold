@@ -17,6 +17,8 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <stdlib.h>
+
 #include "stm32f0xx_hal.h"
 
 #include "bsp_mx_adc.h"
@@ -28,9 +30,11 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp_mx_timer.h"
 #include "bsp_mx_usart.h"
 
-#include "bsp.h"
-#include "bsp_clock.h"
-#include "bsp_pinout.h"
+#include "app.h"
+
+#include "uavcan/protocol/HardwareVersion.h"
+
+#define STM32_UUID ((uint32_t *)0x1FFF7A10)
 
 void BSP_init(void)
 {
@@ -72,4 +76,28 @@ void BSP_Led_off(void)
 void BSP_Led_on(void)
 {
     LL_GPIO_SetOutputPin(LED_GPIO_Port, LED_Pin);
+}
+
+uint32_t BSP_getPseudoRandom(void)
+{
+  static bool uninitialized = true;
+  if(uninitialized) {
+    const uint32_t seed = STM32_UUID[0] + STM32_UUID[1] + STM32_UUID[2] + APP_UAVCAN_DEFAULT_NODE_ID;
+    srand(seed);
+    uninitialized = false;
+  }
+
+  return (uint32_t)rand();
+}
+
+void BSP_readUniqueID(uint8_t* outUid)
+{
+    #if UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH != 16U
+      #error "UAVCAN Hardware UUID is not 16 bytes long!"
+    #endif
+    uint32_t* outUid32uPtr = (uint32_t*)outUid; /* 16 bytes long                    */
+    outUid32uPtr[0U] = 0U;             /* Fill most significant bytes with zero     */
+    outUid32uPtr[1U] = STM32_UUID[1U]; /* STM32_UUID is 12 bytes long (96-bit UUID) */
+    outUid32uPtr[2U] = STM32_UUID[2U];
+    outUid32uPtr[3U] = STM32_UUID[3U];
 }
