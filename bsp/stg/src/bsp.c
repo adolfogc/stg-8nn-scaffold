@@ -18,7 +18,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <stdlib.h>
-#include <string.h>
 
 #include "stm32f0xx_hal.h"
 
@@ -93,10 +92,12 @@ uint32_t BSP_getPseudoRandom(void)
 
 void BSP_readUniqueID(uint8_t* outUid)
 {
-    /* 96-bit UUID (12 bytes long) */
-    uint8_t* uuidPtr = (uint8_t*)STM32_UUID;
-
-    /* Currently, UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH is 16 bytes long */
-    memset(outUid, 0, 4U);
-    memcpy(&outUid[4U], uuidPtr, UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH - 4U);
+    #if UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH != 16U
+      #error "UAVCAN Hardware UUID is not 16 bytes long!"
+    #endif
+    uint32_t* outUid32uPtr = (uint32_t*)outUid; /* 16 bytes long                    */
+    outUid32uPtr[0U] = 0U;             /* Fill most significant bytes with zero     */
+    outUid32uPtr[1U] = STM32_UUID[1U]; /* STM32_UUID is 12 bytes long (96-bit UUID) */
+    outUid32uPtr[2U] = STM32_UUID[2U];
+    outUid32uPtr[3U] = STM32_UUID[3U];
 }
