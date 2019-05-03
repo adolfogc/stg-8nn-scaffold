@@ -35,7 +35,7 @@ void QK_onIdle(void)
   /* Not implemented yet */
 }
 
-void Q_onAssert(char const * module, int loc)
+__attribute__((noreturn)) void Q_onAssert(char const * module, int loc)
 {
   (void) module;
   (void) loc;    /* Not used yet */

@@ -25,6 +25,9 @@ else()
   set(QPC_DIR dependencies/qpc)
 endif()
 
+# Use uint32_t as the type of the Time Event counter.
+add_definitions(-DQF_TIMEEVT_CTR_SIZE=4)
+
 #
 # Note: for use with the current ARM Clang toolchain, we're testing CMAKE_ASM_COMPILER_ID instead of
 # CMAKE_C_COMPILER_ID (which is reported as Unknown).
