@@ -18,6 +18,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "stm32f0xx_hal.h"
 
@@ -34,7 +35,8 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "uavcan/protocol/HardwareVersion.h"
 
-#define STM32_UUID ((uint32_t *)0x1FFF7A10)
+/* See chapter 33 - Device electronic signature of the RM0091 Reference Manual. */
+const uint32_t* g_uuid = (uint32_t *)0x1FFFF7ACU;
 
 void BSP_init(void)
 {
@@ -82,7 +84,7 @@ uint32_t BSP_getPseudoRandom(void)
 {
   static bool uninitialized = true;
   if(uninitialized) {
-    const uint32_t seed = STM32_UUID[0] + STM32_UUID[1] + STM32_UUID[2] + APP_UAVCAN_DEFAULT_NODE_ID;
+    const uint32_t seed = APP_UAVCAN_DEFAULT_NODE_ID + g_uuid[0U] + g_uuid[1U] + g_uuid[2U];
     srand(seed);
     uninitialized = false;
   }
@@ -95,9 +97,5 @@ void BSP_readUniqueID(uint8_t* outUid)
     #if UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH != 16U
       #error "UAVCAN Hardware UUID is not 16 bytes long!"
     #endif
-    uint32_t* outUid32uPtr = (uint32_t*)outUid; /* 16 bytes long                    */
-    outUid32uPtr[0U] = 0U;             /* Fill most significant bytes with zero     */
-    outUid32uPtr[1U] = STM32_UUID[1U]; /* STM32_UUID is 12 bytes long (96-bit UUID) */
-    outUid32uPtr[2U] = STM32_UUID[2U];
-    outUid32uPtr[3U] = STM32_UUID[3U];
+    memcpy(&outUid[4U], g_uuid, 12U);
 }
