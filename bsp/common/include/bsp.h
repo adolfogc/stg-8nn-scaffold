@@ -27,7 +27,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp_specific.h"
 
 void BSP_init(void);
-void BSP_restart(void);
+void BSP_restart(void) __attribute__((noreturn));
 
 void BSP_Led_off(void);
 void BSP_Led_on(void);

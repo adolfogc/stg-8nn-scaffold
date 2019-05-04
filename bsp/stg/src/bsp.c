@@ -17,9 +17,6 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <stdlib.h>
-#include <string.h>
-
 #include "stm32f0xx_hal.h"
 
 #include "bsp_mx_adc.h"
@@ -36,8 +33,12 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "uavcan/protocol/HardwareVersion.h"
 
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
 /* See chapter 33 - Device electronic signature of the RM0091 Reference Manual. */
-const uint32_t* g_uuid = (uint32_t *)0x1FFFF7ACU;
+uint32_t const * const Uuid = (uint32_t *)0x1FFFF7ACU;
 
 void BSP_init(void)
 {
@@ -85,7 +86,7 @@ uint32_t BSP_getPseudoRandom(void)
 {
   static bool uninitialized = true;
   if(uninitialized) {
-    const uint32_t seed = APP_UAVCAN_DEFAULT_NODE_ID + g_uuid[0U] + g_uuid[1U] + g_uuid[2U];
+    const uint32_t seed = APP_UAVCAN_DEFAULT_NODE_ID + Uuid[0U] + Uuid[1U] + Uuid[2U];
     srand(seed);
     uninitialized = false;
   }
@@ -96,7 +97,7 @@ uint32_t BSP_getPseudoRandom(void)
 void BSP_readUniqueID(uint8_t* outUid)
 {
 #if UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH != 16U
-#error "UAVCAN Hardware UUID is not 16 bytes long!"
+#error "UAVCAN Hardware Uuid is not 16 bytes long!"
 #endif
-    memcpy(&outUid[4U], g_uuid, 12U);
+    memcpy(&outUid[4U], Uuid, 12U);
 }
