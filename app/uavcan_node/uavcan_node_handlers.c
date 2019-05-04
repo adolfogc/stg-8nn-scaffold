@@ -21,9 +21,7 @@ static void statusUpdate(void)
 {
     static uint8_t transferId = 0; /* The transferId variable MUST BE STATIC; refer to the libcanard documentation for the explanation. */
 
-    uint8_t messageBuffer[UAVCAN_PROTOCOL_NODESTATUS_MAX_SIZE];
-    memset(messageBuffer, 0, UAVCAN_PROTOCOL_NODESTATUS_MAX_SIZE);
-
+    uint8_t messageBuffer[UAVCAN_PROTOCOL_NODESTATUS_MAX_SIZE] = {0U};
     const uint32_t len = makeNodeStatusMessage(messageBuffer);
 
     canardBroadcast(&l_canardInstance,
@@ -37,13 +35,14 @@ static void statusUpdate(void)
 
 static void restartNodeHandle(CanardRxTransfer* transfer)
 {
-    uint8_t buffer[UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAX_SIZE];
+    uint8_t buffer[UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAX_SIZE] = {0U};
 
-    uavcan_protocol_RestartNodeRequest request;
+    uavcan_protocol_RestartNodeRequest request = {0};
     uavcan_protocol_RestartNodeRequest_decode(transfer, transfer->payload_len, &request, (uint8_t**)0U);
 
-    uavcan_protocol_RestartNodeResponse response;
-    response.ok = request.magic_number == UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAGIC_NUMBER;
+    uavcan_protocol_RestartNodeResponse response = {
+      .ok = request.magic_number == UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAGIC_NUMBER
+    };
 
     const uint32_t len = uavcan_protocol_RestartNodeResponse_encode(&response, buffer);
 
@@ -65,9 +64,7 @@ static void restartNodeHandle(CanardRxTransfer* transfer)
 
 static void getNodeInfoHandle(CanardRxTransfer* transfer)
 {
-    uint8_t messageBuffer[UAVCAN_PROTOCOL_GETNODEINFO_RESPONSE_NAME_MAX_LENGTH];
-    memset(messageBuffer, 0, UAVCAN_PROTOCOL_GETNODEINFO_RESPONSE_NAME_MAX_LENGTH);
-
+    uint8_t messageBuffer[UAVCAN_PROTOCOL_GETNODEINFO_RESPONSE_NAME_MAX_LENGTH] = {0U};
     const uint32_t len = makeNodeInfoMessage(messageBuffer);
 
     int result = canardRequestOrRespond(&l_canardInstance,
@@ -84,35 +81,33 @@ static void getNodeInfoHandle(CanardRxTransfer* transfer)
 
 static uint32_t makeNodeStatusMessage(uint8_t* messageBuffer)
 {
-    uavcan_protocol_NodeStatus nodeStatus;
-    memset(&nodeStatus, 0, sizeof(nodeStatus));
-
-    nodeStatus.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK;
-    nodeStatus.mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL;
-    nodeStatus.uptime_sec = BSP_upTimeSeconds();
+    uavcan_protocol_NodeStatus nodeStatus = {
+      .health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK,
+      .mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL,
+      .uptime_sec = BSP_upTimeSeconds()
+    };
 
     return uavcan_protocol_NodeStatus_encode(&nodeStatus, messageBuffer);
 }
 
 static uint32_t makeNodeInfoMessage(uint8_t* messageBuffer)
 {
-    uavcan_protocol_GetNodeInfoResponse nodeInfoResponse;
-    memset(&nodeInfoResponse, 0, sizeof(nodeInfoResponse));
+    uavcan_protocol_GetNodeInfoResponse nodeInfoResponse = {
+      .name.data = (uint8_t*) APP_UAVCAN_NODE_NAME_DATA,
+      .name.len = APP_UAVCAN_NODE_NAME_LEN,
 
-    nodeInfoResponse.name.data = (uint8_t*) APP_UAVCAN_NODE_NAME_DATA;
-    nodeInfoResponse.name.len = APP_UAVCAN_NODE_NAME_LEN;
+      .status.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK,
+      .status.mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL,
+      .status.uptime_sec = BSP_upTimeSeconds(),
 
-    nodeInfoResponse.status.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK;
-    nodeInfoResponse.status.mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL;
-    nodeInfoResponse.status.uptime_sec = BSP_upTimeSeconds();
+      .software_version.major = APP_SW_VERSION_MAJOR,
+      .software_version.minor = APP_SW_VERSION_MINOR,
+      .software_version.optional_field_flags = 1U,
+      .software_version.vcs_commit = APP_SW_GIT_COMMIT_HASH, /* DEFINED BY CMAKE */
 
-    nodeInfoResponse.software_version.major = APP_SW_VERSION_MAJOR;
-    nodeInfoResponse.software_version.minor = APP_SW_VERSION_MINOR;
-    nodeInfoResponse.software_version.optional_field_flags = 1;
-    nodeInfoResponse.software_version.vcs_commit = APP_SW_GIT_COMMIT_HASH; /* DEFINED BY CMAKE */
-
-    nodeInfoResponse.hardware_version.major = APP_HW_VERSION_MAJOR;
-    nodeInfoResponse.hardware_version.minor = APP_HW_VERSION_MINOR;
+      .hardware_version.major = APP_HW_VERSION_MAJOR,
+      .hardware_version.minor = APP_HW_VERSION_MINOR
+    };
 
     BSP_readUniqueID(&(nodeInfoResponse.hardware_version.unique_id[0]));   /* Writes unique ID into the buffer */
 
