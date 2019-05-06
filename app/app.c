@@ -24,15 +24,16 @@ int main(void);
 static int App_mainDefault(void);
 int App_main(void) __attribute__((weak, alias("App_mainDefault")));
 
+typedef union {
+  void* size_min;
+  QEvt size_a;
+  /* other event types follow here */
+} AppEvent;
+
 static int App_mainDefault(void)
 {
     static QSubscrList subscrSto[APP_MAX_SIG];
-
-    static union AppEvent {
-      void* size_min;
-      QEvt size_a;
-      /* other event types follow here */
-    } appEventSto[10U];
+    static AppEvent appEventSto[10U];
 
     /* Initialize the AOs */
     BSP_Ticker0_initAO(); /* This AO is a singleton managed by its module. */
