@@ -26,6 +26,9 @@ int App_main(void) __attribute__((weak, alias("App_mainDefault")));
 
 static int App_mainDefault(void)
 {
+    static QSubscrList subscrSto[10U];
+    static QF_MPOOL_EL(QEvt) qevtSto[10U];
+
     /* Initialize the AOs */
     BSP_Ticker0_initAO(); /* This AO is a singleton managed by its module. */
     UavcanNode_initAO();  /* This AO is a singleton managed by its module. */
@@ -35,6 +38,11 @@ static int App_mainDefault(void)
     BSP_init();
     /* Initialize the QF framework and the underlying RT kernel. */
     QF_init();
+    /* Initialize publish-subscribe */
+    QF_psInit(subscrSto, Q_DIM(subscrSto));
+    /* Initialize memory pools */
+    QF_poolInit(qevtSto, sizeof(qevtSto), sizeof(qevtSto[0]));
+
 
     /* Start the AOs */
     BSP_Ticker0_startAO(1U);

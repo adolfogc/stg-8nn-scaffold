@@ -24,6 +24,16 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "led.h"
 #include "uavcan_node.h"
 
+#include "app_signals.h"
+
+#ifdef APP_ENABLE_CUSTOM_SIGNALS
+#include "app_custom_signals.h"
+#else
+enum AppSignals {
+    APP_MAX_SIG = APP_BASE_MAX_SIG /* last app signal */
+};
+#endif
+
 #ifdef APP_ENABLE_CUSTOM_BUILD_CONFIG
 #include "app_config.h"
 #endif
@@ -70,7 +80,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #ifndef APP_UAVCAN_NODE_NAME_DATA
 #define APP_UAVCAN_NODE_NAME_DATA "local.stg8nn.scaffold"
-#define APP_UAVCAN_NODE_NAME_LEN 21
+#define APP_UAVCAN_NODE_NAME_LEN sizeof(APP_UAVCAN_NODE_NAME_DATA)-1U
 #endif
 
 #ifndef APP_UAVCAN_DEFAULT_NODE_ID
