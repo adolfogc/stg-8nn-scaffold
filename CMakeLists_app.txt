@@ -32,6 +32,7 @@ set(APP_INCLUDE ${APP_DIR} ${UAVCAN_NODE_DIR} ${LED_DIR})
 
 set(APP_SOURCES
   ${APP_DIR}/app.h
+  ${APP_DIR}/app_signals.h
   ${APP_DIR}/app.c
 )
 

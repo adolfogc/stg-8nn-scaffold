@@ -17,12 +17,16 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _LED_H
-#define _LED_H
+#ifndef _APP_SIGNALS_H
+#define _APP_SIGNALS_H
 
-#include <stdint.h>
+#include "bsp_qpc.h"
 
-void Led_initAO(void);
-void Led_startAO(uint8_t priority);
+enum BaseAppSignals {
+    APP_LED_ON_SIG = Q_USER_SIG,
+    APP_LED_OFF_SIG,
+    APP_LED_BLINK_SIG,
+    APP_BASE_MAX_SIG /* last base app signal */
+};
 
-#endif /* _LED_AO_H */
+#endif

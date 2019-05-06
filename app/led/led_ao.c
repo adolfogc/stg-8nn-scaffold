@@ -27,6 +27,10 @@ static QState Led_init(Led * const me, QEvt const * const e)
 {
     (void) e; /* unused parameter */
 
+    QActive_subscribe(&me->super, LED_ON_SIG);
+    QActive_subscribe(&me->super, LED_OFF_SIG);
+    QActive_subscribe(&me->super, LED_BLINK_SIG);
+
     return Q_TRAN(&Led_off);
 }
 

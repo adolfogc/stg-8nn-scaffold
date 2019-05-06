@@ -21,6 +21,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define _LED_AO_H
 
 #include "bsp_qpc.h"
+#include "app_signals.h"
 
 typedef struct {
     QActive super;
@@ -29,10 +30,10 @@ typedef struct {
 } Led;
 
 enum LedSignals {
-    LED_BLINK_SIG = Q_USER_SIG,
-    LED_OFF_SIG,
-    LED_ON_SIG,
-    LED_TIMEOUT_SIG
+    LED_ON_SIG = APP_LED_ON_SIG,
+    LED_BLINK_SIG = APP_LED_BLINK_SIG,
+    LED_OFF_SIG = APP_LED_OFF_SIG,
+    LED_TIMEOUT_SIG = APP_MAX_SIG
 };
 
 static void Led_ctor(Led* me);

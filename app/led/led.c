@@ -48,21 +48,3 @@ void Led_startAO(uint8_t priority)
     (void*)0, 0U,
     (QEvt*)0);
 }
-
-void Led_postOn(void)
-{
-    static const QEvt evt = {LED_ON_SIG, 0U, 0U};
-    QACTIVE_POST(&l_led.super, &evt, (void*)0);
-}
-
-void Led_postOff(void)
-{
-    static const QEvt evt = {LED_OFF_SIG, 0U, 0U};
-    QACTIVE_POST(&l_led.super, &evt, (void*)0);
-}
-
-void Led_postBlink()
-{
-    static const QEvt evt = {LED_BLINK_SIG, 0U, 0U};
-    QACTIVE_POST(&l_led.super, &evt, (void*)0);
-}
