@@ -26,8 +26,13 @@ int App_main(void) __attribute__((weak, alias("App_mainDefault")));
 
 static int App_mainDefault(void)
 {
-    static QSubscrList subscrSto[10U];
-    static QF_MPOOL_EL(QEvt) qevtSto[10U];
+    static QSubscrList subscrSto[APP_MAX_SIG];
+
+    static union AppEvent {
+      void* size_min;
+      QEvt size_a;
+      /* other event types follow here */
+    } appEventSto[10U];
 
     /* Initialize the AOs */
     BSP_Ticker0_initAO(); /* This AO is a singleton managed by its module. */
@@ -41,8 +46,7 @@ static int App_mainDefault(void)
     /* Initialize publish-subscribe */
     QF_psInit(subscrSto, Q_DIM(subscrSto));
     /* Initialize memory pools */
-    QF_poolInit(qevtSto, sizeof(qevtSto), sizeof(qevtSto[0]));
-
+    QF_poolInit(appEventSto, sizeof(appEventSto), sizeof(appEventSto[0]));
 
     /* Start the AOs */
     BSP_Ticker0_startAO(1U);
