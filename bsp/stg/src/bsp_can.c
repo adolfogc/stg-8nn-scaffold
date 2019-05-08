@@ -59,15 +59,19 @@ Q_DEFINE_THIS_FILE
    See: https://github.com/UAVCAN/libuavcan/blob/dfcdf22eda16ff06847976fd6c7f40671fc92eb5/libuavcan/include/uavcan/transport/can_acceptance_filter_configurator.hpp
 */
 
-static uint32_t const DefaultFilterMsgFullMask = 0xFFFFFFU;   /* 00000 11111111 11111111 11111111 */
-static uint32_t const DefaultFilterMsgMask = 0xFFFF80U;       /* 00000 11111111 11111111 10000000 */
+static uint32_t const Filter1MsgMask = 0xFFU;     /* 00000 00000000 00000000 11111111 */
+static uint32_t const Filter2MsgMask = 0xFFFF80U; /* 00000 11111111 11111111 10000000 */
+static uint32_t const Filter3MsgMask = 0xFFFFFFU; /* 00000 11111111 11111111 11111111 */
 
-static uint32_t const DefaultFilterServiceFullMask = 0x7FFFU; /* 00000 00000000 01111111 11111111 */
-static uint32_t const DefaultFilterServiceMask = 0x7F80U;     /* 00000 00000000 01111111 10000000 */
-static uint32_t const BaseFilterServiceID = 0x80U;            /* 00000 00000000 0ddddddd 1sssssss */
+static uint32_t const BaseFilterSrvId = 0x80U;    /* 00000 00000000 00000000 10000000 */
 
-static uint32_t const DefaultAnonMsgMask = 0xFFU;             /* 00000 00000000 00000000 11111111 */
-static uint32_t const DefaultAnonMsgID = 0x0U;                /* 00000 00000000 00000000 00000000 */
+static uint32_t const Filter1SrvMask = 0x7FFFU;   /* 00000 00000000 01111111 11111111 */
+static uint32_t const Filter2SrvMask = 0xFF0080U; /* 00000 11111111 00000000 10000000 */
+static uint32_t const Filter3SrvMask = 0xFF7FFFU; /* 00000 11111111 01111111 11111111 */
+static uint32_t const Filter4SrvMask = 0x7F80U;   /* 00000 00000000 01111111 10000000 */
+
+static uint32_t const DefaultAnonMsgMask = 0xFFU; /* 00000 00000000 00000000 11111111 */
+static uint32_t const DefaultAnonMsgID = 0x0U;    /* 00000 00000000 00000000 00000000 */
 
 /* -- Local state variables -- */
 
@@ -90,26 +94,78 @@ BSP_CAN_FilterConfig * BSP_CAN_getFilterConfig(void)
     return &l_filterConfig;
 }
 
-void BSP_CAN_newMessageFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes)
+void BSP_CAN_newMessageFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNodes)
 {
     rule->id = 0U;
-    rule->id |= destNodes << 8; /* dest. node ID */
-    rule->id |= srcNodes; /* src. node ID */
+    rule->id |= (srcNodes & 0x7FU);
     rule->id |= CANARD_CAN_FRAME_EFF;
 
-    rule->mask = (srcNodes != 0U) ? DefaultFilterMsgFullMask : DefaultFilterMsgMask;
+    rule->mask = Filter1MsgMask;
     rule->mask |= CANARD_CAN_FRAME_EFF | CANARD_CAN_FRAME_RTR | CANARD_CAN_FRAME_ERR;
 }
 
-void BSP_CAN_newServiceFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes)
+void BSP_CAN_newMessageFilter2(BSP_CAN_FilterRule* rule, const uint32_t messageIds)
 {
-    rule->id = BaseFilterServiceID;
-    rule->id |= destNodes << 8; /* dest. node ID */
-    rule->id |= srcNodes; /* src. node ID */
+    rule->id = 0U;
+    rule->id |= (messageIds & 0xFFFFU) << 8U;
     rule->id |= CANARD_CAN_FRAME_EFF;
 
-    rule->mask = (srcNodes != 0U) ? DefaultFilterServiceFullMask : DefaultFilterServiceMask;
+    rule->mask = Filter2MsgMask;
     rule->mask |= CANARD_CAN_FRAME_EFF | CANARD_CAN_FRAME_RTR | CANARD_CAN_FRAME_ERR;
+}
+
+void BSP_CAN_newMessageFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t messageIds)
+{
+    rule->id = 0U;
+    rule->id |= (srcNodes & 0x7FU);
+    rule->id |= (messageIds & 0xFFFFU) << 8U;
+    rule->id |= CANARD_CAN_FRAME_EFF;
+
+    rule->mask = Filter3MsgMask;
+    rule->mask |= CANARD_CAN_FRAME_EFF | CANARD_CAN_FRAME_RTR | CANARD_CAN_FRAME_ERR;  
+}
+
+void BSP_CAN_newServiceFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes)
+{
+    rule->id = BaseFilterSrvId;
+    rule->id |= (srcNodes & 0x7FU);
+    rule->id |= (destNodes & 0x7FU) << 8U;
+    rule->id |= CANARD_CAN_FRAME_EFF;
+
+    rule->mask = Filter1SrvMask;
+    rule->mask |= CANARD_CAN_FRAME_EFF | CANARD_CAN_FRAME_RTR | CANARD_CAN_FRAME_ERR;
+}
+
+void BSP_CAN_newServiceFilter2(BSP_CAN_FilterRule* rule, const uint32_t serviceIds)
+{
+    rule->id = BaseFilterSrvId;
+    rule->id |= (serviceIds & 0xFFU) << 16U;
+    rule->id |= CANARD_CAN_FRAME_EFF;
+
+    rule->mask = Filter2SrvMask;
+    rule->mask |= CANARD_CAN_FRAME_EFF | CANARD_CAN_FRAME_RTR | CANARD_CAN_FRAME_ERR;
+}
+
+void BSP_CAN_newServiceFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes, const uint32_t serviceIds)
+{
+    rule->id = BaseFilterSrvId;
+    rule->id |= (srcNodes & 0x7FU);
+    rule->id |= (destNodes & 0x7FU) << 8U;
+    rule->id |= (serviceIds & 0xFFU) << 16U;
+    rule->id |= CANARD_CAN_FRAME_EFF;
+
+    rule->mask = Filter3SrvMask;
+    rule->mask |= CANARD_CAN_FRAME_EFF | CANARD_CAN_FRAME_RTR | CANARD_CAN_FRAME_ERR;  
+}
+
+void BSP_CAN_newServiceFilter4(BSP_CAN_FilterRule* rule, const uint32_t destNodes) 
+{
+    rule->id = BaseFilterSrvId;
+    rule->id |= (destNodes & 0x7FU) << 8U;
+    rule->id |= CANARD_CAN_FRAME_EFF;
+
+    rule->mask = Filter4SrvMask;
+    rule->mask |= CANARD_CAN_FRAME_EFF | CANARD_CAN_FRAME_RTR | CANARD_CAN_FRAME_ERR;    
 }
 
 bool BSP_CAN_init(BSP_CAN_FilterConfig * const filterConfig)
@@ -182,19 +238,12 @@ static bool BSP_CAN_setupFilters(BSP_CAN_FilterConfig * const filterConfig)
     if(filterConfig->options & BSP_CAN_FILTER_ACCEPT_ALL_FROM_DEBUGGER) {
         Q_ENSURE(next < CANARD_STM32_NUM_ACCEPTANCE_FILTERS);
         /* Allow all service requests/responses sent by debugging tools */
-        acceptanceRules[next].id = BaseFilterServiceID; 
-        acceptanceRules[next].id |= (uint32_t)APP_UAVCAN_DEFAULT_NODE_ID << 8; /* dest. node ID */
-        acceptanceRules[next].id |= (uint32_t)(126U | 127U); /* src. node ID */
-        acceptanceRules[next].id |= CANARD_CAN_FRAME_EFF;
-        acceptanceRules[next].mask = DefaultFilterServiceFullMask | CANARD_CAN_FRAME_EFF | CANARD_CAN_FRAME_RTR | CANARD_CAN_FRAME_ERR;
+        BSP_CAN_newServiceFilter1(&acceptanceRules[next], (126U | 127U), APP_UAVCAN_DEFAULT_NODE_ID);
         ++next;
         Q_ENSURE(next < CANARD_STM32_NUM_ACCEPTANCE_FILTERS);
         /* Allow messages sent by debugging tools */
         acceptanceRules[next].id = 0U;
-        acceptanceRules[next].id |= (uint32_t)APP_UAVCAN_DEFAULT_NODE_ID << 8; /* dest. node ID */
-        acceptanceRules[next].id |= (uint32_t)(126U | 127U); /* src. node ID */
-        acceptanceRules[next].id |= CANARD_CAN_FRAME_EFF;
-        acceptanceRules[next].mask = DefaultFilterMsgFullMask | CANARD_CAN_FRAME_EFF | CANARD_CAN_FRAME_RTR | CANARD_CAN_FRAME_ERR;
+        BSP_CAN_newMessageFilter1(&acceptanceRules[next], (126U | 127U));
         ++next;
     }
 
