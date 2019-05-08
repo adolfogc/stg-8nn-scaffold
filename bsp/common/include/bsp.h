@@ -32,15 +32,37 @@ void BSP_restart(void) __attribute__((noreturn));
 void BSP_Led_off(void);
 void BSP_Led_on(void);
 
-bool BSP_CAN_init(void);
-
-enum BSP_CAN_RxTxResultTag {
+typedef enum {
     BSP_CAN_RXTX_TIMEOUT,
     BSP_CAN_RXTX_SUCCESS,
     BSP_CAN_RXTX_ERROR
-};
+} BSP_CAN_RxTxResult;
 
-typedef enum BSP_CAN_RxTxResultTag BSP_CAN_RxTxResult;
+typedef enum {
+    BSP_CAN_FILTER_ACCEPT_ALL = 1,
+    BSP_CAN_FILTER_ACCEPT_ANONYMOUS,
+    BSP_CAN_FILTER_ACCEPT_ALL_FROM_DEBUGGER,
+    BSP_CAN_FILTER_USE_ADDITIONAL_RULES
+} BSP_CAN_FilterOptions;
+
+typedef struct {
+    uint32_t id;
+    uint32_t mask;
+} BSP_CAN_FilterRule;
+
+typedef struct {
+    BSP_CAN_FilterOptions options;
+    BSP_CAN_FilterRule * const rules;
+    uint_fast8_t const MaxRuleNumber;
+    uint_fast8_t nRules;
+} BSP_CAN_FilterConfig;
+
+BSP_CAN_FilterConfig * BSP_CAN_getFilterConfig(void);
+
+void BSP_CAN_newMessageFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes);
+void BSP_CAN_newServiceFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes);
+
+bool BSP_CAN_init(BSP_CAN_FilterConfig * const filterConfig);
 
 BSP_CAN_RxTxResult BSP_CAN_transmitOnce(const CanardCANFrame* frame);
 BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame);

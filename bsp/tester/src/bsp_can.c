@@ -33,16 +33,40 @@ Q_DEFINE_THIS_FILE
 #define BSP_CAN_IFACE_NAME "vcan0"
 
 /* SocketCan driver instance */
-static SocketCANInstance g_socketcan;
+static SocketCANInstance l_socketcan;
 
-bool BSP_CAN_init(void)
+BSP_CAN_FilterConfig * BSP_CAN_getFilterConfig(void)
 {
-    return socketcanInit(&g_socketcan, BSP_CAN_IFACE_NAME) == 0;
+    /* Not implemented */
+    return NULL;
+}
+
+void BSP_CAN_newMessageFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes)
+{
+    (void) rule;
+    (void) srcNodes;
+    (void) destNodes;
+    /* Not implemented */
+}
+
+void BSP_CAN_newServiceFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes)
+{
+    (void) rule;
+    (void) srcNodes;
+    (void) destNodes;
+    /* Not implemented */  
+}
+
+bool BSP_CAN_init(BSP_CAN_FilterConfig * const filterConfig)
+{
+    (void) filterConfig; /* unused parameter */
+
+    return socketcanInit(&l_socketcan, BSP_CAN_IFACE_NAME) == 0;
 }
 
 BSP_CAN_RxTxResult BSP_CAN_transmitOnce(const CanardCANFrame* frame)
 {
-    const int16_t txRes = socketcanTransmit(&g_socketcan, frame, 0U);
+    const int16_t txRes = socketcanTransmit(&l_socketcan, frame, 0U);
     BSP_CAN_RxTxResult result = BSP_CAN_RXTX_ERROR;
     if (txRes > 0) {
         result = BSP_CAN_RXTX_SUCCESS;
@@ -56,7 +80,7 @@ BSP_CAN_RxTxResult BSP_CAN_transmitOnce(const CanardCANFrame* frame)
 
 BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame* frame)
 {
-    const int16_t rxRes = socketcanReceive(&g_socketcan, frame, 100U); /* 100 ms timeout */
+    const int16_t rxRes = socketcanReceive(&l_socketcan, frame, 100U); /* 100 ms timeout */
     BSP_CAN_RxTxResult result = BSP_CAN_RXTX_ERROR;
     if (rxRes > 0) {
         result = BSP_CAN_RXTX_SUCCESS;

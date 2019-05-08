@@ -32,7 +32,7 @@ static QState UavcanNode_initial(UavcanNode* me, QEvt const * const e)
 {
     (void) e; /* unused parameter */
 
-    if(!BSP_CAN_init()) {
+    if(!BSP_CAN_init(BSP_CAN_getFilterConfig())) {
       return Q_TRAN(&UavcanNode_offline);
     }
 
@@ -84,7 +84,7 @@ static QState UavcanNode_offline(UavcanNode* me, QEvt const * const e)
           status = Q_HANDLED();
           break;
       case UAVCAN_TIMEOUT_SIG:
-          if(!BSP_CAN_init()) {
+          if(!BSP_CAN_init(BSP_CAN_getFilterConfig())) {
               status = Q_HANDLED();
           } else {
               /* Initialize our Libcanard's instance */
