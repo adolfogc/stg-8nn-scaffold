@@ -59,8 +59,26 @@ typedef struct {
 
 BSP_CAN_FilterConfig * BSP_CAN_getFilterConfig(void);
 
-void BSP_CAN_newMessageFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes);
-void BSP_CAN_newServiceFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes);
+/* Accepts all frames with the given source nodes and regardless of message ids */
+void BSP_CAN_newMessageFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNodes);
+
+/* Accepts all frames with the given message ids and regardless of source node */
+void BSP_CAN_newMessageFilter2(BSP_CAN_FilterRule* rule, const uint32_t messageIds);
+
+/* Accepts all frames with the given source nodes and message ids */
+void BSP_CAN_newMessageFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t messageIds);
+
+/* Accepts all frames with the given source and destination nodes and regardless of service id */
+void BSP_CAN_newServiceFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes);
+
+/* Accepts all frames with the given service ids and regardless of source/destination nodes */
+void BSP_CAN_newServiceFilter2(BSP_CAN_FilterRule* rule, const uint32_t serviceIds);
+
+/* Accepts all frames with the given source and destination nodes as well as the given service ids */
+void BSP_CAN_newServiceFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes, const uint32_t serviceIds);
+
+/* Accepts all frames with the given destination nodes, regardless of source node or service id */
+void BSP_CAN_newServiceFilter4(BSP_CAN_FilterRule* rule, const uint32_t destNodes);
 
 bool BSP_CAN_init(BSP_CAN_FilterConfig * const filterConfig);
 

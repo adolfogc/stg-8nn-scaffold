@@ -41,7 +41,29 @@ BSP_CAN_FilterConfig * BSP_CAN_getFilterConfig(void)
     return NULL;
 }
 
-void BSP_CAN_newMessageFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes)
+void BSP_CAN_newMessageFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNodes)
+{
+    (void) rule;
+    (void) srcNodes;
+    /* Not implemented */
+}
+
+void BSP_CAN_newMessageFilter2(BSP_CAN_FilterRule* rule, const uint32_t messageIds)
+{
+    (void) rule;
+    (void) messageIds;
+    /* Not implemented */
+}
+
+void BSP_CAN_newMessageFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t messageIds)
+{
+    (void) rule;
+    (void) srcNodes;
+    (void) messageIds;
+    /* Not implemented */    
+}
+
+void BSP_CAN_newServiceFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes)
 {
     (void) rule;
     (void) srcNodes;
@@ -49,12 +71,27 @@ void BSP_CAN_newMessageFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes,
     /* Not implemented */
 }
 
-void BSP_CAN_newServiceFilter(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes)
+void BSP_CAN_newServiceFilter2(BSP_CAN_FilterRule* rule, const uint32_t serviceIds)
+{
+    (void) rule;
+    (void) serviceIds;
+    /* Not implemented */
+}
+
+void BSP_CAN_newServiceFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes, const uint32_t serviceIds)
 {
     (void) rule;
     (void) srcNodes;
     (void) destNodes;
-    /* Not implemented */  
+    (void) serviceIds;
+    /* Not implemented */   
+}
+
+void BSP_CAN_newServiceFilter4(BSP_CAN_FilterRule* rule, const uint32_t destNodes) 
+{
+    (void) rule;
+    (void) destNodes;
+    /* Not implemented */ 
 }
 
 bool BSP_CAN_init(BSP_CAN_FilterConfig * const filterConfig)
