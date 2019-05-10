@@ -39,10 +39,11 @@ typedef enum {
 } BSP_CAN_RxTxResult;
 
 typedef enum {
+    BSP_CAN_FILTER_NO_OPTIONS = 0,
     BSP_CAN_FILTER_ACCEPT_ALL = 1,
-    BSP_CAN_FILTER_ACCEPT_ANONYMOUS,
-    BSP_CAN_FILTER_ACCEPT_ALL_FROM_DEBUGGER,
-    BSP_CAN_FILTER_USE_ADDITIONAL_RULES
+    BSP_CAN_FILTER_ACCEPT_ANONYMOUS = 2,
+    BSP_CAN_FILTER_ACCEPT_ALL_FROM_DEBUGGER = 4,
+    BSP_CAN_FILTER_USE_ADDITIONAL_RULES = 8
 } BSP_CAN_FilterOptions;
 
 typedef struct {
@@ -59,26 +60,26 @@ typedef struct {
 
 BSP_CAN_FilterConfig * BSP_CAN_getFilterConfig(void);
 
-/* Accepts all frames with the given source nodes and regardless of message ids */
-void BSP_CAN_newMessageFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNodes);
+/* Accepts all frames with the given source node and regardless of message id */
+void BSP_CAN_newMessageFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNode);
 
-/* Accepts all frames with the given message ids and regardless of source node */
-void BSP_CAN_newMessageFilter2(BSP_CAN_FilterRule* rule, const uint32_t messageIds);
+/* Accepts all frames with the given message id and regardless of source node */
+void BSP_CAN_newMessageFilter2(BSP_CAN_FilterRule* rule, const uint32_t messageId);
 
-/* Accepts all frames with the given source nodes and message ids */
-void BSP_CAN_newMessageFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t messageIds);
+/* Accepts all frames with the given source node and message id */
+void BSP_CAN_newMessageFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNode, const uint32_t messageId);
 
 /* Accepts all frames with the given source and destination nodes and regardless of service id */
-void BSP_CAN_newServiceFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes);
+void BSP_CAN_newServiceFilter1(BSP_CAN_FilterRule* rule, const uint32_t srcNode, const uint32_t destNode);
 
-/* Accepts all frames with the given service ids and regardless of source/destination nodes */
-void BSP_CAN_newServiceFilter2(BSP_CAN_FilterRule* rule, const uint32_t serviceIds);
+/* Accepts all frames with the given service id and regardless of source/destination node */
+void BSP_CAN_newServiceFilter2(BSP_CAN_FilterRule* rule, const uint32_t serviceId);
 
-/* Accepts all frames with the given source and destination nodes as well as the given service ids */
-void BSP_CAN_newServiceFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNodes, const uint32_t destNodes, const uint32_t serviceIds);
+/* Accepts all frames with the given source and destination node as well as the given service id */
+void BSP_CAN_newServiceFilter3(BSP_CAN_FilterRule* rule, const uint32_t srcNode, const uint32_t destNode, const uint32_t serviceId);
 
-/* Accepts all frames with the given destination nodes, regardless of source node or service id */
-void BSP_CAN_newServiceFilter4(BSP_CAN_FilterRule* rule, const uint32_t destNodes);
+/* Accepts all frames with the given destination node, regardless of source node or service id */
+void BSP_CAN_newServiceFilter4(BSP_CAN_FilterRule* rule, const uint32_t destNode);
 
 bool BSP_CAN_init(BSP_CAN_FilterConfig * const filterConfig);
 
