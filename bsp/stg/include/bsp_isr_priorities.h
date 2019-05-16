@@ -30,11 +30,11 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
  * with the numerical values of priorities equal or higher than
  * QF_AWARE_ISR_CMSIS_PRI) are allowed to call any QF services. These ISRs
  * are "QF-aware".
-*/
+ */
 
 /* In Cortex-M0, there are 4 priority levels only, given by the upper two bits
  * of the priority byte. No grouping available. All ISRs are KernelAware.
-*/
+ */
 enum KernelAwareISRs {
   BSP_SYSTICK_PRIO = QF_AWARE_ISR_CMSIS_PRI,
   BSP_CAN_PRIO,

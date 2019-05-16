@@ -20,8 +20,8 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef _STG_PINOUT_H
 #define _STG_PINOUT_H
 
-#include "stm32f0xx_ll_gpio.h"
 #include "stm32f0xx_hal_gpio.h"
+#include "stm32f0xx_ll_gpio.h"
 
 #ifdef MODEL_STG850
 #define OUT1_HS_Pin LL_GPIO_PIN_13

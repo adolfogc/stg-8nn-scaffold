@@ -24,6 +24,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 void UavcanNode_initAO(void);
 void UavcanNode_startAO(uint8_t priority);
-CanardInstance* getCanardInstance(void);
+CanardInstance *getCanardInstance(void);
 
 #endif /* _UAVCAN_NODE_H */

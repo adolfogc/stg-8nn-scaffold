@@ -17,8 +17,8 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "app.h"
 #include "led.h"
+#include "app.h"
 #include "led_ao.h"
 
 Q_DEFINE_THIS_FILE
@@ -26,7 +26,7 @@ Q_DEFINE_THIS_FILE
 /* -- Active object instance -- */
 
 static Led l_led;
-static QEvt const * l_led_evtBuffer[APP_LED_EVT_QUEUE_SIZE];
+static QEvt const *l_led_evtBuffer[APP_LED_EVT_QUEUE_SIZE];
 
 /* -- Active object implementation -- */
 
@@ -34,17 +34,8 @@ static QEvt const * l_led_evtBuffer[APP_LED_EVT_QUEUE_SIZE];
 
 /* -- Public functions implementation -- */
 
-void Led_initAO(void)
-{
-  Led_ctor(&l_led);
-}
+void Led_initAO(void) { Led_ctor(&l_led); }
 
-void Led_startAO(uint8_t priority)
-{
-  QACTIVE_START((QActive*)&l_led.super,
-    priority,
-    l_led_evtBuffer,
-    Q_DIM(l_led_evtBuffer),
-    (void*)0, 0U,
-    (QEvt*)0);
+void Led_startAO(uint8_t priority) {
+  QACTIVE_START((QActive *)&l_led.super, priority, l_led_evtBuffer, Q_DIM(l_led_evtBuffer), (void *)0, 0U, (QEvt *)0);
 }

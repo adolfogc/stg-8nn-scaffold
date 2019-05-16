@@ -20,30 +20,26 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef _UAVCAN_NODE_AO_H
 #define _UAVCAN_NODE_AO_H
 
-#include <stdint.h>
 #include "bsp_qpc.h"
+#include <stdint.h>
 
 typedef struct {
-    QActive super;
+  QActive super;
 
-    QTimeEvt timeEvent;
-    /* Timer event used for publishing the status message. */
-    uint32_t publishStatusTimeout;
-    uint32_t publishStatusTimeoutCounter;
+  QTimeEvt timeEvent;
+  /* Timer event used for publishing the status message. */
+  uint32_t publishStatusTimeout;
+  uint32_t publishStatusTimeoutCounter;
 } UavcanNode;
 
-enum UavcanNodeSignals {
-    UAVCAN_TIMEOUT_SIG = Q_USER_SIG,
-    UAVCAN_SPIN_SIG,
-    UAVCAN_RESTART_SIG
-};
+enum UavcanNodeSignals { UAVCAN_TIMEOUT_SIG = Q_USER_SIG, UAVCAN_SPIN_SIG, UAVCAN_RESTART_SIG };
 
-void UavcanNode_ctor(UavcanNode* me);
+void UavcanNode_ctor(UavcanNode *me);
 
-static QState UavcanNode_initial(UavcanNode* me, QEvt const * const e);
-static QState UavcanNode_online(UavcanNode* me, QEvt const * const e);
-static QState UavcanNode_offline(UavcanNode* me, QEvt const * const e);
-static QState UavcanNode_spin(UavcanNode* me, QEvt const * const e);
-static QState UavcanNode_aboutToRestart(UavcanNode* me, QEvt const * const e);
+static QState UavcanNode_initial(UavcanNode *me, QEvt const *const e);
+static QState UavcanNode_online(UavcanNode *me, QEvt const *const e);
+static QState UavcanNode_offline(UavcanNode *me, QEvt const *const e);
+static QState UavcanNode_spin(UavcanNode *me, QEvt const *const e);
+static QState UavcanNode_aboutToRestart(UavcanNode *me, QEvt const *const e);
 
 #endif /* _UAVCAN_NODE_AO_H */

@@ -21,9 +21,9 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define _UAVCAN_NODE_HANDLERS_H
 
 static void statusUpdate(void);
-static uint32_t makeNodeStatusMessage(uint8_t* buffer);
-static uint32_t makeNodeInfoMessage(uint8_t* buffer);
-static void getNodeInfoHandle(CanardRxTransfer* transfer);
-static void restartNodeHandle(CanardRxTransfer* transfer);
+static uint32_t makeNodeStatusMessage(uint8_t *buffer);
+static uint32_t makeNodeInfoMessage(uint8_t *buffer);
+static void getNodeInfoHandle(CanardRxTransfer *transfer);
+static void restartNodeHandle(CanardRxTransfer *transfer);
 
 #endif /* _UAVCAN_NODE_HANDLERS_H */

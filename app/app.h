@@ -30,7 +30,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "app_custom_signals.h"
 #else
 enum AppSignals {
-    APP_MAX_SIG = APP_BASE_MAX_SIG /* last app signal */
+  APP_MAX_SIG = APP_BASE_MAX_SIG /* last app signal */
 };
 #endif
 
@@ -80,7 +80,7 @@ enum AppSignals {
 
 #ifndef APP_UAVCAN_NODE_NAME_DATA
 #define APP_UAVCAN_NODE_NAME_DATA "local.stg8nn.scaffold"
-#define APP_UAVCAN_NODE_NAME_LEN sizeof(APP_UAVCAN_NODE_NAME_DATA)-1U
+#define APP_UAVCAN_NODE_NAME_LEN sizeof(APP_UAVCAN_NODE_NAME_DATA) - 1U
 #endif
 
 #ifndef APP_UAVCAN_DEFAULT_NODE_ID

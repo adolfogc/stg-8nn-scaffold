@@ -17,60 +17,44 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "bsp_specific.h"
 #include "qpc.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 Q_DEFINE_THIS_FILE
 
-static volatile QTicker * l_ticker0Ptr = NULL;
+static volatile QTicker *l_ticker0Ptr = NULL;
 static volatile QTicker l_ticker0;
 
-void QF_onStartup(void)
-{
-    QF_setTickRate(BSP_TICKS_PER_SEC, 1);
-    QF_consoleSetup();
+void QF_onStartup(void) {
+  QF_setTickRate(BSP_TICKS_PER_SEC, 1);
+  QF_consoleSetup();
 }
 
-void QF_onCleanup(void)
-{
-    QF_consoleCleanup();
+void QF_onCleanup(void) { QF_consoleCleanup(); }
+
+void QF_onClockTick(void) {
+  if (l_ticker0Ptr != NULL) {
+    QACTIVE_POST((QTicker *)l_ticker0Ptr, 0U, (void *)0);
+  } else {
+    QF_TICK_X(0U, (void *)0);
+  }
 }
 
-void QF_onClockTick(void)
-{
-    if(l_ticker0Ptr != NULL) {
-      QACTIVE_POST((QTicker*)l_ticker0Ptr, 0U, (void *)0);
-    } else {
-      QF_TICK_X(0U, (void *)0);
-    }
+void BSP_Ticker0_initAO(void) {
+  QTicker_ctor((QTicker *)&l_ticker0, 0U);
+  l_ticker0Ptr = &l_ticker0;
 }
 
-void BSP_Ticker0_initAO(void)
-{
-    QTicker_ctor((QTicker*)&l_ticker0, 0U);
-    l_ticker0Ptr = &l_ticker0;
+void BSP_Ticker0_startAO(uint8_t priority) {
+  QACTIVE_START((QActive *)&l_ticker0, priority, (void *)0, 0U, (void *)0, 0U, (QEvt *)0);
 }
 
-void BSP_Ticker0_startAO(uint8_t priority)
-{
-    QACTIVE_START((QActive*)&l_ticker0,
-      priority,
-      (void*)0,
-      0U,
-      (void*)0, 0U,
-      (QEvt*)0);
-}
+QTicker *BSP_Ticker0_getAO(void) { return (QTicker *)&l_ticker0; }
 
-QTicker* BSP_Ticker0_getAO(void)
-{
-    return (QTicker*)&l_ticker0;
-}
-
-void Q_onAssert(char const * const module, int loc)
-{
-    fprintf(stderr, "Assertion failed in %s:%d\n", module, loc);
-    QF_onCleanup();
-    exit(-1);
+void Q_onAssert(char const *const module, int loc) {
+  fprintf(stderr, "Assertion failed in %s:%d\n", module, loc);
+  QF_onCleanup();
+  exit(-1);
 }

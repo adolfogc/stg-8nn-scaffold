@@ -25,39 +25,35 @@ static int App_mainDefault(void);
 int App_main(void) __attribute__((weak, alias("App_mainDefault")));
 
 typedef union {
-  void* size_min;
+  void *size_min;
   QEvt size_a;
   /* other event types follow here */
 } AppEvent;
 
-static int App_mainDefault(void)
-{
-    static QSubscrList subscrSto[APP_MAX_SIG];
-    static AppEvent appEventSto[10U];
+static int App_mainDefault(void) {
+  static QSubscrList subscrSto[APP_MAX_SIG];
+  static AppEvent appEventSto[10U];
 
-    /* Initialize the AOs */
-    BSP_Ticker0_initAO(); /* This AO is a singleton managed by its module. */
-    UavcanNode_initAO();  /* This AO is a singleton managed by its module. */
-    Led_initAO();         /* This AO is a singleton managed by its module. */
+  /* Initialize the AOs */
+  BSP_Ticker0_initAO(); /* This AO is a singleton managed by its module. */
+  UavcanNode_initAO();  /* This AO is a singleton managed by its module. */
+  Led_initAO();         /* This AO is a singleton managed by its module. */
 
-    /* Initialize the hardware. */
-    BSP_init();
-    /* Initialize the QF framework and the underlying RT kernel. */
-    QF_init();
-    /* Initialize publish-subscribe */
-    QF_psInit(subscrSto, Q_DIM(subscrSto));
-    /* Initialize memory pools */
-    QF_poolInit(appEventSto, sizeof(appEventSto), sizeof(appEventSto[0]));
+  /* Initialize the hardware. */
+  BSP_init();
+  /* Initialize the QF framework and the underlying RT kernel. */
+  QF_init();
+  /* Initialize publish-subscribe */
+  QF_psInit(subscrSto, Q_DIM(subscrSto));
+  /* Initialize memory pools */
+  QF_poolInit(appEventSto, sizeof(appEventSto), sizeof(appEventSto[0]));
 
-    /* Start the AOs */
-    BSP_Ticker0_startAO(1U);
-    Led_startAO(2U);
-    UavcanNode_startAO(3U);
+  /* Start the AOs */
+  BSP_Ticker0_startAO(1U);
+  Led_startAO(2U);
+  UavcanNode_startAO(3U);
 
-    return QF_run();
+  return QF_run();
 }
 
-int main(void)
-{
-  return App_main();
-}
+int main(void) { return App_main(); }

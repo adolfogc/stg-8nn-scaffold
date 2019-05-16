@@ -20,20 +20,32 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef _UAVCAN_NODE_CALLBACKS_H
 #define _UAVCAN_NODE_CALLBACKS_H
 
-#include <stdbool.h>
 #include "canard.h"
+#include <stdbool.h>
 
 /* -- Prototypes for Libcanard's callback -- */
-static bool shouldAcceptTransferDefault(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId);
-bool shouldAcceptTransfer(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId) __attribute__((weak, alias("shouldAcceptTransferDefault")));
+static bool shouldAcceptTransferDefault(const CanardInstance *instance, uint64_t *outDataTypeSignature,
+                                        uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId);
 
-static void onTransferReceivedDefault(CanardInstance* instance, CanardRxTransfer* transfer);
-void onTransferReceived(CanardInstance* instance, CanardRxTransfer* transfer) __attribute__((weak, alias("onTransferReceivedDefault")));
+bool shouldAcceptTransfer(const CanardInstance *instance, uint64_t *outDataTypeSignature, uint16_t dataTypeId,
+                          CanardTransferType transferType, uint8_t sourceNodeId)
+    __attribute__((weak, alias("shouldAcceptTransferDefault")));
 
-static bool shouldAcceptTransferExtendDefault(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId);
-bool shouldAcceptTransferExtend(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId) __attribute__((weak, alias("shouldAcceptTransferExtendDefault")));
+static void onTransferReceivedDefault(CanardInstance *instance, CanardRxTransfer *transfer);
 
-static void onTransferReceivedExtendDefault(CanardInstance* instance, CanardRxTransfer* transfer);
-void onTransferReceivedExtend(CanardInstance* instance, CanardRxTransfer* transfer) __attribute__((weak, alias("onTransferReceivedExtendDefault")));
+void onTransferReceived(CanardInstance *instance, CanardRxTransfer *transfer)
+    __attribute__((weak, alias("onTransferReceivedDefault")));
+
+static bool shouldAcceptTransferExtendDefault(const CanardInstance *instance, uint64_t *outDataTypeSignature,
+                                              uint16_t dataTypeId, CanardTransferType transferType,
+                                              uint8_t sourceNodeId);
+bool shouldAcceptTransferExtend(const CanardInstance *instance, uint64_t *outDataTypeSignature, uint16_t dataTypeId,
+                                CanardTransferType transferType, uint8_t sourceNodeId)
+    __attribute__((weak, alias("shouldAcceptTransferExtendDefault")));
+
+static void onTransferReceivedExtendDefault(CanardInstance *instance, CanardRxTransfer *transfer);
+
+void onTransferReceivedExtend(CanardInstance *instance, CanardRxTransfer *transfer)
+    __attribute__((weak, alias("onTransferReceivedExtendDefault")));
 
 #endif /* _UAVCAN_NODE_CALLBACKS_H */

@@ -17,46 +17,33 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "bsp.h"
+#include "uavcan/protocol/HardwareVersion.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include "bsp.h"
-#include "uavcan/protocol/HardwareVersion.h"
-
 static time_t g_startTime;
 
-void BSP_init(void)
-{
-  g_startTime = time(NULL);
+void BSP_init(void) { g_startTime = time(NULL); }
+
+void BSP_restart(void) {
+  fputs("RESTARTING...\n", stdout);
+  QF_stop();
 }
 
-void BSP_restart(void)
-{
-    fputs("RESTARTING...\n", stdout);
-    QF_stop();
+void BSP_Led_off(void) { fputs("LED is OFF\n", stdout); }
+
+void BSP_Led_on(void) { fputs("LED is ON\n", stdout); }
+
+uint32_t BSP_upTimeSeconds(void) {
+  const double upTime_ = difftime(time(NULL), g_startTime);
+  return (uint32_t)upTime_;
 }
 
-void BSP_Led_off(void)
-{
-    fputs("LED is OFF\n", stdout);
-}
-
-void BSP_Led_on(void)
-{
-    fputs("LED is ON\n", stdout);
-}
-
-uint32_t BSP_upTimeSeconds(void)
-{
-    const double upTime_ = difftime(time(NULL), g_startTime);
-    return (uint32_t) upTime_;
-}
-
-uint32_t BSP_getPseudoRandom(void)
-{
+uint32_t BSP_getPseudoRandom(void) {
   static bool uninitialized = true;
-  if(uninitialized) {
+  if (uninitialized) {
     srand(time(NULL));
     uninitialized = false;
   }
@@ -64,9 +51,8 @@ uint32_t BSP_getPseudoRandom(void)
   return (uint32_t)rand();
 }
 
-void BSP_readUniqueID(uint8_t* outUid)
-{
-    for (uint8_t i = 0; i < UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH; ++i) {
-        outUid[i] = i;
-    }
+void BSP_readUniqueID(uint8_t *outUid) {
+  for (uint8_t i = 0; i < UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH; ++i) {
+    outUid[i] = i;
+  }
 }

@@ -17,64 +17,62 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-static bool shouldAcceptTransferDefault(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId)
-{
-    (void)instance;
-    (void)sourceNodeId; /* not used yet */
+static bool shouldAcceptTransferDefault(const CanardInstance *instance, uint64_t *outDataTypeSignature,
+                                        uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId) {
+  (void)instance;
+  (void)sourceNodeId; /* not used yet */
 
-    bool accept = false;
-    switch(dataTypeId) {
-        case UAVCAN_PROTOCOL_GETNODEINFO_ID:
-            *outDataTypeSignature = UAVCAN_PROTOCOL_GETNODEINFO_SIGNATURE;
-            accept = true;
-            break;
-        case UAVCAN_PROTOCOL_RESTARTNODE_ID:
-            *outDataTypeSignature = UAVCAN_PROTOCOL_RESTARTNODE_SIGNATURE;
-            accept = true;
-            break;
-        default:
-            accept = shouldAcceptTransferExtend(instance, outDataTypeSignature, dataTypeId, transferType, sourceNodeId);
-            break;
+  bool accept = false;
+  switch (dataTypeId) {
+  case UAVCAN_PROTOCOL_GETNODEINFO_ID:
+    *outDataTypeSignature = UAVCAN_PROTOCOL_GETNODEINFO_SIGNATURE;
+    accept = true;
+    break;
+  case UAVCAN_PROTOCOL_RESTARTNODE_ID:
+    *outDataTypeSignature = UAVCAN_PROTOCOL_RESTARTNODE_SIGNATURE;
+    accept = true;
+    break;
+  default:
+    accept = shouldAcceptTransferExtend(instance, outDataTypeSignature, dataTypeId, transferType, sourceNodeId);
+    break;
+  }
+
+  return accept;
+}
+
+static bool shouldAcceptTransferExtendDefault(const CanardInstance *instance, uint64_t *outDataTypeSignature,
+                                              uint16_t dataTypeId, CanardTransferType transferType,
+                                              uint8_t sourceNodeId) {
+  (void)instance;
+  (void)outDataTypeSignature;
+  (void)dataTypeId;
+  (void)transferType;
+  (void)sourceNodeId; /* not used yet */
+
+  return false;
+}
+
+static void onTransferReceivedDefault(CanardInstance *instance, CanardRxTransfer *transfer) {
+  (void)instance; /* not used yet */
+
+  switch (transfer->data_type_id) {
+  case UAVCAN_PROTOCOL_GETNODEINFO_ID:
+    if (transfer->transfer_type == CanardTransferTypeRequest) {
+      getNodeInfoHandle(transfer);
     }
-
-    return accept;
-}
-
-static bool shouldAcceptTransferExtendDefault(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId)
-{
-    (void)instance;
-    (void)outDataTypeSignature;
-    (void)dataTypeId;
-    (void)transferType;
-    (void)sourceNodeId; /* not used yet */
-
-    return false;
-}
-
-
-static void onTransferReceivedDefault(CanardInstance* instance, CanardRxTransfer* transfer)
-{
-    (void)instance; /* not used yet */
-
-    switch(transfer->data_type_id) {
-        case UAVCAN_PROTOCOL_GETNODEINFO_ID:
-          if(transfer->transfer_type == CanardTransferTypeRequest) {
-            getNodeInfoHandle(transfer);
-          }
-          break;
-        case UAVCAN_PROTOCOL_RESTARTNODE_ID:
-          if(transfer->transfer_type == CanardTransferTypeRequest) {
-            restartNodeHandle(transfer);
-          }
-          break;
-        default:
-          onTransferReceivedExtend(instance, transfer);
-          break;
+    break;
+  case UAVCAN_PROTOCOL_RESTARTNODE_ID:
+    if (transfer->transfer_type == CanardTransferTypeRequest) {
+      restartNodeHandle(transfer);
     }
+    break;
+  default:
+    onTransferReceivedExtend(instance, transfer);
+    break;
+  }
 }
 
-static void onTransferReceivedExtendDefault(CanardInstance* instance, CanardRxTransfer* transfer)
-{
+static void onTransferReceivedExtendDefault(CanardInstance *instance, CanardRxTransfer *transfer) {
   (void)instance;
   (void)transfer;
 }
