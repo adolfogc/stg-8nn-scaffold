@@ -20,10 +20,9 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef BSP_CANARD_BUILD_CONFIG_H
 #define BSP_CANARD_BUILD_CONFIG_H
 
-#include <stdint.h>
 #include "qpc.h"
+#include <stdint.h>
 
-#define CANARD_ASSERT(test_) ((test_) \
-    ? (void)0 : Q_onAssert(__FILE__, (int)__LINE__))
+#define CANARD_ASSERT(test_) ((test_) ? (void)0 : Q_onAssert(__FILE__, (int)__LINE__))
 
 #endif /* BSP_CANARD_BUILD_CONFIG_H */

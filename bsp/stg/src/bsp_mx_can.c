@@ -17,38 +17,38 @@ You should have received a copy of the GNU Affero General Public License
 along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "stm32f0xx_ll_gpio.h"
-#include "stm32f0xx_ll_bus.h"
+#include "bsp_mx_can.h"
 #include "bsp_isr_priorities.h"
 #include "bsp_pinout.h"
 #include "bsp_qpc.h"
-#include "bsp_mx_can.h"
+#include "stm32f0xx_ll_bus.h"
+#include "stm32f0xx_ll_gpio.h"
+
 
 /* CAN init function */
-void BSP_MX_CAN_Init(void)
-{
-    LL_GPIO_InitTypeDef GPIO_InitStruct;
+void BSP_MX_CAN_Init(void) {
+  LL_GPIO_InitTypeDef GPIO_InitStruct;
 
-    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_CAN);
-    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
+  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_CAN);
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
 
-    /* Set CAN to silent mode */
-    LL_GPIO_SetOutputPin(CAN_GPIO_Port, CAN_S_Pin);
+  /* Set CAN to silent mode */
+  LL_GPIO_SetOutputPin(CAN_GPIO_Port, CAN_S_Pin);
 
-    GPIO_InitStruct.Pin = CAN_S_Pin;
-    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-    LL_GPIO_Init(CAN_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Pin = CAN_S_Pin;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  LL_GPIO_Init(CAN_GPIO_Port, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = CAN_RX_Pin|CAN_TX_Pin;
-    GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
-    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
-    GPIO_InitStruct.Alternate = LL_GPIO_AF_4;
-    LL_GPIO_Init(CAN_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Pin = CAN_RX_Pin | CAN_TX_Pin;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Alternate = LL_GPIO_AF_4;
+  LL_GPIO_Init(CAN_GPIO_Port, &GPIO_InitStruct);
 
-    NVIC_SetPriority(CEC_CAN_IRQn, BSP_CAN_PRIO);
-    /* The IRQ can be enabled by calling: NVIC_EnableIRQ(CEC_CAN_IRQn) */
+  NVIC_SetPriority(CEC_CAN_IRQn, BSP_CAN_PRIO);
+  /* The IRQ can be enabled by calling: NVIC_EnableIRQ(CEC_CAN_IRQn) */
 }

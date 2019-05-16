@@ -22,7 +22,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 /* 1 tick every 0.1 ms (100 us) */
 #define BSP_TICKS_PER_SEC 10000U
-#define BSP_TICKS_PER_MS  (BSP_TICKS_PER_SEC / 1000U)
-#define BSP_TICKS_PER_100uS  (BSP_TICKS_PER_SEC / 10000U) 
+#define BSP_TICKS_PER_MS (BSP_TICKS_PER_SEC / 1000U)
+#define BSP_TICKS_PER_100uS (BSP_TICKS_PER_SEC / 10000U)
 
 #endif /* _BSP_SPECIFIC_H */
