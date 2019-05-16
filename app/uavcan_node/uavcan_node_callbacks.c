@@ -22,20 +22,22 @@ static bool shouldAcceptTransferDefault(const CanardInstance* instance, uint64_t
     (void)instance;
     (void)sourceNodeId; /* not used yet */
 
-    if (transferType != CanardTransferTypeRequest) {
-        return false;
-    }
-
+    bool accept = false;
     switch(dataTypeId) {
         case UAVCAN_PROTOCOL_GETNODEINFO_ID:
             *outDataTypeSignature = UAVCAN_PROTOCOL_GETNODEINFO_SIGNATURE;
-            return true;
+            accept = true;
+            break;
         case UAVCAN_PROTOCOL_RESTARTNODE_ID:
             *outDataTypeSignature = UAVCAN_PROTOCOL_RESTARTNODE_SIGNATURE;
-            return true;
+            accept = true;
+            break;
         default:
-            return shouldAcceptTransferExtend(instance, outDataTypeSignature, dataTypeId, transferType, sourceNodeId);
+            accept = shouldAcceptTransferExtend(instance, outDataTypeSignature, dataTypeId, transferType, sourceNodeId);
+            break;
     }
+
+    return accept;
 }
 
 static bool shouldAcceptTransferExtendDefault(const CanardInstance* instance, uint64_t* outDataTypeSignature, uint16_t dataTypeId, CanardTransferType transferType, uint8_t sourceNodeId)
@@ -54,19 +56,20 @@ static void onTransferReceivedDefault(CanardInstance* instance, CanardRxTransfer
 {
     (void)instance; /* not used yet */
 
-    if(transfer->transfer_type != CanardTransferTypeRequest) {
-        return;
-    }
-
     switch(transfer->data_type_id) {
         case UAVCAN_PROTOCOL_GETNODEINFO_ID:
+          if(transfer->transfer_type == CanardTransferTypeRequest) {
             getNodeInfoHandle(transfer);
-            return;
+          }
+          break;
         case UAVCAN_PROTOCOL_RESTARTNODE_ID:
+          if(transfer->transfer_type == CanardTransferTypeRequest) {
             restartNodeHandle(transfer);
-            return;
+          }
+          break;
         default:
-            onTransferReceivedExtend(instance, transfer);
+          onTransferReceivedExtend(instance, transfer);
+          break;
     }
 }
 
@@ -74,5 +77,4 @@ static void onTransferReceivedExtendDefault(CanardInstance* instance, CanardRxTr
 {
   (void)instance;
   (void)transfer;
-  return;
 }
