@@ -45,37 +45,19 @@ git submodule update --init --recursive
 ```
 
 ### Getting the toolchain and the flashing utility
+
+### VS Code + Docker (devcontainer)
+
+This repository can be used with a dev container, see: https://code.visualstudio.com/docs/remote/containers
+Also see the [adolfogc/cortex-m-devcontainer](https://hub.docker.com/repository/docker/adolfogc/cortex-m-devcontainer) image in Docker Hub.
+
 #### macOS
 
-1. Installing ARM Embedded (GCC-based)
+To install the ARM Embedded (GCC-based) toolchain:
 
 ```bash
 brew tap osx-cross/arm
 brew install arm-gcc-bin stlink open-ocd cmake ninja
-```
-
-2. Installing a Clang-based toolchain
-
-```bash
-brew tap eblot/armeabi
-brew install armv6m-cortex-m0plus
-```
-
-3. Installing Python 3 (required by Libcanard's DSDL compiler)
-
-```bash
-brew install python3
-```
-
-#### Linux
-Refer to `ci/Dockerfile`.
-
-For the test build, in Ubuntu Linux, install GCC multilib:
-
-```bash
-sudo dpkg --add-architecture i386
-sudo apt update
-sudo apt-get install libc6-dev:i386 gcc-multilib
 ```
 
 ### Compiling the project
