@@ -18,10 +18,10 @@
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
 if [ ! -d ${HOME}/.cache/cppcheck ]; then
-  curl -SOL https://github.com/danmar/cppcheck/archive/1.86.tar.gz && \
-  tar xzf 1.86.tar.gz && \
-  (cd cppcheck-1.86 && \
+  curl -SOL https://github.com/danmar/cppcheck/archive/1.90.tar.gz && \
+  tar xzf 1.90.tar.gz && \
+  (cd cppcheck-1.90 && \
   mkdir -p ${HOME}/.cache/cppcheck && \
-  make CXX=`which clang++-7` PREFIX=${HOME}/.cache/cppcheck SRCDIR=build CFGDIR=cfg HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function" -j4 && \
-  sudo make install PREFIX=${HOME}/.cache/cppcheck CFGDIR=${HOME}/.cache/cppcheck/cfg)
+  make PREFIX=${HOME}/.cache/cppcheck MATCHCOMPILER=yes FILESDIR=/usr/share/cppcheck HAVE_RULES=yes CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function" -j4 && \
+  sudo make install PREFIX=${HOME}/.cache/cppcheck FILESDIR=/usr/share/cppcheck)
 fi

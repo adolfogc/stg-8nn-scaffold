@@ -1,4 +1,4 @@
-image: Ubuntu1804
+image: Ubuntu
 
 branches:
   only:
@@ -6,7 +6,7 @@ branches:
 
 platform: x64
 configuration: Release
-stack: node 10
+stack: node 12
 
 cache:
   - ${HOME}/opt/xPacks
@@ -15,13 +15,13 @@ install:
   - git submodule init
   - git submodule update --init --recursive
   - sh: npm install --global xpm
-  - sh: xpm install --global @gnu-mcu-eclipse/arm-none-eabi-gcc@8.2.1-1.1.1
+  - sh: xpm install --global @xpack-dev-tools/arm-none-eabi-gcc@9.2.1-1.1.1
   - sh: sudo apt-get update
   - sh: sudo apt-get install -y --fix-missing cmake ninja-build
 
 build_script:
   - sh: |
-        export PATH="${HOME}/opt/xPacks/@gnu-mcu-eclipse/arm-none-eabi-gcc/8.2.1-1.1.1/.content/bin:${PATH}"
+        export PATH="${HOME}/opt/xPacks/@xpack-dev-tools/arm-none-eabi-gcc/9.2.1-1.1.1/.content/bin:${PATH}"
         mkdir build && cd build
         cmake -DSTG_MODEL:STRING=856 -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
         cmake --build .

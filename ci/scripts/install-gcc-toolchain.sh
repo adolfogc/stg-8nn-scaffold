@@ -18,9 +18,11 @@
 # along with STG-8nn-Scaffold.  If not, see <www.gnu.org/licenses/>.
 
 if [ ! -d ${HOME}/.cache/gcc-arm-none-eabi ]; then
-  curl -SOL https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2 && \
-  tar xjf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2 && \
-  mkdir -p ${HOME}/.cache/gcc-arm-none-eabi && \
-  cp -r ./gcc-arm-none-eabi-8-2018-q4-major/* ${HOME}/.cache/gcc-arm-none-eabi
+    curl -SOL https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2 && \
+    printf "bcd840f839d5bf49279638e9f67890b2ef3a7c9c7a9b25271e83ec4ff41d177a */tmp/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2" > toolchain.shasum && \
+    sha256sum --check --status toolchain.shasum && \
+    tar xf gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2 && \
+    mkdir -p ${HOME}/.cache/gcc-arm-none-eabi && \
+    cp -r gcc-arm-none-eabi-9-2019-q4-major/* ${HOME}/.cache/gcc-arm-none-eabi
 fi
 
