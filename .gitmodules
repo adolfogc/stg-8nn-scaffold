@@ -9,6 +9,9 @@
 [submodule "dependencies/dsdl"]
 	path = dependencies/dsdl
 	url = https://github.com/dronecan/DSDL.git
+[submodule "dependencies/dronecan_dsdlc"]
+	path = dependencies/dronecan_dsdlc
+	url = https://github.com/dronecan/dronecan_dsdlc.git
 [submodule "dependencies/arm_cmsis5"]
 	path = dependencies/arm_cmsis5
 	url = https://github.com/ARM-software/CMSIS_5.git
