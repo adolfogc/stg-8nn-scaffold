@@ -27,6 +27,13 @@ else()
   set(DSDL_DIR dependencies/dsdl)
 endif()
 
+if(DEFINED SCAFFOLD_DIR)
+  set(DSDLC_DIR ${SCAFFOLD_DIR}/dependencies/dronecan_dsdlc)
+else()
+  set(DSDLC_DIR dependencies/dronecan_dsdlc)
+endif()
+
+
 set(DSDL_SOURCE_FILES
     ${DSDL_DIR}/uavcan/Timestamp.uavcan
 )
@@ -184,8 +191,8 @@ list(APPEND DSDL_GENERATED_FILES
 
 add_custom_command(
     OUTPUT ${DSDL_GENERATED_FILES}
-    COMMAND python3 ${PROJECT_SOURCE_DIR}/${CANARD_DIR}/dsdl_compiler/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
-    MAIN_DEPENDENCY ${CANARD_DIR}/dsdl_compiler/libcanard_dsdlc
+    COMMAND python3 ${PROJECT_SOURCE_DIR}/${DSDLC_DIR}/dronecan_dsdlc.py --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
+    MAIN_DEPENDENCY ${DSDLC_DIR}/dronecan_dsdlc.py
     DEPENDS ${DSDL_SOURCE_FILES}
 )
 
