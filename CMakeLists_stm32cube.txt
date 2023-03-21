@@ -75,9 +75,7 @@ add_definitions(-DUSE_FULL_LL_DRIVER) # enable LL initialization functions and a
 list(APPEND STM32CUBE_SOURCES
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_adc.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_bus.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_comp.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_cortex.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_crc.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_crs.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_dma.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_exti.h
@@ -91,16 +89,11 @@ list(APPEND STM32CUBE_SOURCES
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_tim.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_usart.h
   ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_utils.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_wwdg.h
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_adc.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_comp.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_crc.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_crs.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_dma.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_exti.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_gpio.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_i2c.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_pwr.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_rcc.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_rtc.c
   ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_tim.c
@@ -118,16 +111,13 @@ if(USE_HAL)
   list(APPEND STM32CUBE_SOURCES
     ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_def.h
     ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal.h
+    ${STM32CUBE_DIR}/hal/include/stm32_hal_legacy.h
+    ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_exti.h
     ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal.c
+    ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_exti.c
   )
   if(USE_HAL_ADC)
     add_definitions(-DHAL_ADC_MODULE_ENABLED)
-    list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_adc_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_adc.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_adc_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_adc.c
-    )
   endif()
   if(USE_HAL_CAN)
     add_definitions(-DHAL_CAN_MODULE_ENABLED)
@@ -138,28 +128,12 @@ if(USE_HAL)
   endif()
   if(USE_HAL_CRC)
     add_definitions(-DHAL_CRC_MODULE_ENABLED)
-    list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_crc_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_crc.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_crc_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_crc.c
-    )
   endif()
   if(USE_HAL_IWDG)
     add_definitions(-DHAL_IWDG_MODULE_ENABLED)
-    list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_iwdg.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_iwdg.c
-    )
   endif()
   if(USE_HAL_RTC)
     add_definitions(-DHAL_RTC_MODULE_ENABLED)
-    list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_rtc_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_rtc.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_rtc_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_rtc.c
-    )
   endif()
   if(USE_HAL_TIM)
     add_definitions(-DHAL_TIM_MODULE_ENABLED)
@@ -172,20 +146,9 @@ if(USE_HAL)
   endif()
   if(USE_HAL_UART)
     add_definitions(-DHAL_UART_MODULE_ENABLED)
-    list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_uart_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_uart.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_uart_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_uart.c
-    )
   endif()
   if(USE_HAL_IRDA)
     add_definitions(-DHAL_IRDA_MODULE_ENABLED)
-    list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_irda_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_irda.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_irda.c
-    )
   endif()
   if(USE_HAL_CORTEX)
     add_definitions(-DHAL_CORTEX_MODULE_ENABLED)
@@ -248,9 +211,5 @@ if(USE_HAL)
   endif()
   if(USE_HAL_WWDG)
     add_definitions(-DHAL_WWDG_MODULE_ENABLED)
-    list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_wwdg.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_wwdg.c
-    )
   endif()
 endif()

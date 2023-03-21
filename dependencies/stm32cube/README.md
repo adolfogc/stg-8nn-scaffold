@@ -8,6 +8,9 @@ MCU
 - The `hal` directory contains part of the STM32Cube's HAL (Hardware Abstraction Layer).
 - The `ll` directory contains part of the STM32Cube's LL (Low-level drivers).
 
+## Source repository
+See https://github.com/STMicroelectronics/STM32CubeF0
+
 ## Copying
 
 ### ARM
