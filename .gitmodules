@@ -16,6 +16,6 @@
 [submodule "dependencies/pydronecan"]
 	path = dependencies/pydronecan
 	url = https://github.com/dronecan/pydronecan.git
-[submodule "dependencies/dsdl"]
-	path = dependencies/dsdl
+[submodule "dependencies/DSDL"]
+	path = dependencies/DSDL
 	url = https://github.com/dronecan/DSDL.git
