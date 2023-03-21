@@ -22,9 +22,9 @@ cmake_minimum_required(VERSION 3.5)
 ##
 
 if(DEFINED SCAFFOLD_DIR)
-  set(DSDL_DIR ${SCAFFOLD_DIR}/dependencies/dsdl)
+  set(DSDL_DIR ${SCAFFOLD_DIR}/dependencies/DSDL)
 else()
-  set(DSDL_DIR dependencies/dsdl)
+  set(DSDL_DIR dependencies/DSDL)
 endif()
 
 if(DEFINED SCAFFOLD_DIR)
@@ -339,5 +339,5 @@ add_custom_command(
 ## SET SOURCES AND HEADERS
 ##
 
-set(DSDL_C_INCLUDE ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR})
+set(DSDL_C_INCLUDE ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR}/include)
 set(DSDL_C_SOURCES ${DSDL_GENERATED_FILES})

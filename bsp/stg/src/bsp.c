@@ -31,7 +31,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "app.h"
 #include "bsp_clock.h"
 
-#include "uavcan/protocol/HardwareVersion.h"
+#include "uavcan.protocol.HardwareVersion.h"
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -84,6 +84,10 @@ uint32_t BSP_getPseudoRandom(void) {
 }
 
 void BSP_readUniqueID(uint8_t *outUid) {
+#ifndef UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH
+#define UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH 16U
+#endif
+
 #if UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH != 16U
 #error "UAVCAN Hardware Uuid is not 16 bytes long!"
 #endif

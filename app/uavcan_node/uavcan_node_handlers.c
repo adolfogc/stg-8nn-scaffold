@@ -31,10 +31,10 @@ static void statusUpdate(void) {
 static void restartNodeHandle(CanardRxTransfer *transfer) {
   uint8_t buffer[UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAX_SIZE] = {0U};
 
-  uavcan_protocol_RestartNodeRequest request = {0};
-  uavcan_protocol_RestartNodeRequest_decode(transfer, transfer->payload_len, &request, (uint8_t **)0U);
+  struct uavcan_protocol_RestartNodeRequest request;
+  uavcan_protocol_RestartNodeRequest_decode(transfer, &request);
 
-  uavcan_protocol_RestartNodeResponse response = {.ok = request.magic_number ==
+  struct uavcan_protocol_RestartNodeResponse response = {.ok = request.magic_number ==
                                                         UAVCAN_PROTOCOL_RESTARTNODE_REQUEST_MAGIC_NUMBER};
 
   const uint32_t len = uavcan_protocol_RestartNodeResponse_encode(&response, buffer);
@@ -51,7 +51,7 @@ static void restartNodeHandle(CanardRxTransfer *transfer) {
 }
 
 static void getNodeInfoHandle(CanardRxTransfer *transfer) {
-  uint8_t messageBuffer[UAVCAN_PROTOCOL_GETNODEINFO_RESPONSE_NAME_MAX_LENGTH] = {0U};
+  uint8_t messageBuffer[UAVCAN_PROTOCOL_GETNODEINFO_RESPONSE_MAX_SIZE] = {0U};
   const uint32_t len = makeNodeInfoMessage(messageBuffer);
 
   int result =
@@ -62,29 +62,29 @@ static void getNodeInfoHandle(CanardRxTransfer *transfer) {
 }
 
 static uint32_t makeNodeStatusMessage(uint8_t *messageBuffer) {
-  uavcan_protocol_NodeStatus nodeStatus = {.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK,
-                                           .mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL,
-                                           .uptime_sec = BSP_upTimeSeconds()};
+  struct uavcan_protocol_NodeStatus nodeStatus = {
+    .health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK,
+    .mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL,
+    .uptime_sec = BSP_upTimeSeconds()
+  };
 
   return uavcan_protocol_NodeStatus_encode(&nodeStatus, messageBuffer);
 }
 
 static uint32_t makeNodeInfoMessage(uint8_t *messageBuffer) {
-  uavcan_protocol_GetNodeInfoResponse nodeInfoResponse = {.name.data = (uint8_t *)APP_UAVCAN_NODE_NAME_DATA,
-                                                          .name.len = APP_UAVCAN_NODE_NAME_LEN,
-
-                                                          .status.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK,
-                                                          .status.mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL,
-                                                          .status.uptime_sec = BSP_upTimeSeconds(),
-
-                                                          .software_version.major = APP_SW_VERSION_MAJOR,
-                                                          .software_version.minor = APP_SW_VERSION_MINOR,
-                                                          .software_version.optional_field_flags = 1U,
-                                                          .software_version.vcs_commit =
-                                                              APP_SW_GIT_COMMIT_HASH, /* DEFINED BY CMAKE */
-
-                                                          .hardware_version.major = APP_HW_VERSION_MAJOR,
-                                                          .hardware_version.minor = APP_HW_VERSION_MINOR};
+  struct uavcan_protocol_GetNodeInfoResponse nodeInfoResponse = {
+    .status.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK,
+    .status.mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL,
+    .status.uptime_sec = BSP_upTimeSeconds(),
+    .software_version.major = APP_SW_VERSION_MAJOR,
+    .software_version.minor = APP_SW_VERSION_MINOR,
+    .software_version.optional_field_flags = 1U,
+    .software_version.vcs_commit = APP_SW_GIT_COMMIT_HASH, /* DEFINED BY CMAKE */
+    .hardware_version.major = APP_HW_VERSION_MAJOR,
+    .hardware_version.minor = APP_HW_VERSION_MINOR,
+    .name.data = (uint8_t *)APP_UAVCAN_NODE_NAME_DATA,
+    .name.len = APP_UAVCAN_NODE_NAME_LEN
+  };
 
   BSP_readUniqueID(&(nodeInfoResponse.hardware_version.unique_id[0])); /* Writes unique ID into the buffer */
 
