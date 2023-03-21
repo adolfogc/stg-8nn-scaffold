@@ -8,7 +8,7 @@
 	branch = master
 [submodule "dependencies/dsdl"]
 	path = dependencies/dsdl
-	url = https://github.com/UAVCAN/public_regulated_data_types.git
+	url = https://github.com/dronecan/DSDL.git
 [submodule "dependencies/arm_cmsis5"]
 	path = dependencies/arm_cmsis5
 	url = https://github.com/ARM-software/CMSIS_5.git
