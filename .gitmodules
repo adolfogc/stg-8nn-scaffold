@@ -6,9 +6,6 @@
 	path = dependencies/libcanard
 	url = https://github.com/adolfogc/libcanard.git
 	branch = master
-[submodule "dependencies/dsdl"]
-	path = dependencies/dsdl
-	url = https://github.com/dronecan/DSDL.git
 [submodule "dependencies/dronecan_dsdlc"]
 	path = dependencies/dronecan_dsdlc
 	url = https://github.com/dronecan/dronecan_dsdlc.git
@@ -16,3 +13,6 @@
 	path = dependencies/arm_cmsis5
 	url = https://github.com/ARM-software/CMSIS_5.git
 	shallow = true
+[submodule "dependencies/pydronecan"]
+	path = dependencies/pydronecan
+	url = https://github.com/dronecan/pydronecan.git
