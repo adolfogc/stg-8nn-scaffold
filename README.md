@@ -1,10 +1,14 @@
 # STG-8nn-Scaffold
 
+<!---
+
 [![Travis Build Status](https://travis-ci.org/adolfogc/stg-8nn-scaffold.svg?branch=master)](https://travis-ci.org/adolfogc/stg-8nn-scaffold)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/g9tbt84ft6jedysu?svg=true)](https://ci.appveyor.com/project/adolfogc/stg-8nn-scaffold)
 [![SonarCloud Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
 [![SonarCloud Bug Count](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=bugs)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
 [![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=alert_status)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
+
+-->
 
 <img align="right" width="80" height="100" src="stg-8nn-scaffold-logo.png">
 
@@ -66,7 +70,7 @@ brew install arm-gcc-bin stlink open-ocd cmake ninja
 
 ```bash
 mkdir build && cd build
-cmake -DSTG_MODEL:STRING=850 -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
+cmake -DSTG_MODEL:STRING=856 -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
 cmake --build .
 ```
 

@@ -32,7 +32,8 @@ typedef union {
 
 static int App_mainDefault(void) {
   static QSubscrList subscrSto[APP_MAX_SIG];
-  static AppEvent appEventSto[10U];
+  static AppEvent appEventSto[32U];
+  static QEvt const l_LedBlinkEvt = {APP_LED_BLINK_SIG, 0U, 0U};
 
   /* Initialize the AOs */
   BSP_Ticker0_initAO(); /* This AO is a singleton managed by its module. */
@@ -51,7 +52,10 @@ static int App_mainDefault(void) {
   /* Start the AOs */
   BSP_Ticker0_startAO(1U);
   Led_startAO(2U);
-  UavcanNode_startAO(3U);
+  //UavcanNode_startAO(4U);
+
+  /* Blink */
+  QF_PUBLISH(&l_LedBlinkEvt, me);
 
   return QF_run();
 }

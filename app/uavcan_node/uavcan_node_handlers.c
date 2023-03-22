@@ -73,17 +73,25 @@ static uint32_t makeNodeStatusMessage(uint8_t *messageBuffer) {
 
 static uint32_t makeNodeInfoMessage(uint8_t *messageBuffer) {
   struct uavcan_protocol_GetNodeInfoResponse nodeInfoResponse = {
-    .status.health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK,
-    .status.mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL,
-    .status.uptime_sec = BSP_upTimeSeconds(),
-    .software_version.major = APP_SW_VERSION_MAJOR,
-    .software_version.minor = APP_SW_VERSION_MINOR,
-    .software_version.optional_field_flags = 1U,
-    .software_version.vcs_commit = APP_SW_GIT_COMMIT_HASH, /* DEFINED BY CMAKE */
-    .hardware_version.major = APP_HW_VERSION_MAJOR,
-    .hardware_version.minor = APP_HW_VERSION_MINOR,
-    .name.data = (uint8_t *)APP_UAVCAN_NODE_NAME_DATA,
-    .name.len = APP_UAVCAN_NODE_NAME_LEN
+    .status = {
+      .health = UAVCAN_PROTOCOL_NODESTATUS_HEALTH_OK,
+      .mode = UAVCAN_PROTOCOL_NODESTATUS_MODE_OPERATIONAL,
+      .uptime_sec = BSP_upTimeSeconds()
+    },
+    .software_version = {
+      .major = APP_SW_VERSION_MAJOR,
+      .minor = APP_SW_VERSION_MINOR,
+      .optional_field_flags = 1U,
+      .vcs_commit = APP_SW_GIT_COMMIT_HASH, /* DEFINED BY CMAKE */
+    },
+    .hardware_version = {
+      .major = APP_HW_VERSION_MAJOR,
+      .minor = APP_HW_VERSION_MINOR
+    },
+    .name = {
+      .data = APP_UAVCAN_NODE_NAME_DATA,
+      .len = APP_UAVCAN_NODE_NAME_LEN
+    }
   };
 
   BSP_readUniqueID(&(nodeInfoResponse.hardware_version.unique_id[0])); /* Writes unique ID into the buffer */

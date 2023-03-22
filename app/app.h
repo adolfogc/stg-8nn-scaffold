@@ -92,7 +92,7 @@ enum AppSignals {
 #endif
 
 #ifndef APP_LED_EVT_QUEUE_SIZE
-#define APP_LED_EVT_QUEUE_SIZE 10
+#define APP_LED_EVT_QUEUE_SIZE 12
 #endif
 
 #ifndef APP_CANARD_MEMORY_POOL_SIZE
