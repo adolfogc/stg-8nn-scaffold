@@ -4,7 +4,7 @@
 	branch = master
 [submodule "dependencies/libcanard"]
 	path = dependencies/libcanard
-	url = https://github.com/adolfogc/libcanard.git
+	url = https://github.com/OpenCyphal/libcanard.git
 	branch = master
 [submodule "dependencies/dsdl"]
 	path = dependencies/dsdl
