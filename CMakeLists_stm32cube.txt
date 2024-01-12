@@ -16,20 +16,25 @@
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 if(DEFINED SCAFFOLD_DIR)
-  set(STM32CUBE_DIR ${SCAFFOLD_DIR}/dependencies/stm32cube)
+  set(STM32CUBE_DIR ${SCAFFOLD_DIR}/dependencies/STM32CubeF0)
+  set(STM32CUBE_SYSTEM_FILE_DIR ${SCAFFOLD_DIR}/dependencies)
 else()
-  set(STM32CUBE_DIR dependencies/stm32cube)
+  set(STM32CUBE_DIR dependencies/STM32CubeF0)
+  set(STM32CUBE_SYSTEM_FILE_DIR dependencies)
 endif()
 
 ##
 ## Add dependency: CMSIS device files (stm32cube's)
 ##
 
+set(STM32CUBE_DEVICE_DIR Drivers/CMSIS/Device/ST/STM32F0xx)
+set(STM32CUBE_HAL_DIR Drivers/STM32F0xx_HAL_Driver)
+
 list(APPEND STM32CUBE_SOURCES
-  ${STM32CUBE_DIR}/cmsis/device/include/stm32f0xx.h
-  ${STM32CUBE_DIR}/cmsis/device/include/stm32f091xc.h
-  ${STM32CUBE_DIR}/cmsis/device/include/system_stm32f0xx.h
-  ${STM32CUBE_DIR}/cmsis/device/src/system_stm32f0xx.c
+  ${STM32CUBE_DIR}/${STM32CUBE_DEVICE_DIR}/Include/stm32f0xx.h
+  ${STM32CUBE_DIR}/${STM32CUBE_DEVICE_DIR}/Include/stm32f091xc.h
+  ${STM32CUBE_DIR}/${STM32CUBE_DEVICE_DIR}/Include/system_stm32f0xx.h
+  ${STM32CUBE_SYSTEM_FILE_DIR}/system_stm32f0xx.c
 )
 
 ##
@@ -61,9 +66,8 @@ endif()
 ##
 
 set(STM32CUBE_INCLUDE
-  ${STM32CUBE_DIR}/cmsis/device/include
-  ${STM32CUBE_DIR}/hal/include
-  ${STM32CUBE_DIR}/ll/include
+  ${STM32CUBE_DIR}/${STM32CUBE_DEVICE_DIR}/Include
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc
 )
 
 ###
@@ -73,39 +77,39 @@ set(STM32CUBE_INCLUDE
 add_definitions(-DUSE_FULL_LL_DRIVER) # enable LL initialization functions and associated resources
 
 list(APPEND STM32CUBE_SOURCES
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_adc.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_bus.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_comp.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_cortex.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_crc.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_crs.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_dma.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_exti.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_gpio.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_i2c.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_iwdg.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_pwr.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_rcc.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_rtc.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_system.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_tim.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_usart.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_utils.h
-  ${STM32CUBE_DIR}/ll/include/stm32f0xx_ll_wwdg.h
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_adc.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_comp.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_crc.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_crs.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_dma.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_exti.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_gpio.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_i2c.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_pwr.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_rcc.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_rtc.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_tim.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_usart.c
-  ${STM32CUBE_DIR}/ll/src/stm32f0xx_ll_utils.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_adc.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_bus.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_comp.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_cortex.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_crc.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_crs.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_dma.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_exti.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_gpio.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_i2c.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_iwdg.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_pwr.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_rcc.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_rtc.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_system.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_tim.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_usart.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_utils.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_ll_wwdg.h
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_adc.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_comp.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_crc.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_crs.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_dma.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_exti.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_gpio.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_i2c.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_pwr.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_rcc.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_rtc.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_tim.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_usart.c
+  ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_ll_utils.c
 )
 
 ###
@@ -116,141 +120,141 @@ if(USE_HAL)
   add_definitions(-DHAL_MODULE_ENABLED)
   add_definitions(-DUSE_RTOS=0)
   list(APPEND STM32CUBE_SOURCES
-    ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_def.h
-    ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal.h
-    ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal.c
+    ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_def.h
+    ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal.h
+    ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal.c
   )
   if(USE_HAL_ADC)
     add_definitions(-DHAL_ADC_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_adc_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_adc.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_adc_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_adc.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_adc_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_adc.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_adc_ex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_adc.c
     )
   endif()
   if(USE_HAL_CAN)
     add_definitions(-DHAL_CAN_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_can.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_can.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_can.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_can.c
     )
   endif()
   if(USE_HAL_CRC)
     add_definitions(-DHAL_CRC_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_crc_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_crc.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_crc_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_crc.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_crc_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_crc.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_crc_ex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_crc.c
     )
   endif()
   if(USE_HAL_IWDG)
     add_definitions(-DHAL_IWDG_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_iwdg.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_iwdg.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_iwdg.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_iwdg.c
     )
   endif()
   if(USE_HAL_RTC)
     add_definitions(-DHAL_RTC_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_rtc_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_rtc.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_rtc_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_rtc.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_rtc_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_rtc.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_rtc_ex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_rtc.c
     )
   endif()
   if(USE_HAL_TIM)
     add_definitions(-DHAL_TIM_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_tim_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_tim.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_tim_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_tim.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_tim_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_tim.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_tim_ex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_tim.c
     )
   endif()
   if(USE_HAL_UART)
     add_definitions(-DHAL_UART_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_uart_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_uart.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_uart_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_uart.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_uart_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_uart.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_uart_ex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_uart.c
     )
   endif()
   if(USE_HAL_IRDA)
     add_definitions(-DHAL_IRDA_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_irda_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_irda.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_irda.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_irda_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_irda.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_irda.c
     )
   endif()
   if(USE_HAL_CORTEX)
     add_definitions(-DHAL_CORTEX_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_cortex.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_cortex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_cortex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_cortex.c
     )
   endif()
   if(USE_HAL_DMA)
     add_definitions(-DHAL_DMA_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_dma_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_dma.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_dma.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_dma_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_dma.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_dma.c
     )
   endif()
   if(USE_HAL_FLASH)
     add_definitions(-DHAL_FLASH_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_flash_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_flash.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_flash_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_flash.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_flash_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_flash.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_flash_ex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_flash.c
     )
   endif()
   if(USE_HAL_GPIO)
     add_definitions(-DHAL_GPIO_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_gpio_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_gpio.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_gpio.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_gpio_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_gpio.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_gpio.c
     )
   endif()
   if(USE_HAL_PWR)
     add_definitions(-DHAL_PWR_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_pwr_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_pwr.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_pwr_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_pwr.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_pwr_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_pwr.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_pwr_ex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_pwr.c
     )
   endif()
   if(USE_HAL_RCC)
     add_definitions(-DHAL_RCC_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_rcc_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_rcc.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_rcc_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_rcc.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_rcc_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_rcc.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_rcc_ex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_rcc.c
     )
   endif()
   if(USE_HAL_I2C)
     add_definitions(-DHAL_I2C_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_i2c_ex.h
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_i2c.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_i2c_ex.c
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_i2c.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_i2c_ex.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_i2c.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_i2c_ex.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_i2c.c
     )
   endif()
   if(USE_HAL_WWDG)
     add_definitions(-DHAL_WWDG_MODULE_ENABLED)
     list(APPEND STM32CUBE_SOURCES
-      ${STM32CUBE_DIR}/hal/include/stm32f0xx_hal_wwdg.h
-      ${STM32CUBE_DIR}/hal/src/stm32f0xx_hal_wwdg.c
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Inc/stm32f0xx_hal_wwdg.h
+      ${STM32CUBE_DIR}/${STM32CUBE_HAL_DIR}/Src/stm32f0xx_hal_wwdg.c
     )
   endif()
 endif()

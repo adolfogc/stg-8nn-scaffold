@@ -19,6 +19,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(STG-8nn-Scaffold C ASM) # it's important to select both C and ASM here
 
+set(CMAKE_C_STANDARD 99)
+
 ##
 ## Add dependency: STG-8nn Scaffold
 ##
@@ -42,7 +44,7 @@ if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
   ### BIN file
   add_custom_command(TARGET ${OUTPUT_NAME}.elf
     POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary -S ${OUTPUT_NAME}.elf ${OUTPUT_NAME}.bin && (du -h ${OUTPUT_NAME}.bin | cut -f1)
+    COMMAND ${CMAKE_OBJCOPY} --strip-debug --strip-unneeded -O binary -S ${OUTPUT_NAME}.elf ${OUTPUT_NAME}.bin && (du -h ${OUTPUT_NAME}.bin | cut -f1)
   )
 else()
   ###

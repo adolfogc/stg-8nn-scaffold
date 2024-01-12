@@ -184,8 +184,8 @@ list(APPEND DSDL_GENERATED_FILES
 
 add_custom_command(
     OUTPUT ${DSDL_GENERATED_FILES}
-    COMMAND python3 ${PROJECT_SOURCE_DIR}/${CANARD_DIR}/dsdl_compiler/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
-    MAIN_DEPENDENCY ${CANARD_DIR}/dsdl_compiler/libcanard_dsdlc
+    COMMAND python3 ${PROJECT_SOURCE_DIR}/dependencies/dsdl_compiler/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
+    MAIN_DEPENDENCY dependencies/dsdl_compiler/libcanard_dsdlc
     DEPENDS ${DSDL_SOURCE_FILES}
 )
 

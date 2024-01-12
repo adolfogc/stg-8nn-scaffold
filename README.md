@@ -1,31 +1,25 @@
 # STG-8nn-Scaffold
 
-[![Travis Build Status](https://travis-ci.org/adolfogc/stg-8nn-scaffold.svg?branch=master)](https://travis-ci.org/adolfogc/stg-8nn-scaffold)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/g9tbt84ft6jedysu?svg=true)](https://ci.appveyor.com/project/adolfogc/stg-8nn-scaffold)
-[![SonarCloud Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
-[![SonarCloud Bug Count](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=bugs)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
-[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=adolfogc_stg-8nn-scaffold&metric=alert_status)](https://sonarcloud.io/dashboard?id=adolfogc_stg-8nn-scaffold)
-
 <img align="right" width="80" height="100" src="stg-8nn-scaffold-logo.png">
 
 A base project for programming the [BARTH® STG-8nn mini-PLCs](https://barth-elektronik.com/en/mini-plc.html).
-It is a work-in-progress.
+
+Note (2024): this project will no longer be updated.
 
 ## Motivation
-This project serves as a scaffold to make firmware in C for the BARTH® STG-8nn mini-PLCs, using macOS or Linux as the development platform. For an example on how to use this project, refer to the one provided in the [stg-8nn-scaffold-example](https://github.com/adolfogc/stg-8nn-scaffold-example) repository.
+This project serves as a scaffold to make firmware in C for the BARTH® STG-8nn mini-PLCs, using macOS or Linux + Docker as the development platform. For an example on how to use this project, refer to the one provided in the [stg-8nn-scaffold-example](https://github.com/adolfogc/stg-8nn-scaffold-example) repository.
 
 ## Design Goals
 - Use a modern embedded real-time framework, i.e., Quantum Leaps's QP™/C.
 - Use Linux or macOS as the development platform.
-- Use the [UAVCAN](https://uavcan.org) protocol over CAN bus for communication.
-- *[future work]* Use a CAN bus bootloader for on-the-field firmware updates.
+- Use the [DroneCAN](https://dronecan.github.io/) protocol over CAN bus for communication.
 
 ## Main Software Components
 - [QP™/C](https://www.state-machine.com) using the QK kernel.
-- [ST's STM32Cube™](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html), specifically, STM32F0's LL drivers and HAL.
-- [Libcanard](https://github.com/UAVCAN/libcanard)
+- [ST's STM32Cube™](https://github.com/STMicroelectronics/STM32CubeF0), specifically, STM32F0's LL drivers and HAL.
+- [Libcanard](https://github.com/dronecan/libcanard)
 
-You should be acquainted with the QP™/C framework, UAVCAN and their concepts in order to use this project effectively.
+You should be acquainted with the QP™/C framework, DroneCAN and their concepts in order to use this project effectively.
 
 ## Building instructions
 
@@ -45,42 +39,10 @@ git submodule update --init --recursive
 ```
 
 ### Getting the toolchain and the flashing utility
-#### macOS
 
-1. Installing ARM Embedded (GCC-based)
-
-```bash
-brew tap osx-cross/arm
-brew install arm-gcc-bin stlink open-ocd cmake ninja
-```
-
-2. Installing a Clang-based toolchain
-
-```bash
-brew tap eblot/armeabi
-brew install armv6m-cortex-m0plus
-```
-
-3. Installing Python 3 (required by Libcanard's DSDL compiler)
-
-```bash
-brew install python3
-```
-
-#### Linux
-Refer to `ci/Dockerfile`.
-
-For the test build, in Ubuntu Linux, install GCC multilib:
-
-```bash
-sudo dpkg --add-architecture i386
-sudo apt update
-sudo apt-get install libc6-dev:i386 gcc-multilib
-```
+See `.devcontainer` directory.
 
 ### Compiling the project
-
-1. Using GCC
 
 ```bash
 mkdir build && cd build
@@ -88,18 +50,9 @@ cmake -DSTG_MODEL:STRING=850 -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCM
 cmake --build .
 ```
 
-2. Using Clang
-
 ```bash
 mkdir build && cd build
-cmake -DSTG_MODEL:STRING=850 -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain-macos.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
-cmake --build .
-```
-
-3. Building the test version
-```bash
-mkdir build_tester && cd build_tester
-cmake -DSTG_MODEL:STRING=TESTER -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
+cmake -DSTG_MODEL:STRING=850 -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
 cmake --build .
 ```
 
@@ -119,8 +72,6 @@ openocd \
 # Flash it using st-flash (currently not working for me):
 st-flash write firmware.bin 0x0800000
 ```
-
-Note: You can use the [STM32 ST-LINK utility](https://www.st.com/en/development-tools/stsw-link004.html) to update the ST-Link's firmware, but it only runs on Windows.
 
 ## Other
 

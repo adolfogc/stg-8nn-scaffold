@@ -1,0 +1,8 @@
+{
+    "name": "STG-8nn Scaffold",
+    "dockerFile": "Dockerfile",
+    "extensions": [
+        "ms-vscode.cpptools",
+        "jbenden.c-cpp-flylint"
+    ]
+}
