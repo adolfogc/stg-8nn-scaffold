@@ -170,13 +170,13 @@ void BSP_MX_TIM17_Init(void) {
   /* TIM17 GPIO Configuration
     PB7 ------> TIM17_CH1N
   */
-  GPIO_InitStruct.Pin = Out9_LS_Pin;
+  GPIO_InitStruct.Pin = OUT9_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   GPIO_InitStruct.Alternate = LL_GPIO_AF_2;
-  LL_GPIO_Init(Out9_LS_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(OUT9_GPIO_Port, &GPIO_InitStruct);
 }
 #endif /* MODEL_STG850 */
 
