@@ -25,7 +25,7 @@ endif()
 ## Add dependency: startup code
 ##
 
-set(STARTUP_CODE startup_stm32f091xc.c)
+set(STARTUP_CODE startup_stm32f091xc_gcc.c)
 
 list(APPEND STARTUP_SOURCES ${STARTUP_DIR}/${STARTUP_CODE}) # works with GCC and Clang
 
@@ -33,7 +33,7 @@ list(APPEND STARTUP_SOURCES ${STARTUP_DIR}/${STARTUP_CODE}) # works with GCC and
 ## Add dependency: linker script
 ##
 
-set(STARTUP_LD_SCRIPT STM32F091CCUx_2.ld)
+set(STARTUP_LD_SCRIPT STM32F091CCUx_gcc.ld)
 
 add_custom_command(
   OUTPUT ${STARTUP_LD_SCRIPT}

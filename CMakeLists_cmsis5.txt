@@ -16,9 +16,9 @@
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 if(DEFINED SCAFFOLD_DIR)
-  set(CMSIS5_DIR ${SCAFFOLD_DIR}/dependencies/arm_cmsis5)
+  set(CMSIS5_DIR ${SCAFFOLD_DIR}/dependencies/STM32CubeF0/Drivers)
 else()
-  set(CMSIS5_DIR dependencies/arm_cmsis5)
+  set(CMSIS5_DIR dependencies/STM32CubeF0/Drivers)
 endif()
 
 set(CMSIS5_INCLUDE

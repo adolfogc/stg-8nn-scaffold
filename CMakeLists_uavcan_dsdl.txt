@@ -182,10 +182,16 @@ list(APPEND DSDL_GENERATED_FILES
 ## CUSTOM COMMAND
 ##
 
+if(DEFINED SCAFFOLD_DIR)
+  set(DSDLC_DIR ${SCAFFOLD_DIR}/dependencies/dsdl_compiler)
+else()
+  set(DSDLC_DIR dependencies/dsdl_compiler)
+endif()
+
 add_custom_command(
     OUTPUT ${DSDL_GENERATED_FILES}
-    COMMAND python3 ${PROJECT_SOURCE_DIR}/${CANARD_DIR}/dsdl_compiler/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
-    MAIN_DEPENDENCY ${CANARD_DIR}/dsdl_compiler/libcanard_dsdlc
+    COMMAND python3 ${PROJECT_SOURCE_DIR}/${DSDLC_DIR}/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
+    MAIN_DEPENDENCY ${DSDLC_DIR}/libcanard_dsdlc
     DEPENDS ${DSDL_SOURCE_FILES}
 )
 

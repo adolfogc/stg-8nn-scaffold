@@ -2,14 +2,15 @@
 	path = dependencies/qpc
 	url = https://github.com/QuantumLeaps/qpc.git
 	branch = master
-[submodule "dependencies/libcanard"]
-	path = dependencies/libcanard
-	url = https://github.com/OpenCyphal/libcanard.git
-	branch = master
 [submodule "dependencies/dsdl"]
 	path = dependencies/dsdl
 	url = https://github.com/UAVCAN/public_regulated_data_types.git
-[submodule "dependencies/arm_cmsis5"]
-	path = dependencies/arm_cmsis5
-	url = https://github.com/ARM-software/CMSIS_5.git
-	shallow = true
+[submodule "dependencies/dsdl_compiler/pyuavcan"]
+	path = dependencies/dsdl_compiler/pyuavcan
+	url = https://github.com/cerboas/pyuavcan.git
+[submodule "dependencies/STM32CubeF0"]
+	path = dependencies/STM32CubeF0
+	url = https://github.com/STMicroelectronics/STM32CubeF0.git
+[submodule "dependencies/libcanard"]
+	path = dependencies/libcanard
+	url = https://github.com/OpenCyphal/libcanard.git
