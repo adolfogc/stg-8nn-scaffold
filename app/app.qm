@@ -19,7 +19,7 @@ QActive* parent = &amp;me-&gt;super.super;
 QActive_subscribe(parent, LED_ON_SIG);
 QActive_subscribe(parent, LED_OFF_SIG);
 QActive_subscribe(parent, LED_BLINK_SIG);</action>
-     <initial_glyph conn="2,3,5,1,20,11,-4">
+     <initial_glyph conn="5,3,4,0,9">
       <action box="0,-2,6,2"/>
      </initial_glyph>
     </initial>
@@ -68,8 +68,8 @@ QActive_subscribe(parent, LED_BLINK_SIG);</action>
     <!--${AOs::Led::SM::blinking}-->
     <submachine name="blinking">
      <entry>QTimeEvt_armX(&amp;me-&gt;timeEvt,
-    BSP_TICKS_PER_SEC / 5U,
-    BSP_TICKS_PER_SEC / 5U);</entry>
+    BSP_TICKS_PER_SEC / 2U,
+    BSP_TICKS_PER_SEC / 2U);</entry>
      <exit>QTimeEvt_disarm(&amp;me-&gt;timeEvt);</exit>
      <!--${AOs::Led::SM::blinking::initial}-->
      <initial target="../1">

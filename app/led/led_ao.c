@@ -288,8 +288,8 @@ static QState Led_blink(Led * const me, QEvt const * const e) {
 //${AOs::Led::SM::blinking}
 static QState Led_blinking_e(Led * const me) {
     QTimeEvt_armX(&me->timeEvt,
-        BSP_TICKS_PER_SEC / 5U,
-        BSP_TICKS_PER_SEC / 5U);
+        BSP_TICKS_PER_SEC / 2U,
+        BSP_TICKS_PER_SEC / 2U);
     return QM_ENTRY(&Led_blinking_s);
 }
 //${AOs::Led::SM::blinking}
