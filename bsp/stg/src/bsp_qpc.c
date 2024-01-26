@@ -18,6 +18,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "bsp_qpc.h"
+#include "qpc.h"
 #include "stm32f0xx_hal.h"
 
 void QF_onStartup(void) { /* Not implemented yet */
@@ -29,9 +30,9 @@ void QF_onCleanup(void) { /* Not implemented yet */
 void QK_onIdle(void) { /* Not implemented yet */
 }
 
-__attribute__((noreturn)) void Q_onAssert(char const *module, int loc) {
+Q_NORETURN Q_onError(char const *const module, int_t const id) {
   (void)module;
-  (void)loc; /* Not used yet */
+  (void)id; /* Not used yet */
 
   NVIC_SystemReset(); /* This should be called last */
 }

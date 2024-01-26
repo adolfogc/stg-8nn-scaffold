@@ -1,6 +1,7 @@
 #include "qpc.h"
 
 #include "stm32f0xx_hal.h"
+#include "stm32f0xx_ll_utils.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -11,24 +12,21 @@
 #include "bsp_qpc.h"
 #include "bsp_specific.h"
 
-Q_DEFINE_THIS_FILE
-
 static const uint32_t MaxUint32Value = 0xFFFFFFFFU;
 
 static volatile uint32_t l_nTicks = 0U;
 static volatile uint32_t l_upTimeSeconds = 0U;
 
 static QTicker volatile l_ticker0;
-static bool volatile ticker0IsInitialized = false;
 
-void SysTick_Handler(void) {
+void SysTick_Handler(void) { /* every 1ms */
   
   QK_ISR_ENTRY();
 
   /* Update tick count */
   ++l_nTicks;
 
-  HAL_IncTick();
+  HAL_IncTick(); // needs to be called every 1ms
   
   if (l_nTicks % BSP_TICKS_PER_SEC == 0U) {
     l_nTicks = 0U;
@@ -37,21 +35,20 @@ void SysTick_Handler(void) {
     }
   }
 
-  QTICKER_TRIG(&l_ticker0.super, (void *)0); // trigger ticker AO
+  QTICKER_TRIG((QActive*)&l_ticker0.super, (void *)0); // trigger ticker AO
 
   QK_ISR_EXIT();
 }
 
 void BSP_Ticker0_initAO(void) {
-  QTicker_ctor(&l_ticker0, 0U);
-  ticker0IsInitialized = true;
+  QTicker_ctor((QTicker*)&l_ticker0, 0U);
 }
 
 void BSP_Ticker0_startAO(uint8_t priority) {
-  QACTIVE_START(&l_ticker0.super, priority, (void *)0, 0U, (void *)0, 0U, (QEvt *)0);
+  QACTIVE_START((QActive*)&l_ticker0.super, priority, (void *)0, 0U, (void *)0, 0U, (QEvt *)0);
 }
 
-QTicker *BSP_Ticker0_getAO(void) { return &l_ticker0; }
+QTicker* BSP_Ticker0_getAO(void) { return (QTicker*)&l_ticker0; }
 
 uint32_t BSP_upTimeSeconds(void) { return l_upTimeSeconds; }
 
