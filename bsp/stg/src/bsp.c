@@ -55,10 +55,7 @@ void BSP_init(void) {
   BSP_MX_USART3_IRDA_Init();
   BSP_MX_I2C2_Init();
   BSP_MX_TIM1_Init();
-
-#ifdef MODEL_STG850
   BSP_MX_TIM2_Init();
-#endif /* MODEL_STG850 */
 
 #ifdef MODEL_STG856
   BSP_MX_USART5_UART_Init();
