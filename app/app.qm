@@ -11,34 +11,34 @@
    <!--${AOs::Led::SM}-->
    <statechart properties="0x01">
     <!--${AOs::Led::SM::initial}-->
-    <initial target="../1">
-     <action>(void)par; /* unused parameter */
+    <initial target="../3">
+     <action brief="subscribeToEvents">(void)par; /* unused parameter */
 
 QActive* parent = &amp;me-&gt;super.super; 
 
 QActive_subscribe(parent, LED_ON_SIG);
 QActive_subscribe(parent, LED_OFF_SIG);
 QActive_subscribe(parent, LED_BLINK_SIG);</action>
-     <initial_glyph conn="5,3,4,0,9">
-      <action box="0,-2,6,2"/>
+     <initial_glyph conn="5,3,4,3,22,25">
+      <action box="0,-2,15,2"/>
      </initial_glyph>
     </initial>
     <!--${AOs::Led::SM::off}-->
     <state name="off">
-     <entry>BSP_Led_off();</entry>
+     <entry brief="led -&gt; off">BSP_Led_off();</entry>
      <!--${AOs::Led::SM::off::LED_BLINK}-->
      <tran trig="LED_BLINK" target="../../3">
-      <tran_glyph conn="18,16,1,0,20,4">
+      <tran_glyph conn="26,16,1,0,12,4">
        <action box="0,-2,10,2"/>
       </tran_glyph>
      </tran>
-     <state_glyph node="2,12,16,11">
-      <entry box="1,2,12,4"/>
+     <state_glyph node="2,12,24,11">
+      <entry box="1,2,9,2"/>
      </state_glyph>
     </state>
     <!--${AOs::Led::SM::on}-->
     <state name="on">
-     <entry>BSP_Led_on();</entry>
+     <entry brief="led -&gt; on">BSP_Led_on();</entry>
      <!--${AOs::Led::SM::on::LED_BLINK}-->
      <tran trig="LED_BLINK" target="../../3">
       <tran_glyph conn="18,34,1,2,20,-3">
@@ -46,7 +46,7 @@ QActive_subscribe(parent, LED_BLINK_SIG);</action>
       </tran_glyph>
      </tran>
      <state_glyph node="2,29,16,10">
-      <entry box="1,2,12,4"/>
+      <entry box="1,2,9,2"/>
      </state_glyph>
     </state>
     <!--${AOs::Led::SM::blink}-->
@@ -67,10 +67,8 @@ QActive_subscribe(parent, LED_BLINK_SIG);</action>
     </smstate>
     <!--${AOs::Led::SM::blinking}-->
     <submachine name="blinking">
-     <entry>QTimeEvt_armX(&amp;me-&gt;timeEvt,
-    BSP_TICKS_PER_SEC / 2U,
-    BSP_TICKS_PER_SEC / 2U);</entry>
-     <exit>QTimeEvt_disarm(&amp;me-&gt;timeEvt);</exit>
+     <entry brief="setupTimer">QTimeEvt_armX(&amp;me-&gt;timeEvt, BSP_TICKS_PER_MS * 500U, BSP_TICKS_PER_MS * 500U);</entry>
+     <exit brief="disarmTimer">QTimeEvt_disarm(&amp;me-&gt;timeEvt);</exit>
      <!--${AOs::Led::SM::blinking::initial}-->
      <initial target="../1">
       <initial_glyph conn="7,7,5,0,9,4">
@@ -79,7 +77,7 @@ QActive_subscribe(parent, LED_BLINK_SIG);</action>
      </initial>
      <!--${AOs::Led::SM::blinking::off}-->
      <state name="off">
-      <entry>BSP_Led_off();</entry>
+      <entry brief="led -&gt; off">BSP_Led_off();</entry>
       <!--${AOs::Led::SM::blinking::off::LED_TIMEOUT}-->
       <tran trig="LED_TIMEOUT" target="../../2">
        <tran_glyph conn="27,17,1,3,24">
@@ -87,12 +85,12 @@ QActive_subscribe(parent, LED_BLINK_SIG);</action>
        </tran_glyph>
       </tran>
       <state_glyph node="6,11,21,27">
-       <entry box="1,2,6,2"/>
+       <entry box="1,2,10,2"/>
       </state_glyph>
      </state>
      <!--${AOs::Led::SM::blinking::on}-->
      <state name="on">
-      <entry>BSP_Led_on();</entry>
+      <entry brief="led -&gt; on">BSP_Led_on();</entry>
       <!--${AOs::Led::SM::blinking::on::LED_TIMEOUT}-->
       <tran trig="LED_TIMEOUT" target="../../1">
        <tran_glyph conn="51,31,3,1,-24">
@@ -100,7 +98,7 @@ QActive_subscribe(parent, LED_BLINK_SIG);</action>
        </tran_glyph>
       </tran>
       <state_glyph node="51,11,23,27">
-       <entry box="1,2,6,2"/>
+       <entry box="1,2,10,2"/>
       </state_glyph>
      </state>
      <submachine_diagram size="75,45">
@@ -118,6 +116,113 @@ QActive_subscribe(parent, LED_BLINK_SIG);</action>
 QMActive_ctor(&amp;me-&gt;super, Q_STATE_CAST(&amp;Led_initial));
 QTimeEvt_ctorX(&amp;me-&gt;timeEvt, &amp;me-&gt;super.super, LED_TIMEOUT_SIG, 0U);</code>
   </operation>
+  <!--${AOs::UavcanNode}-->
+  <class name="UavcanNode" superclass="qpc::QMActive">
+   <!--${AOs::UavcanNode::spinTimeEvt}-->
+   <attribute name="spinTimeEvt" type="QTimeEvt" visibility="0x02" properties="0x00"/>
+   <!--${AOs::UavcanNode::statusTimeEvt}-->
+   <attribute name="statusTimeEvt" type="QTimeEvt" visibility="0x02" properties="0x00"/>
+   <!--${AOs::UavcanNode::wasHardwareInitialized}-->
+   <attribute name="wasHardwareInitialized" type="uint_fast8_t" visibility="0x02" properties="0x00">
+    <code>= 0U;</code>
+   </attribute>
+   <!--${AOs::UavcanNode::SM}-->
+   <statechart properties="0x00">
+    <!--${AOs::UavcanNode::SM::initial}-->
+    <initial target="../1">
+     <action brief="suscribeToEvents">(void)par; /* unused parameter */
+
+QActive* parent = &amp;me-&gt;super.super; 
+
+QActive_subscribe(parent, RESTART_SIG);</action>
+     <initial_glyph conn="1,3,5,3,5,17,2">
+      <action box="0,-2,20,2"/>
+     </initial_glyph>
+    </initial>
+    <!--${AOs::UavcanNode::SM::hardwareInit}-->
+    <state name="hardwareInit">
+     <entry brief="setupTimer">// retry every 500 ms
+QTimeEvt_armX(&amp;me-&gt;spinTimeEvt, BSP_TICKS_PER_MS * 5U, BSP_TICKS_PER_MS * 500U);</entry>
+     <exit brief="disarmTimer">QTimeEvt_disarm(&amp;me-&gt;spinTimeEvt);</exit>
+     <!--${AOs::UavcanNode::SM::hardwareInit::SPIN_TIMEOUT}-->
+     <tran trig="SPIN_TIMEOUT">
+      <action brief="initializeHardware">me-&gt;wasHardwareInitialized = BSP_CAN_init(BSP_CAN_getFilterConfig());</action>
+      <!--${AOs::UavcanNode::SM::hardwareInit::SPIN_TIMEOUT::[me->wasHardwareInitialized]}-->
+      <choice target="../../../2">
+       <guard>me-&gt;wasHardwareInitialized</guard>
+       <action brief="initCanard">initCanardInstance();</action>
+       <choice_glyph conn="17,39,5,2,30,-11">
+        <action box="1,1,37,2"/>
+       </choice_glyph>
+      </choice>
+      <!--${AOs::UavcanNode::SM::hardwareInit::SPIN_TIMEOUT::[else]}-->
+      <choice>
+       <guard brief="else"/>
+       <choice_glyph conn="17,39,4,-1,4,-5,-19">
+        <action box="-4,4,10,2"/>
+       </choice_glyph>
+      </choice>
+      <tran_glyph conn="17,29,2,-1,10">
+       <action box="1,2,26,3"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="8,14,28,15">
+      <entry box="1,2,19,2"/>
+      <exit box="1,4,19,2"/>
+     </state_glyph>
+    </state>
+    <!--${AOs::UavcanNode::SM::online}-->
+    <state name="online">
+     <entry brief="setupTimers">// Spin every 25 ms
+QTimeEvt_armX(&amp;me-&gt;spinTimeEvt, BSP_TICKS_PER_MS * 25U, BSP_TICKS_PER_MS * 25U);
+// Send status every 450 ms
+QTimeEvt_armX(&amp;me-&gt;statusTimeEvt, BSP_TICKS_PER_MS * 450U, BSP_TICKS_PER_MS * 450U);
+</entry>
+     <exit brief="disarmTimers">QTimeEvt_disarm(&amp;me-&gt;spinTimeEvt);
+QTimeEvt_disarm(&amp;me-&gt;statusTimeEvt);</exit>
+     <!--${AOs::UavcanNode::SM::online::SPIN_TIMEOUT}-->
+     <tran trig="SPIN_TIMEOUT">
+      <action brief="spin">receiveAll();
+sendAll();</action>
+      <tran_glyph conn="38,22,3,-1,24">
+       <action box="0,-2,16,2"/>
+      </tran_glyph>
+     </tran>
+     <!--${AOs::UavcanNode::SM::online::STATUS_TIMEOUT}-->
+     <tran trig="STATUS_TIMEOUT">
+      <action brief="sendStatus">statusUpdate();</action>
+      <tran_glyph conn="38,25,3,-1,24">
+       <action box="0,-2,22,2"/>
+      </tran_glyph>
+     </tran>
+     <!--${AOs::UavcanNode::SM::online::RESTART}-->
+     <tran trig="RESTART" target="../../3">
+      <tran_glyph conn="68,21,1,3,8">
+       <action box="0,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="38,14,30,14">
+      <entry box="1,2,14,2"/>
+      <exit box="1,4,15,2"/>
+     </state_glyph>
+    </state>
+    <!--${AOs::UavcanNode::SM::aboutToRestart}-->
+    <state name="aboutToRestart">
+     <entry brief="restart">BSP_restart();</entry>
+     <state_glyph node="76,14,16,14">
+      <entry box="1,2,15,2"/>
+     </state_glyph>
+    </state>
+    <state_diagram size="106,46"/>
+   </statechart>
+  </class>
+  <!--${AOs::UavcanNode_ctor}-->
+  <operation name="UavcanNode_ctor" type="void" visibility="0x00" properties="0x00">
+   <code>UavcanNode *me = (UavcanNode *)AO_uavcanNode;
+QMActive_ctor(&amp;me-&gt;super, Q_STATE_CAST(&amp;UavcanNode_initial));
+QTimeEvt_ctorX(&amp;me-&gt;spinTimeEvt, &amp;me-&gt;super.super, SPIN_TIMEOUT_SIG, 0U);
+QTimeEvt_ctorX(&amp;me-&gt;statusTimeEvt, &amp;me-&gt;super.super, STATUS_TIMEOUT_SIG, 0U);</code>
+  </operation>
  </package>
  <!--${.}-->
  <directory name=".">
@@ -129,17 +234,15 @@ QTimeEvt_ctorX(&amp;me-&gt;timeEvt, &amp;me-&gt;super.super, LED_TIMEOUT_SIG, 0U
 #include &quot;bsp_qpc.h&quot; /* Board Support Package interface */
 #include &quot;led_ao.h&quot;
 
-/* Prototypes */
-void Led_ctor(void);
-
-/* ask QM to declare the Blinky class --------------------------------------*/
+/* Declarations */
+$declare${AOs::Led_ctor}
 $declare${AOs::Led}
 
-/* instantiate the Blinky active object ------------------------------------*/
+/* Instances */
 static Led l_led;
 QMActive * const AO_led = &amp;l_led.super;
 
-/* ask QM to define the Blinky class ---------------------------------------*/
+/* Definitions */
 $define${AOs::Led_ctor}
 $define${AOs::Led}</text>
    </file>
@@ -154,10 +257,46 @@ enum LedSignals {
   LED_ON_SIG = APP_LED_ON_SIG,
   LED_BLINK_SIG = APP_LED_BLINK_SIG,
   LED_OFF_SIG = APP_LED_OFF_SIG,
-  LED_TIMEOUT_SIG = APP_MAX_SIG
+  LED_TIMEOUT_SIG = APP_LED_TIMEOUT_SIG
 };
 
 #endif</text>
+   </file>
+  </directory>
+  <!--${.::uavcan_node}-->
+  <directory name="uavcan_node">
+   <!--${.::uavcan_node::uavcan_node_ao.h}-->
+   <file name="uavcan_node_ao.h">
+    <text>#ifndef _UAVCAN_NODE_AO_H
+#define _UAVCAN_NODE_AO_H
+
+#include &quot;app_signals.h&quot;
+
+enum UavcanNodeSignals {
+  RESTART_SIG = APP_UAVCAN_RESTART_SIG,
+  SPIN_TIMEOUT_SIG = APP_UAVCAN_SPIN_TIMEOUT_SIG,
+  STATUS_TIMEOUT_SIG = APP_UAVCAN_STATUS_TIMEOUT_SIG
+};
+
+#endif /* _UAVCAN_NODE_AO_H */</text>
+   </file>
+   <!--${.::uavcan_node::uavcan_node_ao.c}-->
+   <file name="uavcan_node_ao.c">
+    <text>#include &quot;qpc.h&quot;    /* QP/C framework API */
+#include &quot;bsp_qpc.h&quot; /* Board Support Package interface */
+#include &quot;uavcan_node_ao.h&quot;
+
+/* Declarations */
+$declare${AOs::UavcanNode_ctor}
+$declare${AOs::UavcanNode}
+
+/* Instances */
+static UavcanNode l_uavcanNode;
+QMActive * const AO_uavcanNode = &amp;l_uavcanNode.super;
+
+/* Definitions */
+$define${AOs::UavcanNode_ctor}
+$define${AOs::UavcanNode}</text>
    </file>
   </directory>
  </directory>

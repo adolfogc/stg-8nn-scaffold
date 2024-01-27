@@ -23,9 +23,13 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp_qpc.h"
 
 enum BaseAppSignals {
-  APP_LED_ON_SIG = Q_USER_SIG,
+  APP_UAVCAN_RESTART_SIG = Q_USER_SIG,
+  APP_UAVCAN_SPIN_TIMEOUT_SIG,
+  APP_UAVCAN_STATUS_TIMEOUT_SIG,
+  APP_LED_ON_SIG,
   APP_LED_OFF_SIG,
   APP_LED_BLINK_SIG,
+  APP_LED_TIMEOUT_SIG,
   APP_BASE_MAX_SIG /* last base app signal */
 };
 

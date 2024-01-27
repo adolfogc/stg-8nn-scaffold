@@ -32,10 +32,12 @@
 #include "bsp_qpc.h" /* Board Support Package interface */
 #include "led_ao.h"
 
-/* Prototypes */
-void Led_ctor(void);
+/* Declarations */
+//$declare${AOs::Led_ctor} vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
-/* ask QM to declare the Blinky class --------------------------------------*/
+//${AOs::Led_ctor} ...........................................................
+static void Led_ctor(void);
+//$enddecl${AOs::Led_ctor} ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //$declare${AOs::Led} vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 //${AOs::Led} ................................................................
@@ -118,11 +120,11 @@ static QMState const Led_blinking_on_s = {
 };
 //$enddecl${AOs::Led} ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-/* instantiate the Blinky active object ------------------------------------*/
+/* Instances */
 static Led l_led;
 QMActive * const AO_led = &l_led.super;
 
-/* ask QM to define the Blinky class ---------------------------------------*/
+/* Definitions */
 //$skip${QP_VERSION} vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 // Check for the minimum required QP version
 #if (QP_VERSION < 730U) || (QP_VERSION != ((QP_RELEASE^4294967295U) % 0x3E8U))
@@ -133,7 +135,7 @@ QMActive * const AO_led = &l_led.super;
 //$define${AOs::Led_ctor} vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 //${AOs::Led_ctor} ...........................................................
-void Led_ctor(void) {
+static void Led_ctor(void) {
     Led *me = (Led *)AO_led;
     QMActive_ctor(&me->super, Q_STATE_CAST(&Led_initial));
     QTimeEvt_ctorX(&me->timeEvt, &me->super.super, LED_TIMEOUT_SIG, 0U);
@@ -147,11 +149,12 @@ void Led_ctor(void) {
 static QState Led_initial(Led * const me, void const * const par) {
     static struct {
         QMState const *target;
-        QActionHandler act[2];
+        QActionHandler act[3];
     } const tatbl_ = { // tran-action table
-        &Led_off_s, // target state
+        &Led_blinking_s, // target submachine
         {
-            Q_ACTION_CAST(&Led_off_e), // entry
+            Q_ACTION_CAST(&Led_blink_e), // entry
+            Q_ACTION_CAST(&Led_blinking_i), // initial tran.
             Q_ACTION_NULL // zero terminator
         }
     };
@@ -287,9 +290,7 @@ static QState Led_blink(Led * const me, QEvt const * const e) {
 //${AOs::Led::SM::blinking} ..................................................
 //${AOs::Led::SM::blinking}
 static QState Led_blinking_e(Led * const me) {
-    QTimeEvt_armX(&me->timeEvt,
-        BSP_TICKS_PER_SEC / 2U,
-        BSP_TICKS_PER_SEC / 2U);
+    QTimeEvt_armX(&me->timeEvt, BSP_TICKS_PER_MS * 500U, BSP_TICKS_PER_MS * 500U);
     return QM_ENTRY(&Led_blinking_s);
 }
 //${AOs::Led::SM::blinking}

@@ -33,7 +33,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 Q_DEFINE_THIS_FILE
 
 /* -- Active object instance -- */
-static UavcanNode l_uavcanNode;
 static QEvt const *l_uavcanNode_evtBuffer[APP_UAVCAN_NODE_EVT_QUEUE_SIZE];
 
 /* -- Libcanard's memory pool -- */
@@ -55,10 +54,10 @@ static CanardInstance l_canardInstance;
 #include "uavcan_node_helpers.c"
 
 /* -- Implementation of public AO functions -- */
-void UavcanNode_initAO(void) { UavcanNode_ctor(&l_uavcanNode); }
+void UavcanNode_initAO(void) { UavcanNode_ctor(); }
 
 void UavcanNode_startAO(uint8_t priority) {
-  QACTIVE_START((QActive *)&l_uavcanNode.super, priority, l_uavcanNode_evtBuffer, Q_DIM(l_uavcanNode_evtBuffer),
+  QACTIVE_START(AO_uavcanNode, priority, l_uavcanNode_evtBuffer, Q_DIM(l_uavcanNode_evtBuffer),
                 (void *)0, 0U, (QEvt *)0);
 }
 
