@@ -22,11 +22,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "qpc.h"
 
-/* Check for the minimum required QP version */
-#if (QP_VERSION < 630U) || (QP_VERSION != ((QP_RELEASE ^ 4294967295U) % 0x3E8U))
-#error qpc version 6.3.0 or higher required
-#endif
-
 /* Ensure QP/C assertions are enabled */
 #ifdef Q_NASSERT
 #error qp/c assertions are required

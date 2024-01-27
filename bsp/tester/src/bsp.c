@@ -20,7 +20,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "bsp.h"
 #include "uavcan/protocol/HardwareVersion.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
 
 static time_t g_startTime;
@@ -39,16 +38,6 @@ void BSP_Led_on(void) { fputs("LED is ON\n", stdout); }
 uint32_t BSP_upTimeSeconds(void) {
   const double upTime_ = difftime(time(NULL), g_startTime);
   return (uint32_t)upTime_;
-}
-
-uint32_t BSP_getPseudoRandom(void) {
-  static bool uninitialized = true;
-  if (uninitialized) {
-    srand(time(NULL));
-    uninitialized = false;
-  }
-
-  return (uint32_t)rand();
 }
 
 void BSP_readUniqueID(uint8_t *outUid) {

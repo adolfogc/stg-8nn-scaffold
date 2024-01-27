@@ -23,19 +23,18 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
 Q_DEFINE_THIS_FILE
 
-/* -- Active object instance -- */
-
-static Led l_led;
-static QEvt const *l_led_evtBuffer[APP_LED_EVT_QUEUE_SIZE];
-
 /* -- Active object implementation -- */
 
 #include "led_ao.c"
 
+/* -- Active object event queue -- */
+
+static QEvt const *l_led_evtBuffer[APP_LED_EVT_QUEUE_SIZE];
+
 /* -- Public functions implementation -- */
 
-void Led_initAO(void) { Led_ctor(&l_led); }
+void Led_initAO(void) { Led_ctor(); }
 
 void Led_startAO(uint8_t priority) {
-  QACTIVE_START((QActive *)&l_led.super, priority, l_led_evtBuffer, Q_DIM(l_led_evtBuffer), (void *)0, 0U, (QEvt *)0);
+  QACTIVE_START(AO_led, priority, l_led_evtBuffer, Q_DIM(l_led_evtBuffer), (void *)0, 0U, (QEvt *)0);
 }

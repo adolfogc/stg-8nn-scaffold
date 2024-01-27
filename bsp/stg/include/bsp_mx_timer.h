@@ -44,11 +44,8 @@
 #include "stm32f0xx_ll_tim.h"
 
 void BSP_MX_TIM1_Init(void);
+void BSP_MX_TIM2_Init(void);
 void BSP_MX_TIM16_Init(void);
 void BSP_MX_TIM17_Init(void);
-
-#ifdef MODEL_STG850
-void BSP_MX_TIM2_Init(void);
-#endif
 
 #endif /* _BSP_MX_TIM_H */

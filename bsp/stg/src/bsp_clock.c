@@ -104,8 +104,7 @@ void BSP_systemClockConfig2(void) {
     /* Wait till System clock is ready */
   }
 
-  LL_InitTick(16000000,
-              BSP_TICKS_PER_SEC); /* Note: the LL_InitTick/2 macro already substracts one from the reload value */
+  LL_Init1msTick(16000000);
   LL_SYSTICK_SetClkSource(LL_SYSTICK_CLKSOURCE_HCLK);
   LL_SetSystemCoreClock(16000000);
   LL_RCC_HSI14_EnableADCControl();

@@ -41,6 +41,6 @@
 
 #include "bsp_qpc.h"
 
-#define assert_param(expr) ((expr) ? (void)0U : Q_onAssert((char const *)__FILE__, (int)__LINE__))
+#define assert_param(expr) ((expr) ? (void)0U : Q_onError((char const *)__FILE__, (int)__LINE__))
 
 #endif /* __STM32_ASSERT_H */

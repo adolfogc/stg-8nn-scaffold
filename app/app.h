@@ -75,7 +75,7 @@ enum AppSignals {
   See: https://uavcan.org/Specification/8._Hardware_design_recommendations
 */
 #ifndef APP_CAN_BITRATE
-#define APP_CAN_BITRATE 500000U
+#define APP_CAN_BITRATE 125000U
 #endif
 
 #ifndef APP_UAVCAN_NODE_NAME_DATA
@@ -84,7 +84,7 @@ enum AppSignals {
 #endif
 
 #ifndef APP_UAVCAN_DEFAULT_NODE_ID
-#define APP_UAVCAN_DEFAULT_NODE_ID 115
+#define APP_UAVCAN_DEFAULT_NODE_ID 45U
 #endif
 
 #ifndef APP_UAVCAN_NODE_EVT_QUEUE_SIZE
