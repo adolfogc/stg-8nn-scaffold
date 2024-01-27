@@ -46,7 +46,7 @@ static void restartNodeHandle(CanardRxTransfer *transfer) {
 
   if (result >= 0 && response.ok) {
     static const QEvt aboutToRestartEvt = {RESTART_SIG, 0U, 0U};
-    QACTIVE_POST(&l_uavcanNode.super, &aboutToRestartEvt, (void *)0U);
+    QACTIVE_POST(&AO_uavcanNode->super, &aboutToRestartEvt, (void *)0U);
   }
 }
 

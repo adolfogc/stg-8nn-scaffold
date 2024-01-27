@@ -101,6 +101,7 @@ QMActive * const AO_uavcanNode = &l_uavcanNode.super;
 //${AOs::UavcanNode_ctor} ....................................................
 static void UavcanNode_ctor(void) {
     UavcanNode *me = (UavcanNode *)AO_uavcanNode;
+
     QMActive_ctor(&me->super, Q_STATE_CAST(&UavcanNode_initial));
     QTimeEvt_ctorX(&me->spinTimeEvt, &me->super.super, SPIN_TIMEOUT_SIG, 0U);
     QTimeEvt_ctorX(&me->statusTimeEvt, &me->super.super, STATUS_TIMEOUT_SIG, 0U);
@@ -125,9 +126,7 @@ static QState UavcanNode_initial(UavcanNode * const me, void const * const par) 
     //${AOs::UavcanNode::SM::initial}
     (void)par; /* unused parameter */
 
-    QActive* parent = &me->super.super;
-
-    QActive_subscribe(parent, RESTART_SIG);
+    QActive_subscribe((QActive*)&me->super.super, RESTART_SIG);
     return QM_TRAN_INIT(&tatbl_);
 }
 
