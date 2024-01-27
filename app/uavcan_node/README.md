@@ -2,4 +2,4 @@
 
 ## Statechart
 
-![statechart](../../doc/statecharts/uavcan_node.svg)
+See `app.qm`.

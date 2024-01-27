@@ -2,4 +2,4 @@
 
 ## Statechart
 
-![statechart](../../doc/statecharts/led.svg)
+See `app.qm`.
