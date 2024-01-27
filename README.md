@@ -73,24 +73,6 @@ openocd \
 st-flash write firmware.bin 0x0800000
 ```
 
-## Other
-
-### Code format
-The file `.clang-format` contains the options used to format this project's codebase using Clang-Tidy.
-
-### Checking conformance with some MISRA C:2012 rules using Cppcheck v1.87+
-1. Generate your "rule texts file" using [this Python script](https://github.com/ChisholmKyle/SublimeLinter-contrib-cppcheck-misra/blob/master/scripts/cppcheck-misra-parsetexts.py) and your PDF copy of *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* and place it in: `ci/scripts/misra-c-2012-rule-texts.txt`.
-
-2. Use the provided script: `ci/scripts/test-cppcheck.sh`.
-
-**Note 0:** No compliance with any MISRA guidelines is claimed here, *"MISRA C:2012 - Guidelines for the use of the C language in critical systems"* is only used as a reference for best practices to follow when developing embedded code using ISO C99.
-
-**Note 1:** [SonarCloud](https://www.sonarsource.com/products/codeanalyzers/sonarcfamilyforcpp.html) is also used in the CI builds to check for conformance with [MISRA C rules](https://rules.sonarsource.com/c/tag/misra).
-
-**Note 2:** The QP™/C framework is MISRA C:2004 compliant to the extend described in [that project's compliance matrix](http://www.state-machine.com/doc/AN_QP-C_MISRA.pdf).
-
-**Note 3:** STM32CubeF0's HAL and LL are MISRA C:2004 compliant, with some exceptions, as stated in [STM32CubeF0's webpage](https://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubef0.html).
-
 ## License
 ![AGPL-3](https://www.gnu.org/graphics/agplv3-with-text-162x68.png)
 
