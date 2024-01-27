@@ -11,7 +11,7 @@
    <!--${AOs::Led::SM}-->
    <statechart properties="0x01">
     <!--${AOs::Led::SM::initial}-->
-    <initial target="../3">
+    <initial target="../1">
      <action brief="subscribeToEvents">(void)par; /* unused parameter */
 
 QActive* parent = &amp;me-&gt;super.super; 
@@ -19,7 +19,7 @@ QActive* parent = &amp;me-&gt;super.super;
 QActive_subscribe(parent, LED_ON_SIG);
 QActive_subscribe(parent, LED_OFF_SIG);
 QActive_subscribe(parent, LED_BLINK_SIG);</action>
-     <initial_glyph conn="5,3,4,3,22,25">
+     <initial_glyph conn="5,3,4,0,9">
       <action box="0,-2,15,2"/>
      </initial_glyph>
     </initial>

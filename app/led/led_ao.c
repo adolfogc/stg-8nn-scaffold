@@ -149,12 +149,11 @@ static void Led_ctor(void) {
 static QState Led_initial(Led * const me, void const * const par) {
     static struct {
         QMState const *target;
-        QActionHandler act[3];
+        QActionHandler act[2];
     } const tatbl_ = { // tran-action table
-        &Led_blinking_s, // target submachine
+        &Led_off_s, // target state
         {
-            Q_ACTION_CAST(&Led_blink_e), // entry
-            Q_ACTION_CAST(&Led_blinking_i), // initial tran.
+            Q_ACTION_CAST(&Led_off_e), // entry
             Q_ACTION_NULL // zero terminator
         }
     };
