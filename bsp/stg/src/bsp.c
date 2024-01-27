@@ -34,7 +34,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "uavcan/protocol/HardwareVersion.h"
 
 #include <stdbool.h>
-#include <stdlib.h>
 #include <string.h>
 
 /* See chapter 33 - Device electronic signature of the RM0091 Reference Manual. */
@@ -71,17 +70,6 @@ __attribute__((noreturn)) void BSP_restart(void) { NVIC_SystemReset(); }
 void BSP_Led_off(void) { LL_GPIO_ResetOutputPin(LED_GPIO_Port, LED_Pin); }
 
 void BSP_Led_on(void) { LL_GPIO_SetOutputPin(LED_GPIO_Port, LED_Pin); }
-
-uint32_t BSP_getPseudoRandom(void) {
-  static bool uninitialized = true;
-  if (uninitialized) {
-    const uint32_t seed = APP_UAVCAN_DEFAULT_NODE_ID + Uuid[0U] + Uuid[1U] + Uuid[2U];
-    srand(seed);
-    uninitialized = false;
-  }
-
-  return (uint32_t)rand();
-}
 
 void BSP_readUniqueID(uint8_t *outUid) {
 #if UAVCAN_PROTOCOL_HARDWAREVERSION_UNIQUE_ID_LENGTH != 16U
