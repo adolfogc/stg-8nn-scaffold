@@ -28,16 +28,14 @@
 // <info@state-machine.com>
 //
 //$endhead${.::led::led_ao.c} ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#include "qpc.h"    /* QP/C framework API */
-#include "bsp_qpc.h" /* Board Support Package interface */
+#include "qpc.h"
+#include "bsp_qpc.h"
+
+#include "app.h"
 #include "led_ao.h"
+#include "led_ao_private.h"
 
 /* Declarations */
-//$declare${AOs::Led_ctor} vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-
-//${AOs::Led_ctor} ...........................................................
-static void Led_ctor(void);
-//$enddecl${AOs::Led_ctor} ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //$declare${AOs::Led} vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 //${AOs::Led} ................................................................
@@ -47,16 +45,40 @@ typedef struct {
 
 // private:
     QTimeEvt timeEvt;
-
-// private submachines
-    // exit points for submachine ${AOs::Led::SM::blinking}
-    struct SM_blinking {
-        QMState super;
-    } const *sub_blinking;
+    uint32_t blinkPeriod;
 } Led;
 
 // protected:
 static QState Led_initial(Led * const me, void const * const par);
+static QState Led_blink  (Led * const me, QEvt const * const e);
+static QState Led_blink_e(Led * const me);
+static QState Led_blink_x(Led * const me);
+static QState Led_blink_i(Led * const me);
+static QMState const Led_blink_s = {
+    QM_STATE_NULL, // superstate (top)
+    Q_STATE_CAST(&Led_blink),
+    Q_ACTION_CAST(&Led_blink_e),
+    Q_ACTION_CAST(&Led_blink_x),
+    Q_ACTION_CAST(&Led_blink_i)
+};
+static QState Led_blink_on  (Led * const me, QEvt const * const e);
+static QState Led_blink_on_e(Led * const me);
+static QMState const Led_blink_on_s = {
+    &Led_blink_s, // superstate
+    Q_STATE_CAST(&Led_blink_on),
+    Q_ACTION_CAST(&Led_blink_on_e),
+    Q_ACTION_NULL, // no exit action
+    Q_ACTION_NULL  // no initial tran.
+};
+static QState Led_blink_off  (Led * const me, QEvt const * const e);
+static QState Led_blink_off_e(Led * const me);
+static QMState const Led_blink_off_s = {
+    &Led_blink_s, // superstate
+    Q_STATE_CAST(&Led_blink_off),
+    Q_ACTION_CAST(&Led_blink_off_e),
+    Q_ACTION_NULL, // no exit action
+    Q_ACTION_NULL  // no initial tran.
+};
 static QState Led_off  (Led * const me, QEvt const * const e);
 static QState Led_off_e(Led * const me);
 static QMState const Led_off_s = {
@@ -75,54 +97,21 @@ static QMState const Led_on_s = {
     Q_ACTION_NULL, // no exit action
     Q_ACTION_NULL  // no initial tran.
 };
-static QState Led_blink  (Led * const me, QEvt const * const e);
-static QState Led_blink_e(Led * const me);
-static struct SM_blinking const Led_blink_s = {
-    {
-        QM_STATE_NULL, // superstate (top)
-        Q_STATE_CAST(&Led_blink),
-        Q_ACTION_CAST(&Led_blink_e),
-        Q_ACTION_NULL, // no exit action
-        Q_ACTION_NULL  // no initial tran.
-    }
-
-};
-
-// submachine ${AOs::Led::SM::blinking}
-static QState Led_blinking  (Led * const me, QEvt const * const e);
-static QState Led_blinking_e(Led * const me);
-static QState Led_blinking_x(Led * const me);
-static QState Led_blinking_i(Led * const me);
-static QMState const Led_blinking_s = {
-    QM_STATE_NULL, // superstate unused
-    Q_STATE_CAST(&Led_blinking),
-    Q_ACTION_CAST(&Led_blinking_e),
-    Q_ACTION_CAST(&Led_blinking_x),
-    Q_ACTION_CAST(&Led_blinking_i)
-};
-static QState Led_blinking_off  (Led * const me, QEvt const * const e);
-static QState Led_blinking_off_e(Led * const me);
-static QMState const Led_blinking_off_s = {
-    &Led_blinking_s, // superstate
-    Q_STATE_CAST(&Led_blinking_off),
-    Q_ACTION_CAST(&Led_blinking_off_e),
-    Q_ACTION_NULL, // no exit action
-    Q_ACTION_NULL  // no initial tran.
-};
-static QState Led_blinking_on  (Led * const me, QEvt const * const e);
-static QState Led_blinking_on_e(Led * const me);
-static QMState const Led_blinking_on_s = {
-    &Led_blinking_s, // superstate
-    Q_STATE_CAST(&Led_blinking_on),
-    Q_ACTION_CAST(&Led_blinking_on_e),
-    Q_ACTION_NULL, // no exit action
-    Q_ACTION_NULL  // no initial tran.
-};
 //$enddecl${AOs::Led} ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-/* Instances */
+/* Instance */
 static Led l_led;
-QMActive * const AO_led = &l_led.super;
+
+/* Instance pointers */
+QActive * AO_led = &l_led.super.super;
+
+/* Constructor */
+void Led_ctor(QActive * ao) {
+  Led* me = (Led*)ao;
+  QMActive_ctor(&me->super, Q_STATE_CAST(&Led_initial));
+  QTimeEvt_ctorX(&me->timeEvt, &me->super.super, TIMEOUT_SIG, 0U);
+  me->blinkPeriod = LED_DEFAULT_BLINK_TIMEOUT;
+}
 
 /* Definitions */
 //$skip${QP_VERSION} vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -132,15 +121,6 @@ QMActive * const AO_led = &l_led.super;
 #endif
 //$endskip${QP_VERSION} ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-//$define${AOs::Led_ctor} vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-
-//${AOs::Led_ctor} ...........................................................
-static void Led_ctor(void) {
-    Led *me = (Led *)AO_led;
-    QMActive_ctor(&me->super, Q_STATE_CAST(&Led_initial));
-    QTimeEvt_ctorX(&me->timeEvt, &me->super.super, LED_TIMEOUT_SIG, 0U);
-}
-//$enddef${AOs::Led_ctor} ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //$define${AOs::Led} vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 //${AOs::Led} ................................................................
@@ -158,14 +138,157 @@ static QState Led_initial(Led * const me, void const * const par) {
         }
     };
     //${AOs::Led::SM::initial}
-    (void)par; /* unused parameter */
-
-    QActive* parent = &me->super.super;
-
-    QActive_subscribe(parent, LED_ON_SIG);
-    QActive_subscribe(parent, LED_OFF_SIG);
-    QActive_subscribe(parent, LED_BLINK_SIG);
     return QM_TRAN_INIT(&tatbl_);
+}
+
+//${AOs::Led::SM::blink} .....................................................
+//${AOs::Led::SM::blink}
+static QState Led_blink_e(Led * const me) {
+    QTimeEvt_armX(&me->timeEvt, me->blinkPeriod, me->blinkPeriod);
+    return QM_ENTRY(&Led_blink_s);
+}
+//${AOs::Led::SM::blink}
+static QState Led_blink_x(Led * const me) {
+    QTimeEvt_disarm(&me->timeEvt);
+    return QM_EXIT(&Led_blink_s);
+}
+//${AOs::Led::SM::blink::initial}
+static QState Led_blink_i(Led * const me) {
+    static struct {
+        QMState const *target;
+        QActionHandler act[2];
+    } const tatbl_ = { // tran-action table
+        &Led_blink_off_s, // target state
+        {
+            Q_ACTION_CAST(&Led_blink_off_e), // entry
+            Q_ACTION_NULL // zero terminator
+        }
+    };
+    //${AOs::Led::SM::blink::initial}
+    return QM_TRAN_INIT(&tatbl_);
+}
+//${AOs::Led::SM::blink}
+static QState Led_blink(Led * const me, QEvt const * const e) {
+    QState status_;
+    switch (e->sig) {
+        //${AOs::Led::SM::blink::LED_ON}
+        case LED_ON_SIG: {
+            static struct {
+                QMState const *target;
+                QActionHandler act[3];
+            } const tatbl_ = { // tran-action table
+                &Led_on_s, // target state
+                {
+                    Q_ACTION_CAST(&Led_blink_x), // exit
+                    Q_ACTION_CAST(&Led_on_e), // entry
+                    Q_ACTION_NULL // zero terminator
+                }
+            };
+            status_ = QM_TRAN(&tatbl_);
+            break;
+        }
+        //${AOs::Led::SM::blink::LED_BLINK}
+        case LED_BLINK_SIG: {
+            LedEvt* ledEvt = (LedEvt*)e;
+
+            if(ledEvt->blinkPeriod > 0U) {
+              me->blinkPeriod = ledEvt->blinkPeriod;
+            }
+
+            QTimeEvt_rearm(&me->timeEvt, me->blinkPeriod);
+            status_ = QM_HANDLED();
+            break;
+        }
+        //${AOs::Led::SM::blink::LED_OFF}
+        case LED_OFF_SIG: {
+            static struct {
+                QMState const *target;
+                QActionHandler act[3];
+            } const tatbl_ = { // tran-action table
+                &Led_off_s, // target state
+                {
+                    Q_ACTION_CAST(&Led_blink_x), // exit
+                    Q_ACTION_CAST(&Led_off_e), // entry
+                    Q_ACTION_NULL // zero terminator
+                }
+            };
+            status_ = QM_TRAN(&tatbl_);
+            break;
+        }
+        default: {
+            status_ = QM_SUPER();
+            break;
+        }
+    }
+    return status_;
+}
+
+//${AOs::Led::SM::blink::blink_on} ...........................................
+//${AOs::Led::SM::blink::blink_on}
+static QState Led_blink_on_e(Led * const me) {
+    BSP_Led_on();
+    Q_UNUSED_PAR(me);
+    return QM_ENTRY(&Led_blink_on_s);
+}
+//${AOs::Led::SM::blink::blink_on}
+static QState Led_blink_on(Led * const me, QEvt const * const e) {
+    QState status_;
+    switch (e->sig) {
+        //${AOs::Led::SM::blink::blink_on::TIMEOUT}
+        case TIMEOUT_SIG: {
+            static struct {
+                QMState const *target;
+                QActionHandler act[2];
+            } const tatbl_ = { // tran-action table
+                &Led_blink_off_s, // target state
+                {
+                    Q_ACTION_CAST(&Led_blink_off_e), // entry
+                    Q_ACTION_NULL // zero terminator
+                }
+            };
+            status_ = QM_TRAN(&tatbl_);
+            break;
+        }
+        default: {
+            status_ = QM_SUPER();
+            break;
+        }
+    }
+    return status_;
+}
+
+//${AOs::Led::SM::blink::blink_off} ..........................................
+//${AOs::Led::SM::blink::blink_off}
+static QState Led_blink_off_e(Led * const me) {
+    BSP_Led_off();
+    Q_UNUSED_PAR(me);
+    return QM_ENTRY(&Led_blink_off_s);
+}
+//${AOs::Led::SM::blink::blink_off}
+static QState Led_blink_off(Led * const me, QEvt const * const e) {
+    QState status_;
+    switch (e->sig) {
+        //${AOs::Led::SM::blink::blink_off::TIMEOUT}
+        case TIMEOUT_SIG: {
+            static struct {
+                QMState const *target;
+                QActionHandler act[2];
+            } const tatbl_ = { // tran-action table
+                &Led_blink_on_s, // target state
+                {
+                    Q_ACTION_CAST(&Led_blink_on_e), // entry
+                    Q_ACTION_NULL // zero terminator
+                }
+            };
+            status_ = QM_TRAN(&tatbl_);
+            break;
+        }
+        default: {
+            status_ = QM_SUPER();
+            break;
+        }
+    }
+    return status_;
 }
 
 //${AOs::Led::SM::off} .......................................................
@@ -185,13 +308,18 @@ static QState Led_off(Led * const me, QEvt const * const e) {
                 QMState const *target;
                 QActionHandler act[3];
             } const tatbl_ = { // tran-action table
-                &Led_blinking_s, // target submachine
+                &Led_blink_off_s, // target state
                 {
                     Q_ACTION_CAST(&Led_blink_e), // entry
-                    Q_ACTION_CAST(&Led_blinking_i), // initial tran.
+                    Q_ACTION_CAST(&Led_blink_off_e), // entry
                     Q_ACTION_NULL // zero terminator
                 }
             };
+            LedEvt* ledEvt = (LedEvt*)e;
+
+            if(ledEvt->blinkPeriod > 0U) {
+              me->blinkPeriod = ledEvt->blinkPeriod;
+            }
             status_ = QM_TRAN(&tatbl_);
             break;
         }
@@ -220,168 +348,18 @@ static QState Led_on(Led * const me, QEvt const * const e) {
                 QMState const *target;
                 QActionHandler act[3];
             } const tatbl_ = { // tran-action table
-                &Led_blinking_s, // target submachine
+                &Led_blink_on_s, // target state
                 {
                     Q_ACTION_CAST(&Led_blink_e), // entry
-                    Q_ACTION_CAST(&Led_blinking_i), // initial tran.
+                    Q_ACTION_CAST(&Led_blink_on_e), // entry
                     Q_ACTION_NULL // zero terminator
                 }
             };
-            status_ = QM_TRAN(&tatbl_);
-            break;
-        }
-        default: {
-            status_ = QM_SUPER();
-            break;
-        }
-    }
-    return status_;
-}
+            LedEvt* ledEvt = (LedEvt*)e;
 
-//${AOs::Led::SM::blink} .....................................................
-//${AOs::Led::SM::blink}
-static QState Led_blink_e(Led * const me) {
-    me->sub_blinking = &Led_blink_s; // attach submachine
-    return Led_blinking_e(me); // enter submachine
-}
-//${AOs::Led::SM::blink}
-static QState Led_blink(Led * const me, QEvt const * const e) {
-    QState status_;
-    switch (e->sig) {
-        //${AOs::Led::SM::blink::LED_OFF}
-        case LED_OFF_SIG: {
-            static struct {
-                QMState const *target;
-                QActionHandler act[2];
-            } const tatbl_ = { // tran-action table
-                &Led_off_s, // target state
-                {
-                    Q_ACTION_CAST(&Led_off_e), // entry
-                    Q_ACTION_NULL // zero terminator
-                }
-            };
-            status_ = QM_TRAN(&tatbl_);
-            break;
-        }
-        //${AOs::Led::SM::blink::LED_ON}
-        case LED_ON_SIG: {
-            static struct {
-                QMState const *target;
-                QActionHandler act[2];
-            } const tatbl_ = { // tran-action table
-                &Led_on_s, // target state
-                {
-                    Q_ACTION_CAST(&Led_on_e), // entry
-                    Q_ACTION_NULL // zero terminator
-                }
-            };
-            status_ = QM_TRAN(&tatbl_);
-            break;
-        }
-        default: {
-            status_ = QM_SUPER();
-            break;
-        }
-    }
-    return status_;
-}
-
-//${AOs::Led::SM::blinking} ..................................................
-//${AOs::Led::SM::blinking}
-static QState Led_blinking_e(Led * const me) {
-    QTimeEvt_armX(&me->timeEvt, BSP_TICKS_PER_MS * 500U, BSP_TICKS_PER_MS * 500U);
-    return QM_ENTRY(&Led_blinking_s);
-}
-//${AOs::Led::SM::blinking}
-static QState Led_blinking_x(Led * const me) {
-    QTimeEvt_disarm(&me->timeEvt);
-    return QM_SM_EXIT(&me->sub_blinking->super);
-}
-//${AOs::Led::SM::blinking::initial}
-static QState Led_blinking_i(Led * const me) {
-    static struct {
-        QMState const *target;
-        QActionHandler act[2];
-    } const tatbl_ = { // tran-action table
-        &Led_blinking_off_s, // target state
-        {
-            Q_ACTION_CAST(&Led_blinking_off_e), // entry
-            Q_ACTION_NULL // zero terminator
-        }
-    };
-    //${AOs::Led::SM::blinking::initial}
-    return QM_TRAN_INIT(&tatbl_);
-}
-//${AOs::Led::SM::blinking}
-static QState Led_blinking(Led * const me, QEvt const * const e) {
-    QState status_;
-    switch (e->sig) {
-        default: {
-            status_ = QM_SUPER_SUB(&me->sub_blinking->super);
-            break;
-        }
-    }
-    Q_UNUSED_PAR(me);
-    return status_;
-}
-
-//${AOs::Led::SM::blinking::off} .............................................
-//${AOs::Led::SM::blinking::off}
-static QState Led_blinking_off_e(Led * const me) {
-    BSP_Led_off();
-    Q_UNUSED_PAR(me);
-    return QM_ENTRY(&Led_blinking_off_s);
-}
-//${AOs::Led::SM::blinking::off}
-static QState Led_blinking_off(Led * const me, QEvt const * const e) {
-    QState status_;
-    switch (e->sig) {
-        //${AOs::Led::SM::blinking::off::LED_TIMEOUT}
-        case LED_TIMEOUT_SIG: {
-            static struct {
-                QMState const *target;
-                QActionHandler act[2];
-            } const tatbl_ = { // tran-action table
-                &Led_blinking_on_s, // target state
-                {
-                    Q_ACTION_CAST(&Led_blinking_on_e), // entry
-                    Q_ACTION_NULL // zero terminator
-                }
-            };
-            status_ = QM_TRAN(&tatbl_);
-            break;
-        }
-        default: {
-            status_ = QM_SUPER();
-            break;
-        }
-    }
-    return status_;
-}
-
-//${AOs::Led::SM::blinking::on} ..............................................
-//${AOs::Led::SM::blinking::on}
-static QState Led_blinking_on_e(Led * const me) {
-    BSP_Led_on();
-    Q_UNUSED_PAR(me);
-    return QM_ENTRY(&Led_blinking_on_s);
-}
-//${AOs::Led::SM::blinking::on}
-static QState Led_blinking_on(Led * const me, QEvt const * const e) {
-    QState status_;
-    switch (e->sig) {
-        //${AOs::Led::SM::blinking::on::LED_TIMEOUT}
-        case LED_TIMEOUT_SIG: {
-            static struct {
-                QMState const *target;
-                QActionHandler act[2];
-            } const tatbl_ = { // tran-action table
-                &Led_blinking_off_s, // target state
-                {
-                    Q_ACTION_CAST(&Led_blinking_off_e), // entry
-                    Q_ACTION_NULL // zero terminator
-                }
-            };
+            if(ledEvt->blinkPeriod > 0U) {
+              me->blinkPeriod = ledEvt->blinkPeriod;
+            }
             status_ = QM_TRAN(&tatbl_);
             break;
         }

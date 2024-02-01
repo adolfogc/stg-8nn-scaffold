@@ -23,7 +23,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include "canard.h"
 
 void UavcanNode_initAO(void);
-void UavcanNode_startAO(uint8_t priority);
+void UavcanNode_startAO(const uint8_t priority);
 CanardInstance *getCanardInstance(void);
 
 #endif /* _UAVCAN_NODE_H */

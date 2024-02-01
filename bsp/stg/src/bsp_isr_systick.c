@@ -19,6 +19,8 @@ static volatile uint32_t l_upTimeSeconds = 0U;
 
 static QTicker volatile l_ticker0;
 
+QTicker * AO_ticker0 = &l_ticker0.super;
+
 void SysTick_Handler(void) { /* every 1ms */
   
   QK_ISR_ENTRY();
@@ -35,20 +37,10 @@ void SysTick_Handler(void) { /* every 1ms */
     }
   }
 
-  QTICKER_TRIG((QActive*)&l_ticker0.super, (void *)0); // trigger ticker AO
+  QTICKER_TRIG(AO_ticker0, (void *)0); // trigger ticker AO
 
   QK_ISR_EXIT();
 }
-
-void BSP_Ticker0_initAO(void) {
-  QTicker_ctor((QTicker*)&l_ticker0, 0U);
-}
-
-void BSP_Ticker0_startAO(uint8_t priority) {
-  QACTIVE_START((QActive*)&l_ticker0.super, priority, (void *)0, 0U, (void *)0, 0U, (QEvt *)0);
-}
-
-QTicker* BSP_Ticker0_getAO(void) { return (QTicker*)&l_ticker0; }
 
 uint32_t BSP_upTimeSeconds(void) { return l_upTimeSeconds; }
 

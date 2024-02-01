@@ -31,12 +31,10 @@
 #ifndef _UAVCAN_NODE_AO_H
 #define _UAVCAN_NODE_AO_H
 
-#include "app_signals.h"
+#include "qpc.h"
 
-enum UavcanNodeSignals {
-  RESTART_SIG = APP_UAVCAN_RESTART_SIG,
-  SPIN_TIMEOUT_SIG = APP_UAVCAN_SPIN_TIMEOUT_SIG,
-  STATUS_TIMEOUT_SIG = APP_UAVCAN_STATUS_TIMEOUT_SIG
-};
+extern QActive * AO_uavcanNode;
+
+void UavcanNode_ctor(QActive * ao);
 
 #endif /* _UAVCAN_NODE_AO_H */
