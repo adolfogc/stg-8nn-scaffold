@@ -18,40 +18,49 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "app.h"
+#include "led_ao.h"
+#include "uavcan_node_ao.h"
 
 int main(void);
 
 static int App_mainDefault(void);
+
 int App_main(void) __attribute__((weak, alias("App_mainDefault")));
 
 typedef union {
   void *size_min;
   QEvt size_a;
   /* other event types follow here */
-} AppEvent;
+  LedEvt size_b;
+} AppEvt;
 
 static int App_mainDefault(void) {
+
   static QSubscrList subscrSto[APP_MAX_SIG];
-  static AppEvent appEventSto[10U];
+  static AppEvt appEventSto[10U];
 
-  /* Initialize the AOs */
-  BSP_Ticker0_initAO(); /* This AO is a singleton managed by its module. */
-  UavcanNode_initAO();  /* This AO is a singleton managed by its module. */
-  Led_initAO();         /* This AO is a singleton managed by its module. */
+  static QEvt const * led_evtBuffer[10U];
+  static QEvt const * uavcan_evtBuffer[10U];
 
-  /* Initialize the hardware. */
-  BSP_init();
-  /* Initialize the QF framework and the underlying RT kernel. */
+  /* Initialize the QF framework and the underlying RT kernel */
   QF_init();
+  /* Initialize the hardware */
+  BSP_init();
   /* Initialize publish-subscribe */
   QF_psInit(subscrSto, Q_DIM(subscrSto));
   /* Initialize memory pools */
   QF_poolInit(appEventSto, sizeof(appEventSto), sizeof(appEventSto[0]));
 
-  /* Start the AOs */
-  BSP_Ticker0_startAO(1U);
-  Led_startAO(2U);
-  UavcanNode_startAO(3U);
+  /* Start the active objects */
+
+  QTicker_ctor((QTicker*)AO_ticker0, 0U);
+  QACTIVE_START(AO_ticker0, Q_PRIO(1U, 1U), 0U, 0U, (void *)0, 0U, (void *)0);
+
+  Led_ctor(AO_led);
+  QACTIVE_START(AO_led, Q_PRIO(2U, 2U), led_evtBuffer, Q_DIM(led_evtBuffer), (void *)0, 0U, (void *)0);
+
+  UavcanNode_ctor(AO_uavcanNode);
+  QACTIVE_START(AO_uavcanNode, Q_PRIO(3U, 3U), uavcan_evtBuffer, Q_DIM(uavcan_evtBuffer), (void *)0, 0U, (void *)0);
 
   return QF_run();
 }

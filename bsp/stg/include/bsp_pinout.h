@@ -26,13 +26,13 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #ifdef MODEL_STG850
 /* IN7-10 are digital */
 #define IN7_Pin GPIO_PIN_12
-#define IN7_Port GPIOA
+#define IN7_GPIO_Port GPIOA
 #define IN8_Pin GPIO_PIN_15
-#define IN8_Port GPIOA
+#define IN8_GPIO_Port GPIOA
 #define IN9_Pin GPIO_PIN_4
-#define IN9_Port GPIOB
+#define IN9_GPIO_Port GPIOB
 #define IN10_Pin GPIO_PIN_5
-#define IN10_Port GPIOB
+#define IN10_GPIO_Port GPIOB
 
 /* OUT1-8 are high-side*/
 #define OUT1_Pin LL_GPIO_PIN_13

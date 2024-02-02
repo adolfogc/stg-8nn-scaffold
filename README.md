@@ -44,12 +44,15 @@ See `.devcontainer` directory.
 
 ### Compiling the project
 
+GNU Arm:
+
 ```bash
 mkdir build && cd build
 cmake -DSTG_MODEL:STRING=850 -DCMAKE_TOOLCHAIN_FILE=arm-gcc-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
 cmake --build .
 ```
 
+LLVM Arm:
 ```bash
 mkdir build && cd build
 cmake -DSTG_MODEL:STRING=850 -DCMAKE_TOOLCHAIN_FILE=arm-clang-toolchain.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja ..
@@ -67,7 +70,7 @@ openocd \
   -f ../openocd/stm32f0x-stlinkv2.cfg \
   -f ../openocd/stm32f0x-utils.cfg \
   -c "custom_flash firmware.bin" \
-  -c shutdown
+  -c "shutdown"
 
 # Flash it using st-flash (currently not working for me):
 st-flash write firmware.bin 0x0800000

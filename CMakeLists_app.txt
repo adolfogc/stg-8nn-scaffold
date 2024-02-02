@@ -38,35 +38,14 @@ set(APP_SOURCES
 
 list(APPEND APP_SOURCES
   ${UAVCAN_NODE_DIR}/uavcan_node.h
-  ${UAVCAN_NODE_DIR}/uavcan_node.c
   ${UAVCAN_NODE_DIR}/uavcan_node_ao.h
+  ${UAVCAN_NODE_DIR}/uavcan_node_ao_private.h
   ${UAVCAN_NODE_DIR}/uavcan_node_ao.c
   ${UAVCAN_NODE_DIR}/uavcan_node_callbacks.h
-  ${UAVCAN_NODE_DIR}/uavcan_node_callbacks.c
-  ${UAVCAN_NODE_DIR}/uavcan_node_handlers.h
-  ${UAVCAN_NODE_DIR}/uavcan_node_handlers.c
-  ${UAVCAN_NODE_DIR}/uavcan_node_helpers.h
-  ${UAVCAN_NODE_DIR}/uavcan_node_helpers.c
 )
-
-# The following files are "included" in "uavcan_node.c".
-#
-# This is necessary, as we wish to have smaller .c files while maintaining
-# the benefits of single module compiler optimizations and automatic static
-# function inlining.
-#
-set_source_files_properties(${UAVCAN_NODE_DIR}/uavcan_node_ao.c PROPERTIES HEADER_FILE_ONLY TRUE)
-set_source_files_properties(${UAVCAN_NODE_DIR}/uavcan_node_callbacks.c PROPERTIES HEADER_FILE_ONLY TRUE)
-set_source_files_properties(${UAVCAN_NODE_DIR}/uavcan_node_handlers.c PROPERTIES HEADER_FILE_ONLY TRUE)
-set_source_files_properties(${UAVCAN_NODE_DIR}/uavcan_node_helpers.c PROPERTIES HEADER_FILE_ONLY TRUE)
 
 list(APPEND APP_SOURCES
-  ${LED_DIR}/led.h
-  ${LED_DIR}/led.c
   ${LED_DIR}/led_ao.h
+  ${LED_DIR}/led_ao_private.h
   ${LED_DIR}/led_ao.c
 )
-
-# The following files are "included" in "led.c"
-#
-set_source_files_properties(${LED_DIR}/led_ao.c PROPERTIES HEADER_FILE_ONLY TRUE)

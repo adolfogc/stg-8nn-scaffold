@@ -26,6 +26,8 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdbool.h>
 #include <stdint.h>
 
+extern QTicker * AO_ticker0;
+
 void BSP_init(void);
 void BSP_restart(void) __attribute__((noreturn));
 
@@ -85,9 +87,5 @@ BSP_CAN_RxTxResult BSP_CAN_receiveOnce(CanardCANFrame *frame);
 
 uint32_t BSP_upTimeSeconds(void);
 void BSP_readUniqueID(uint8_t *outUid);
-
-void BSP_Ticker0_initAO(void);
-void BSP_Ticker0_startAO(uint8_t priority);
-QTicker *BSP_Ticker0_getAO(void);
 
 #endif /* _BSP_H */

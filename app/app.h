@@ -21,8 +21,6 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #define _SCAFFOLD_APP_H
 
 #include "bsp.h"
-#include "led.h"
-#include "uavcan_node.h"
 
 #include "app_signals.h"
 
@@ -87,16 +85,24 @@ enum AppSignals {
 #define APP_UAVCAN_DEFAULT_NODE_ID 45U
 #endif
 
-#ifndef APP_UAVCAN_NODE_EVT_QUEUE_SIZE
-#define APP_UAVCAN_NODE_EVT_QUEUE_SIZE 20
+#ifndef APP_UAVCAN_NODE_SPIN_PERIOD_MS
+#define APP_UAVCAN_NODE_SPIN_PERIOD_MS 25U
+#endif
+
+#ifndef APP_UAVCAN_NODE_STATUS_PERIOD_MS
+#define APP_UAVCAN_NODE_STATUS_PERIOD_MS 450U
 #endif
 
 #ifndef APP_LED_EVT_QUEUE_SIZE
-#define APP_LED_EVT_QUEUE_SIZE 10
+#define APP_LED_EVT_QUEUE_SIZE 10U
+#endif
+
+#ifndef APP_LED_DEFAULT_BLINK_PERIOD_MS
+#define APP_LED_DEFAULT_BLINK_PERIOD_MS 500U
 #endif
 
 #ifndef APP_CANARD_MEMORY_POOL_SIZE
-#define APP_CANARD_MEMORY_POOL_SIZE 4096
+#define APP_CANARD_MEMORY_POOL_SIZE 4096U
 #endif
 
 #endif /* _SCAFFOLD_APP_H */
