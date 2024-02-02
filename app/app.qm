@@ -305,10 +305,13 @@ $define${AOs::Led}</text>
 #define _UAVCAN_NODE_AO_H
 
 #include &quot;qpc.h&quot;
+#include &quot;canard.h&quot;
 
 extern QActive * AO_uavcanNode;
 
 void UavcanNode_ctor(QActive * ao);
+
+CanardInstance * getCanardInstance(void);
 
 #endif /* _UAVCAN_NODE_AO_H */</text>
    </file>
@@ -373,6 +376,11 @@ void UavcanNode_ctor(QActive * ao) {
   QMActive_ctor(&amp;me-&gt;super, Q_STATE_CAST(&amp;UavcanNode_initial));
   QTimeEvt_ctorX(&amp;me-&gt;spinTimeEvt, &amp;me-&gt;super.super, SPIN_TIMEOUT_SIG, 0U);
   QTimeEvt_ctorX(&amp;me-&gt;statusTimeEvt, &amp;me-&gt;super.super, STATUS_TIMEOUT_SIG, 0U);
+}
+
+/* Public interface */
+CanardInstance * getCanardInstance(void) {
+ return &amp;l_canardInstance;
 }
 
 /* Helpers */

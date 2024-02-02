@@ -115,6 +115,11 @@ void UavcanNode_ctor(QActive * ao) {
   QTimeEvt_ctorX(&me->statusTimeEvt, &me->super.super, STATUS_TIMEOUT_SIG, 0U);
 }
 
+/* Public interface */
+CanardInstance * getCanardInstance(void) {
+ return &l_canardInstance;
+}
+
 /* Helpers */
 static void initCanardInstance(void) {
   canardInit(&l_canardInstance, l_canardMemoryPool, APP_CANARD_MEMORY_POOL_SIZE, onTransferReceived,

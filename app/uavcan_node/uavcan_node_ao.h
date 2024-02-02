@@ -32,9 +32,12 @@
 #define _UAVCAN_NODE_AO_H
 
 #include "qpc.h"
+#include "canard.h"
 
 extern QActive * AO_uavcanNode;
 
 void UavcanNode_ctor(QActive * ao);
+
+CanardInstance * getCanardInstance(void);
 
 #endif /* _UAVCAN_NODE_AO_H */
