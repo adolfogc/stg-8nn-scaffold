@@ -106,8 +106,6 @@ static uint8_t l_canardMemoryPool[APP_CANARD_MEMORY_POOL_SIZE];
 /* Instance pointers */
 QActive * AO_uavcanNode = &l_uavcanNode.super.super;
 
-/* Static Events */
-static const LedEvt l_ledEvt = {QEVT_INITIALIZER(APP_LED_BLINK_SIG), .blinkPeriod = 100U};
 
 /* Constructor */
 void UavcanNode_ctor(QActive * ao) {
@@ -196,7 +194,7 @@ static void restartNodeHandle(CanardRxTransfer *transfer) {
                              buffer, (uint16_t)len);
 
   if (result >= 0 && response.ok) {
-    static const QEvt aboutToRestartEvt = {RESTART_SIG, 0U, 0U};
+    static const QEvt aboutToRestartEvt = {QEVT_INITIALIZER(RESTART_SIG)};
     QACTIVE_POST(AO_uavcanNode, &aboutToRestartEvt, (void *)0U);
   }
 }
@@ -335,7 +333,6 @@ static QState UavcanNode_hardwareInit_e(UavcanNode * const me) {
     // retry every 500 ms
     QTimeEvt_armX(&me->spinTimeEvt, BSP_TICKS_PER_MS * 5U, BSP_TICKS_PER_MS * 500U);
 
-    QACTIVE_POST(AO_led, (QEvt *)&l_ledEvt.super, 0U);
     return QM_ENTRY(&UavcanNode_hardwareInit_s);
 }
 //${AOs::UavcanNode::SM::hardwareInit}
