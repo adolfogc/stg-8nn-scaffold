@@ -17,9 +17,9 @@ static const uint32_t MaxUint32Value = 0xFFFFFFFFU;
 static volatile uint32_t l_nTicks = 0U;
 static volatile uint32_t l_upTimeSeconds = 0U;
 
-static QTicker volatile l_ticker0;
+static QTicker l_ticker0;
 
-QTicker * AO_ticker0 = &l_ticker0.super;
+QActive * const AO_ticker0 = &l_ticker0.super;
 
 void SysTick_Handler(void) { /* every 1ms */
   

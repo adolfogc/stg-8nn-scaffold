@@ -26,7 +26,7 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdbool.h>
 #include <stdint.h>
 
-extern QTicker * AO_ticker0;
+extern QActive * const AO_ticker0;
 
 void BSP_init(void);
 void BSP_restart(void) __attribute__((noreturn));
