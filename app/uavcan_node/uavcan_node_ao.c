@@ -31,7 +31,6 @@
 #include "qpc.h"    /* QP/C framework API */
 #include "bsp.h" /* Board Support Package interface */
 #include "app.h"
-#include "uavcan_node.h"
 #include "uavcan_node_callbacks.h"
 #include "uavcan_node_ao.h"
 #include "uavcan_node_ao_private.h"

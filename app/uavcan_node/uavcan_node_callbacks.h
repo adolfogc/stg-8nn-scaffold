@@ -20,8 +20,9 @@ along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef _UAVCAN_NODE_CALLBACKS_H
 #define _UAVCAN_NODE_CALLBACKS_H
 
-#include "canard.h"
 #include <stdbool.h>
+
+#include "canard.h"
 
 /* -- Prototypes for Libcanard's callback -- */
 bool shouldAcceptTransferDefault(const CanardInstance *instance, uint64_t *outDataTypeSignature,

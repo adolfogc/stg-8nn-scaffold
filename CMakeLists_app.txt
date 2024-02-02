@@ -37,7 +37,6 @@ set(APP_SOURCES
 )
 
 list(APPEND APP_SOURCES
-  ${UAVCAN_NODE_DIR}/uavcan_node.h
   ${UAVCAN_NODE_DIR}/uavcan_node_ao.h
   ${UAVCAN_NODE_DIR}/uavcan_node_ao_private.h
   ${UAVCAN_NODE_DIR}/uavcan_node_ao.c

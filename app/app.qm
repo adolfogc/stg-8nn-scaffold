@@ -338,7 +338,6 @@ enum UavcanNodeSignals {
     <text>#include &quot;qpc.h&quot;    /* QP/C framework API */
 #include &quot;bsp.h&quot; /* Board Support Package interface */
 #include &quot;app.h&quot;
-#include &quot;uavcan_node.h&quot;
 #include &quot;uavcan_node_callbacks.h&quot;
 #include &quot;uavcan_node_ao.h&quot;
 #include &quot;uavcan_node_ao_private.h&quot;
