@@ -28,6 +28,8 @@
 // <info@state-machine.com>
 //
 //$endhead${.::led::led_ao.c} ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#include <string.h> // memcpy
+
 #include "qpc.h"
 #include "bsp_qpc.h"
 
@@ -189,10 +191,11 @@ static QState Led_blink(Led * const me, QEvt const * const e) {
         }
         //${AOs::Led::SM::blink::LED_BLINK}
         case LED_BLINK_SIG: {
-            LedEvt* ledEvt = (LedEvt*)e;
+            LedEvt evt;
+            memcpy(&evt, e, sizeof(evt));
 
-            if(ledEvt->blinkPeriod > 0U) {
-              me->blinkPeriod = ledEvt->blinkPeriod;
+            if(evt.blinkPeriod > 0U) {
+              me->blinkPeriod = evt.blinkPeriod;
             }
 
             QTimeEvt_rearm(&me->timeEvt, me->blinkPeriod);
@@ -315,10 +318,11 @@ static QState Led_off(Led * const me, QEvt const * const e) {
                     Q_ACTION_NULL // zero terminator
                 }
             };
-            LedEvt* ledEvt = (LedEvt*)e;
+            LedEvt evt;
+            memcpy(&evt, e, sizeof(evt));
 
-            if(ledEvt->blinkPeriod > 0U) {
-              me->blinkPeriod = ledEvt->blinkPeriod;
+            if(evt.blinkPeriod > 0U) {
+              me->blinkPeriod = evt.blinkPeriod;
             }
             status_ = QM_TRAN(&tatbl_);
             break;
@@ -355,10 +359,11 @@ static QState Led_on(Led * const me, QEvt const * const e) {
                     Q_ACTION_NULL // zero terminator
                 }
             };
-            LedEvt* ledEvt = (LedEvt*)e;
+            LedEvt evt;
+            memcpy(&evt, e, sizeof(evt));
 
-            if(ledEvt->blinkPeriod > 0U) {
-              me->blinkPeriod = ledEvt->blinkPeriod;
+            if(evt.blinkPeriod > 0U) {
+              me->blinkPeriod = evt.blinkPeriod;
             }
             status_ = QM_TRAN(&tatbl_);
             break;

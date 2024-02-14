@@ -38,10 +38,11 @@
      </tran>
      <!--${AOs::Led::SM::blink::LED_BLINK}-->
      <tran trig="LED_BLINK">
-      <action brief="setBlinkPeriod">LedEvt* ledEvt = (LedEvt*)e;
+      <action brief="setBlinkPeriod">LedEvt evt;
+memcpy(&amp;evt, e, sizeof(evt));
 
-if(ledEvt-&gt;blinkPeriod &gt; 0U) {
-  me-&gt;blinkPeriod = ledEvt-&gt;blinkPeriod;
+if(evt.blinkPeriod &gt; 0U) {
+  me-&gt;blinkPeriod = evt.blinkPeriod;
 }
 
 QTimeEvt_rearm(&amp;me-&gt;timeEvt, me-&gt;blinkPeriod);</action>
@@ -91,10 +92,11 @@ QTimeEvt_rearm(&amp;me-&gt;timeEvt, me-&gt;blinkPeriod);</action>
      <entry brief="LED-&gt;OFF">BSP_Led_off();</entry>
      <!--${AOs::Led::SM::off::LED_BLINK}-->
      <tran trig="LED_BLINK" target="../../1/5">
-      <action brief="setBlinkPeriod">LedEvt* ledEvt = (LedEvt*)e;
+      <action brief="setBlinkPeriod">LedEvt evt;
+memcpy(&amp;evt, e, sizeof(evt));
 
-if(ledEvt-&gt;blinkPeriod &gt; 0U) {
-  me-&gt;blinkPeriod = ledEvt-&gt;blinkPeriod;
+if(evt.blinkPeriod &gt; 0U) {
+  me-&gt;blinkPeriod = evt.blinkPeriod;
 }</action>
       <tran_glyph conn="74,42,3,1,-35">
        <action box="-10,-4,9,4"/>
@@ -109,10 +111,11 @@ if(ledEvt-&gt;blinkPeriod &gt; 0U) {
      <entry brief="LED-&gt;ON">BSP_Led_on();</entry>
      <!--${AOs::Led::SM::on::LED_BLINK}-->
      <tran trig="LED_BLINK" target="../../1/4">
-      <action brief="setBlinkPeriod">LedEvt* ledEvt = (LedEvt*)e;
+      <action brief="setBlinkPeriod">LedEvt evt;
+memcpy(&amp;evt, e, sizeof(evt));
 
-if(ledEvt-&gt;blinkPeriod &gt; 0U) {
-  me-&gt;blinkPeriod = ledEvt-&gt;blinkPeriod;
+if(evt.blinkPeriod &gt; 0U) {
+  me-&gt;blinkPeriod = evt.blinkPeriod;
 }</action>
       <tran_glyph conn="74,22,3,1,-35">
        <action box="-10,-4,9,4"/>
@@ -269,7 +272,9 @@ enum LedSignals {
    </file>
    <!--${.::led::led_ao.c}-->
    <file name="led_ao.c">
-    <text>#include &quot;qpc.h&quot;
+    <text>#include &lt;string.h&gt; // memcpy
+
+#include &quot;qpc.h&quot;
 #include &quot;bsp_qpc.h&quot;
 
 #include &quot;app.h&quot;
@@ -461,7 +466,7 @@ static void restartNodeHandle(CanardRxTransfer *transfer) {
                              buffer, (uint16_t)len);
 
   if (result &gt;= 0 &amp;&amp; response.ok) {
-    static const QEvt aboutToRestartEvt = {QEVT_INITIALIZER(RESTART_SIG)};
+    static const QEvt aboutToRestartEvt = QEVT_INITIALIZER(RESTART_SIG);
     QACTIVE_POST(AO_uavcanNode, &amp;aboutToRestartEvt, (void *)0U);
   }
 }
