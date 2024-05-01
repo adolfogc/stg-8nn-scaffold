@@ -18,6 +18,9 @@
 ##
 ## bsp
 ##
+
+cmake_minimum_required(VERSION 3.20)
+
 list(APPEND BSP_INCLUDE ${BSP_DIR}/tester/include)
 
 list(APPEND BSP_SOURCES

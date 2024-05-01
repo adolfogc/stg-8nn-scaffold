@@ -19,6 +19,8 @@
 ## dependencies::libcanard
 ##
 
+cmake_minimum_required(VERSION 3.20)
+
 # Darwin (macOS) is not yet supported with CAN
 if("${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
   message(WARNING "Darwin lacks a CAN driver for libcanard")

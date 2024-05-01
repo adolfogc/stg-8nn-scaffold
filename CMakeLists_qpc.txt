@@ -19,6 +19,8 @@
 ## dependencies::qpc(qk)
 ##
 
+cmake_minimum_required(VERSION 3.20)
+
 if(DEFINED SCAFFOLD_DIR)
   set(QPC_DIR ${SCAFFOLD_DIR}/dependencies/qpc)
 else()

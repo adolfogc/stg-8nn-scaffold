@@ -19,6 +19,8 @@
 ## app
 ##
 
+cmake_minimum_required(VERSION 3.20)
+
 if(DEFINED SCAFFOLD_DIR)
   set(APP_DIR ${SCAFFOLD_DIR}/app)
 else()

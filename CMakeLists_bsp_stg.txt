@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
+cmake_minimum_required(VERSION 3.20)
+
 list(APPEND BSP_INCLUDE ${BSP_DIR}/stg/include)
 
 list(APPEND BSP_SOURCES

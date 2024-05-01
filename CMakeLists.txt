@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 
 project(STG-8nn-Scaffold C ASM) # it's important to select both C and ASM here
 

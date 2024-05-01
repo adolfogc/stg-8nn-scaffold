@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
+cmake_minimum_required(VERSION 3.20)
 
 if(DEFINED SCAFFOLD_DIR)
   set(BSP_DIR ${SCAFFOLD_DIR}/bsp)

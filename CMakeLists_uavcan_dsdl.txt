@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with STG-8nn-Scaffold.  If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 
 ##
 ## DSDL SOURCE FILES
@@ -83,7 +83,7 @@ list(APPEND DSDL_SOURCE_FILES
 
 # Note: this variable is the source directory passed to the DSDL compiler, so you should
 # use the full path.
-set(DSDL_SOURCE_DIRECTORIES ${PROJECT_SOURCE_DIR}/${DSDL_DIR}/uavcan)
+set(DSDL_SOURCE_DIRECTORIES ${DSDL_DIR}/uavcan)
 
 ##
 ## DSDL GENERATED FILES
@@ -190,7 +190,7 @@ endif()
 
 add_custom_command(
     OUTPUT ${DSDL_GENERATED_FILES}
-    COMMAND python3 ${PROJECT_SOURCE_DIR}/${DSDLC_DIR}/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
+    COMMAND python3 ${DSDLC_DIR}/libcanard_dsdlc --outdir ${PROJECT_BINARY_DIR}/${DSDL_OUT_DIR} ${DSDL_SOURCE_DIRECTORIES}
     MAIN_DEPENDENCY ${DSDLC_DIR}/libcanard_dsdlc
     DEPENDS ${DSDL_SOURCE_FILES}
 )
